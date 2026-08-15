@@ -1,24 +1,83 @@
+import {
+  InstrumentSerif_400Regular,
+  InstrumentSerif_400Regular_Italic,
+} from '@expo-google-fonts/instrument-serif';
+import {
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+  PlusJakartaSans_800ExtraBold,
+} from '@expo-google-fonts/plus-jakarta-sans';
+import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTheme } from '@/hooks/use-theme';
+import { hydrateAuth } from '@/store/auth-store';
+import { hydrateLanguage } from '@/store/language-store';
+import { hydrateThemeMode } from '@/store/theme-store';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+void SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({ duration: 480, fade: true });
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const theme = useTheme();
+  const [storesHydrated, setStoresHydrated] = useState(false);
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    PlusJakartaSans_800ExtraBold,
+    InstrumentSerif_400Regular,
+    InstrumentSerif_400Regular_Italic,
+  });
+
+  useEffect(() => {
+    void Promise.all([hydrateThemeMode(), hydrateLanguage(), hydrateAuth()]).finally(() =>
+      setStoresHydrated(true)
+    );
+  }, []);
+
+  const ready = fontsLoaded && storesHydrated;
+
+  useEffect(() => {
+    if (ready) void SplashScreen.hideAsync();
+  }, [ready]);
+
+  if (!ready) return null;
+
+  const base = theme.scheme === 'dark' ? DarkTheme : DefaultTheme;
+  const navigationTheme = {
+    ...base,
+    colors: {
+      ...base.colors,
+      primary: theme.color.brand,
+      background: theme.color.background,
+      card: theme.color.surface,
+      text: theme.color.text,
+      border: theme.color.border,
+    },
+  };
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider value={navigationTheme}>
+          <Stack screenOptions={{ headerShown: false, animation: 'fade', animationDuration: 280 }}>
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen name="(app)" />
+          </Stack>
+          <StatusBar style={theme.scheme === 'dark' ? 'light' : 'dark'} />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

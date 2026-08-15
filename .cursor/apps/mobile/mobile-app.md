@@ -1,5 +1,5 @@
 # Product Requirements Document (PRD) & Mobile Execution Plan
-**Project:** Doctor Mobile App for Dental Laboratory Communication  
+**Project:** Nadeem Dental Lab — Doctor Mobile App for Dental Laboratory Communication  
 **Target Stack:** Expo (React Native), TypeScript, NativeWind (Tailwind CSS), React Navigation / Expo Router, TanStack Query, Zustand, React Hook Form, Zod.
 
 ---
@@ -76,7 +76,7 @@ Execute each sub-task sequentially. Do not move to the next task until the curre
 - [ ] Build **Alerts & Exceptions Banner** notifying of schedule delays or required action.
 - [ ] Build **Work Status Summary Progress Bar** showing distribution of active cases.
 - [ ] Add **Floating / Quick Action Buttons**: "New Order Request", "Request Courier Pickup".
-- [ ] Add "Brosh Dental Reviews" guides & professional opinions link block.
+- [ ] Add "Nadeem Dental Reviews" guides & professional opinions link block.
 
 #### Sub-Task 3.2: Inbox Live Screen (`inbox.tsx`)
 - [ ] Build virtualized list (`FlatList`) displaying all clinic orders.
