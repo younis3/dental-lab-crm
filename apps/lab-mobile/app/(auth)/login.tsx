@@ -45,7 +45,7 @@ type Step = 'credentials' | 'otp';
 
 export default function LoginScreen() {
   return (
-    <ThemeOverride scheme="light">
+    <ThemeOverride scheme="auth">
       <LoginCanvas />
     </ThemeOverride>
   );
@@ -147,10 +147,10 @@ function LoginCanvas() {
         : interpolate(ui.loginErrorCode, { code: DEMO_OTP });
 
   return (
-    <View style={[styles.root, { backgroundColor: theme.color.surface }]}>
-      <StatusBar style="dark" />
+    <View style={[styles.root, { backgroundColor: theme.color.background }]}>
+      <StatusBar style="light" />
       <LinearGradient
-        colors={['#FFFFFF', '#FBFDFC', '#EFF6F2']}
+        colors={theme.gradient.aurora}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -170,15 +170,10 @@ function LoginCanvas() {
 
           <View style={styles.center}>
             <Animated.View entering={FadeInDown.duration(420)} style={styles.brand}>
-              <LogoMark size={62} />
-              <View style={styles.brandText}>
-                <Text variant="displaySerif" style={styles.wordmark}>
-                  Nadeem
-                </Text>
-                <Text variant="caption" tone="muted" style={styles.tagline}>
-                  {ui.loginTagline}
-                </Text>
-              </View>
+              <LogoMark size={92} />
+              <Text variant="displaySerif" tone="accent" style={styles.wordmark}>
+                Nadeem
+              </Text>
             </Animated.View>
 
             <Animated.View
@@ -398,10 +393,8 @@ const styles = StyleSheet.create({
   body: { flex: 1, paddingHorizontal: spacing.xl },
   topBar: { justifyContent: 'flex-end' },
   center: { flex: 1, justifyContent: 'center', gap: spacing.xl },
-  brand: { alignItems: 'center', gap: spacing.md },
-  brandText: { alignItems: 'center', gap: 2 },
+  brand: { alignItems: 'center', gap: spacing.sm },
   wordmark: { fontSize: 34, lineHeight: 38, textAlign: 'center' },
-  tagline: { textAlign: 'center', maxWidth: 260 },
   card: {
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,

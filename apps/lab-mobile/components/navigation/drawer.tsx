@@ -62,6 +62,13 @@ const PRIMARY_NAV: NavItem[] = [
   { key: 'orders', labelKey: 'navOrders', icon: 'layers-outline', route: '/orders', match: '/orders' },
   { key: 'inbox', labelKey: 'navInbox', icon: 'chatbubbles-outline', route: '/inbox', match: '/inbox', badge: 2 },
   { key: 'folders', labelKey: 'navFiles', icon: 'folder-open-outline', route: '/folders', match: '/folders' },
+  {
+    key: 'exocad',
+    labelKey: 'navExocad',
+    icon: 'cube-outline',
+    route: '/demo-exocad',
+    match: '/demo-exocad',
+  },
 ];
 
 const SECONDARY_NAV: NavItem[] = [
@@ -71,6 +78,15 @@ const SECONDARY_NAV: NavItem[] = [
   { key: 'team', labelKey: 'navTeam', icon: 'people-outline', soon: true },
 ];
 
+/** Stagger slots, derived so adding a nav item never desyncs the animation. */
+const STAGGER = {
+  primaryTitle: 2,
+  primary: 3,
+  secondaryTitle: 3 + PRIMARY_NAV.length,
+  secondary: 4 + PRIMARY_NAV.length,
+  tail: 4 + PRIMARY_NAV.length + SECONDARY_NAV.length,
+} as const;
+
 const THEME_OPTIONS: { key: ThemeMode; icon: IconName; labelKey: keyof UiStrings }[] = [
   { key: 'system', icon: 'phone-portrait-outline', labelKey: 'themeAuto' },
   { key: 'light', icon: 'sunny-outline', labelKey: 'themeLight' },
@@ -78,6 +94,9 @@ const THEME_OPTIONS: { key: ThemeMode; icon: IconName; labelKey: keyof UiStrings
 ];
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+/** Shows behind the scaled-down content while the drawer is open. */
+const DRAWER_VOID = '#1B2836';
 
 /**
  * Hosts the app content and an overlay sidebar. The panel lives on the leading
@@ -178,7 +197,7 @@ export function DrawerHost({ children }: { children: ReactNode }) {
 
   return (
     <DrawerContext.Provider value={contextValue}>
-      <View style={[styles.host, { backgroundColor: '#04110E' }]}>
+      <View style={[styles.host, { backgroundColor: DRAWER_VOID }]}>
         <Animated.View style={[styles.content, { backgroundColor: theme.color.background }, contentStyle]}>
           {children}
         </Animated.View>
@@ -195,7 +214,7 @@ export function DrawerHost({ children }: { children: ReactNode }) {
             accessibilityRole="button"
             accessibilityLabel={ui.drawerCloseMenu}
             onPress={close}
-            style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(2, 8, 7, 0.58)' }]}
+            style={[StyleSheet.absoluteFill, { backgroundColor: theme.color.scrim }]}
           />
         </Animated.View>
 
@@ -204,7 +223,7 @@ export function DrawerHost({ children }: { children: ReactNode }) {
           style={[styles.panel, isRtl ? { right: 0 } : { left: 0 }, { width: panelWidth }, panelStyle]}>
           <GestureDetector gesture={closeGesture}>
             <View style={styles.flex}>
-              <ThemeOverride scheme="dark">
+              <ThemeOverride scheme="auth">
                 <DrawerPanel progress={progress} onNavigate={close} />
               </ThemeOverride>
             </View>
@@ -254,7 +273,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
         }}>
         <StaggerItem progress={progress} index={0}>
           <View style={[styles.brandRow, row(isRtl)]}>
-            <LogoMark size={54} />
+            <LogoMark size={48} />
             <View style={styles.flex}>
               <Text variant="displaySerif" style={styles.brandTitle}>
                 Nadeem
@@ -289,32 +308,32 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
         </StaggerItem>
 
         <View style={styles.group}>
-          <StaggerItem progress={progress} index={2}>
+          <StaggerItem progress={progress} index={STAGGER.primaryTitle}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerWorkspace}
             </Text>
           </StaggerItem>
           {PRIMARY_NAV.map((item, index) => (
-            <StaggerItem key={item.key} progress={progress} index={3 + index}>
+            <StaggerItem key={item.key} progress={progress} index={STAGGER.primary + index}>
               <DrawerRow item={item} active={pathname === item.match} onPress={() => go(item)} />
             </StaggerItem>
           ))}
         </View>
 
         <View style={styles.group}>
-          <StaggerItem progress={progress} index={7}>
+          <StaggerItem progress={progress} index={STAGGER.secondaryTitle}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerComingSoon}
             </Text>
           </StaggerItem>
           {SECONDARY_NAV.map((item, index) => (
-            <StaggerItem key={item.key} progress={progress} index={8 + index}>
+            <StaggerItem key={item.key} progress={progress} index={STAGGER.secondary + index}>
               <DrawerRow item={item} active={false} />
             </StaggerItem>
           ))}
         </View>
 
-        <StaggerItem progress={progress} index={12}>
+        <StaggerItem progress={progress} index={STAGGER.tail}>
           <View style={styles.group}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerLanguage}
@@ -323,7 +342,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={13}>
+        <StaggerItem progress={progress} index={STAGGER.tail + 1}>
           <View style={styles.group}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerAppearance}
@@ -361,7 +380,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={14}>
+        <StaggerItem progress={progress} index={STAGGER.tail + 2}>
           <View
             style={[styles.status, row(isRtl), { backgroundColor: withAlpha(theme.color.success, 0.12) }]}>
             <View style={[styles.statusDot, { backgroundColor: theme.color.success }]} />
@@ -371,7 +390,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={15}>
+        <StaggerItem progress={progress} index={STAGGER.tail + 3}>
           <PressableScale
             onPress={() => {
               onNavigate();

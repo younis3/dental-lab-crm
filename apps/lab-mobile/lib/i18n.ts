@@ -28,7 +28,6 @@ export function interpolate(template: string, values: Record<string, string | nu
 
 export type UiStrings = {
   // login
-  loginTagline: string;
   loginWelcome: string;
   loginSubtitle: string;
   loginPhoneLabel: string;
@@ -63,6 +62,7 @@ export type UiStrings = {
   navFinancials: string;
   navCourier: string;
   navTeam: string;
+  navExocad: string;
 
   // drawer
   drawerWorkspace: string;
@@ -169,11 +169,31 @@ export type UiStrings = {
   filesCount: string;
   filesFolderAria: string;
   filesMore: string;
+
+  // exocad viewer
+  exocadTitle: string;
+  exocadSubtitle: string;
+  exocadAboutTitle: string;
+  exocadAboutBody: string;
+  exocadChooseTitle: string;
+  exocadFileCount: string;
+  exocadOpenAria: string;
+  exocadEmptyTitle: string;
+  exocadEmptyBody: string;
+  exocadLoading: string;
+  exocadLoadingHint: string;
+  exocadErrorTitle: string;
+  exocadErrorBody: string;
+  exocadRetry: string;
+  exocadReload: string;
+  exocadBack: string;
+  exocadBackToList: string;
+  exocadNotFoundTitle: string;
+  exocadNotFoundBody: string;
 };
 
 export const UI_STRINGS: Record<Lang, UiStrings> = {
   en: {
-    loginTagline: 'Precision restorations, from impression to delivery.',
     loginWelcome: 'Welcome back',
     loginSubtitle: 'Sign in to your lab workspace.',
     loginPhoneLabel: 'Phone number',
@@ -207,6 +227,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navFinancials: 'Financials',
     navCourier: 'Courier',
     navTeam: 'Team & roles',
+    navExocad: 'exocad demo',
 
     drawerWorkspace: 'Workspace',
     drawerComingSoon: 'Coming soon',
@@ -307,10 +328,30 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     filesCount: '{count} files',
     filesFolderAria: '{name}, {count} files',
     filesMore: 'More options',
+
+    exocadTitle: 'exocad demo',
+    exocadSubtitle: 'Open a 3D case in the exocad webview',
+    exocadAboutTitle: 'How it works',
+    exocadAboutBody:
+      'Every export already contains the STL meshes and the exocad viewer, so a case opens without an internet connection.',
+    exocadChooseTitle: 'Choose a file',
+    exocadFileCount: '{count} files bundled with the app',
+    exocadOpenAria: 'Open {name} in the 3D viewer',
+    exocadEmptyTitle: 'No exocad files yet',
+    exocadEmptyBody: 'Add an exported HTML file to assets/exocad and register it in lib/exocad.ts.',
+    exocadLoading: 'Loading the 3D viewer',
+    exocadLoadingHint: 'Large cases can take a few seconds.',
+    exocadErrorTitle: 'Could not open the file',
+    exocadErrorBody: 'The exocad export did not load. Check the file and try again.',
+    exocadRetry: 'Try again',
+    exocadReload: 'Reload viewer',
+    exocadBack: 'Back',
+    exocadBackToList: 'Back to files',
+    exocadNotFoundTitle: 'File not found',
+    exocadNotFoundBody: 'This exocad file is no longer bundled with the app.',
   },
 
   he: {
-    loginTagline: 'שחזורים מדויקים, מההטבעה ועד המסירה.',
     loginWelcome: 'ברוך שובך',
     loginSubtitle: 'התחברו לסביבת העבודה של המעבדה.',
     loginPhoneLabel: 'מספר טלפון',
@@ -344,6 +385,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navFinancials: 'כספים',
     navCourier: 'שליחויות',
     navTeam: 'צוות והרשאות',
+    navExocad: 'הדגמת exocad',
 
     drawerWorkspace: 'סביבת עבודה',
     drawerComingSoon: 'בקרוב',
@@ -444,10 +486,30 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     filesCount: '{count} קבצים',
     filesFolderAria: '{name}, {count} קבצים',
     filesMore: 'אפשרויות נוספות',
+
+    exocadTitle: 'הדגמת exocad',
+    exocadSubtitle: 'פתיחת תיק תלת-ממד במציג exocad webview',
+    exocadAboutTitle: 'איך זה עובד',
+    exocadAboutBody:
+      'כל קובץ יצוא כולל בתוכו את קבצי ה-STL ואת מציג exocad, ולכן התיק נפתח גם בלי חיבור לאינטרנט.',
+    exocadChooseTitle: 'בחירת קובץ',
+    exocadFileCount: '{count} קבצים מצורפים לאפליקציה',
+    exocadOpenAria: 'פתיחת {name} במציג התלת-ממד',
+    exocadEmptyTitle: 'אין עדיין קבצי exocad',
+    exocadEmptyBody: 'הוסיפו קובץ HTML מיוצא לתיקייה assets/exocad ורשמו אותו בקובץ lib/exocad.ts.',
+    exocadLoading: 'טוען את מציג התלת-ממד',
+    exocadLoadingHint: 'תיקים גדולים עשויים להימשך כמה שניות.',
+    exocadErrorTitle: 'לא ניתן לפתוח את הקובץ',
+    exocadErrorBody: 'קובץ ה-exocad לא נטען. בדקו את הקובץ ונסו שוב.',
+    exocadRetry: 'נסו שוב',
+    exocadReload: 'טעינת המציג מחדש',
+    exocadBack: 'חזרה',
+    exocadBackToList: 'חזרה לרשימת הקבצים',
+    exocadNotFoundTitle: 'הקובץ לא נמצא',
+    exocadNotFoundBody: 'הקובץ הזה אינו מצורף יותר לאפליקציה.',
   },
 
   ar: {
-    loginTagline: 'ترميمات دقيقة، من الطبعة حتى التسليم.',
     loginWelcome: 'أهلًا بعودتك',
     loginSubtitle: 'سجّل الدخول إلى مساحة عمل المختبر.',
     loginPhoneLabel: 'رقم الهاتف',
@@ -481,6 +543,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navFinancials: 'المالية',
     navCourier: 'التوصيل',
     navTeam: 'الفريق والصلاحيات',
+    navExocad: 'عرض exocad',
 
     drawerWorkspace: 'مساحة العمل',
     drawerComingSoon: 'قريبًا',
@@ -581,5 +644,26 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     filesCount: '{count} ملفات',
     filesFolderAria: '{name}، {count} ملفات',
     filesMore: 'خيارات أخرى',
+
+    exocadTitle: 'عرض exocad',
+    exocadSubtitle: 'افتح حالة ثلاثية الأبعاد في عارض exocad webview',
+    exocadAboutTitle: 'كيف يعمل',
+    exocadAboutBody:
+      'كل ملف مُصدَّر يحتوي على شبكات STL وعلى عارض exocad، لذلك تُفتح الحالة دون اتصال بالإنترنت.',
+    exocadChooseTitle: 'اختر ملفًا',
+    exocadFileCount: '{count} ملفات مضمّنة في التطبيق',
+    exocadOpenAria: 'افتح {name} في العارض ثلاثي الأبعاد',
+    exocadEmptyTitle: 'لا توجد ملفات exocad بعد',
+    exocadEmptyBody: 'أضف ملف HTML مُصدَّرًا إلى assets/exocad وسجّله في lib/exocad.ts.',
+    exocadLoading: 'جارٍ تحميل العارض ثلاثي الأبعاد',
+    exocadLoadingHint: 'قد تستغرق الحالات الكبيرة بضع ثوانٍ.',
+    exocadErrorTitle: 'تعذّر فتح الملف',
+    exocadErrorBody: 'لم يتم تحميل ملف exocad. تحقق من الملف وحاول مرة أخرى.',
+    exocadRetry: 'حاول مرة أخرى',
+    exocadReload: 'إعادة تحميل العارض',
+    exocadBack: 'رجوع',
+    exocadBackToList: 'العودة إلى الملفات',
+    exocadNotFoundTitle: 'الملف غير موجود',
+    exocadNotFoundBody: 'هذا الملف لم يعد مضمّنًا في التطبيق.',
   },
 };

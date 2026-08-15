@@ -1,24 +1,39 @@
 import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 export type ColorScheme = 'light' | 'dark';
+/** `auth` is a fixed palette taken from the printed logo. */
+export type ThemeName = ColorScheme | 'auth';
 
 /** Two-or-more stop tuple required by expo-linear-gradient. */
 export type GradientStops = readonly [string, string, ...string[]];
 
-const palette = {
-  teal400: '#2DD4BF',
-  teal500: '#14B8A6',
-  teal600: '#0D9488',
-  teal700: '#0F766E',
-  teal800: '#115E59',
-  champagne: '#E4C48A',
-  champagneDeep: '#C4A574',
-  mint: '#5EEAD4',
-  sage: '#86B8A8',
-  coral: '#F07178',
-  coralDeep: '#E24B5A',
-  amber: '#F0B45A',
-  gold: '#F5D7A1',
+/** Sampled from assets/images/logo/logo.JPG: slate canvas, rose-taupe mark. */
+const logo = {
+  slateInk: '#16212B',
+  slateDeep: '#22323F',
+  slate: '#2B3D4F',
+  slateLift: '#33465A',
+  slateSoft: '#3A4E63',
+  slateRaised: '#42576C',
+  roseLight: '#C6A594',
+  roseMid: '#B8927F',
+  rose: '#A98876',
+  roseDeep: '#8A6E62',
+  roseInk: '#75594E',
+  cream: '#F2E9E3',
+  creamSoft: '#EDE4DC',
+};
+
+/** One brand ramp everywhere, deep enough for white label text. */
+const brandRamp: GradientStops = ['#B8927F', '#9A7B6C', '#806358'];
+
+const semantic = {
+  success: '#3F8A6E',
+  successLight: '#8FCBB2',
+  warning: '#B4822F',
+  warningLight: '#E3C08A',
+  danger: '#C25B54',
+  dangerLight: '#E8A09A',
 };
 
 export type Theme = {
@@ -44,6 +59,8 @@ export type Theme = {
     glassBorder: string;
     scrim: string;
     highlight: string;
+    /** Ambient blob colour behind screens. */
+    glow: string;
   };
   gradient: {
     brand: GradientStops;
@@ -58,81 +75,124 @@ export type Theme = {
   blurTint: 'light' | 'dark';
 };
 
+/** Warm cream canvas, slate ink, rose brand. */
 const light: Theme = {
   scheme: 'light',
   color: {
-    background: '#F1F6F3',
+    background: '#F6F1EC',
     surface: '#FFFFFF',
-    surfaceMuted: '#E7F0EB',
-    surfaceRaised: '#FBFDFA',
-    border: 'rgba(15, 40, 34, 0.08)',
-    borderStrong: 'rgba(15, 40, 34, 0.16)',
-    text: '#0B1C18',
-    textMuted: '#4F675F',
-    textFaint: '#7A9389',
-    brand: palette.teal700,
-    brandSoft: 'rgba(15, 118, 110, 0.10)',
+    surfaceMuted: logo.creamSoft,
+    surfaceRaised: '#FCFAF8',
+    border: 'rgba(34, 50, 63, 0.10)',
+    borderStrong: 'rgba(34, 50, 63, 0.20)',
+    text: logo.slateDeep,
+    textMuted: '#5C6E7C',
+    textFaint: '#8C9AA6',
+    brand: logo.roseDeep,
+    brandSoft: 'rgba(138, 110, 98, 0.10)',
     onBrand: '#FFFFFF',
-    accent: palette.champagneDeep,
-    success: '#148F68',
-    warning: '#C47C12',
-    danger: palette.coralDeep,
-    glass: 'rgba(255, 255, 255, 0.70)',
-    glassBorder: 'rgba(255, 255, 255, 0.88)',
-    scrim: 'rgba(6, 17, 15, 0.48)',
+    accent: logo.slate,
+    success: semantic.success,
+    warning: semantic.warning,
+    danger: semantic.danger,
+    glass: 'rgba(255, 255, 255, 0.72)',
+    glassBorder: 'rgba(255, 255, 255, 0.90)',
+    scrim: 'rgba(22, 33, 43, 0.48)',
     highlight: 'rgba(255, 255, 255, 0.55)',
+    glow: logo.roseLight,
   },
   gradient: {
-    brand: [palette.teal400, palette.teal600, palette.teal800],
-    aurora: ['#E8F4EF', '#F4F1E8', '#F1F6F3'],
-    surfaceFade: ['rgba(241,246,243,0)', 'rgba(241,246,243,0.94)'],
-    hero: ['#0F766E', '#0D9488', '#134E4A'],
-    gold: [palette.gold, palette.champagneDeep],
-    success: ['#5EEAD4', '#148F68'],
-    warning: ['#F5D7A1', '#C47C12'],
-    danger: ['#FCA5A5', palette.coralDeep],
+    brand: brandRamp,
+    aurora: ['#F8F4EF', '#F3EDE6', '#F6F1EC'],
+    surfaceFade: ['rgba(246,241,236,0)', 'rgba(246,241,236,0.94)'],
+    hero: [logo.slateLift, logo.slate, logo.slateDeep],
+    gold: [logo.roseLight, logo.roseDeep],
+    success: [semantic.successLight, semantic.success],
+    warning: [semantic.warningLight, semantic.warning],
+    danger: [semantic.dangerLight, semantic.danger],
   },
   blurTint: 'light',
 };
 
+/** Logo slate at night: deep navy canvas with lifted slate cards. */
 const dark: Theme = {
   scheme: 'dark',
   color: {
-    background: '#06110F',
-    surface: '#0E1C19',
-    surfaceMuted: '#152420',
-    surfaceRaised: '#1A2C27',
-    border: 'rgba(210, 240, 230, 0.08)',
-    borderStrong: 'rgba(210, 240, 230, 0.16)',
-    text: '#F1F7F4',
-    textMuted: '#A3BDB4',
-    textFaint: '#6F8A80',
-    brand: palette.teal400,
-    brandSoft: 'rgba(45, 212, 191, 0.16)',
+    background: logo.slateInk,
+    surface: logo.slate,
+    surfaceMuted: logo.slateLift,
+    surfaceRaised: logo.slateSoft,
+    border: 'rgba(242, 233, 227, 0.10)',
+    borderStrong: 'rgba(242, 233, 227, 0.20)',
+    text: logo.cream,
+    textMuted: '#C3CDD8',
+    textFaint: '#93A2B1',
+    brand: logo.roseLight,
+    brandSoft: 'rgba(198, 165, 148, 0.16)',
     onBrand: '#FFFFFF',
-    accent: palette.champagne,
-    success: palette.mint,
-    warning: palette.amber,
-    danger: palette.coral,
-    glass: 'rgba(10, 28, 24, 0.62)',
-    glassBorder: 'rgba(180, 230, 214, 0.12)',
-    scrim: 'rgba(2, 8, 7, 0.66)',
-    highlight: 'rgba(255, 255, 255, 0.10)',
+    accent: '#B08972',
+    success: semantic.successLight,
+    warning: semantic.warningLight,
+    danger: semantic.dangerLight,
+    glass: 'rgba(43, 61, 79, 0.62)',
+    glassBorder: 'rgba(242, 233, 227, 0.12)',
+    scrim: 'rgba(11, 17, 23, 0.66)',
+    highlight: 'rgba(255, 255, 255, 0.08)',
+    glow: logo.rose,
   },
   gradient: {
-    brand: [palette.teal400, palette.teal600, palette.teal800],
-    aurora: ['#0C2420', '#10201C', '#06110F'],
-    surfaceFade: ['rgba(6,17,15,0)', 'rgba(6,17,15,0.94)'],
-    hero: ['#115E59', '#0D9488', '#042F2E'],
-    gold: [palette.gold, '#A8844A'],
-    success: [palette.mint, '#0F766E'],
-    warning: [palette.gold, '#C47C12'],
-    danger: ['#FCA5A5', palette.coralDeep],
+    brand: brandRamp,
+    aurora: [logo.slate, logo.slateDeep, logo.slateInk],
+    surfaceFade: ['rgba(22,33,43,0)', 'rgba(22,33,43,0.94)'],
+    hero: [logo.slateSoft, logo.slate, logo.slateInk],
+    gold: [logo.roseLight, logo.roseDeep],
+    success: [semantic.successLight, semantic.success],
+    warning: [semantic.warningLight, semantic.warning],
+    danger: [semantic.dangerLight, semantic.danger],
   },
   blurTint: 'dark',
 };
 
-export const themes: Record<ColorScheme, Theme> = { light, dark };
+/** Sign-in and sidebar palette: the logo background colour, unmodified. */
+const auth: Theme = {
+  scheme: 'dark',
+  color: {
+    background: logo.slate,
+    surface: logo.slateLift,
+    surfaceMuted: logo.slateSoft,
+    surfaceRaised: logo.slateRaised,
+    border: 'rgba(242, 233, 227, 0.14)',
+    borderStrong: 'rgba(242, 233, 227, 0.26)',
+    text: logo.cream,
+    textMuted: '#C3CDD8',
+    textFaint: '#93A2B1',
+    brand: logo.roseLight,
+    brandSoft: 'rgba(198, 165, 148, 0.18)',
+    onBrand: '#FFFFFF',
+    accent: logo.roseLight,
+    success: semantic.successLight,
+    warning: semantic.warningLight,
+    danger: semantic.dangerLight,
+    glass: 'rgba(43, 61, 79, 0.66)',
+    glassBorder: 'rgba(242, 233, 227, 0.16)',
+    scrim: 'rgba(14, 22, 30, 0.66)',
+    highlight: 'rgba(255, 255, 255, 0.08)',
+    glow: logo.rose,
+  },
+  gradient: {
+    brand: brandRamp,
+    aurora: [logo.slateLift, logo.slate, logo.slateDeep],
+    surfaceFade: ['rgba(43,61,79,0)', 'rgba(43,61,79,0.94)'],
+    hero: [logo.slateLift, logo.slate, logo.slateDeep],
+    gold: [logo.roseLight, logo.roseDeep],
+    success: [semantic.successLight, semantic.success],
+    warning: [semantic.warningLight, semantic.warning],
+    danger: [semantic.dangerLight, semantic.danger],
+  },
+  blurTint: 'dark',
+};
+
+export const themes: Record<ThemeName, Theme> = { light, dark, auth };
 
 export const spacing = {
   xs: 4,

@@ -71,6 +71,8 @@ type ScreenHeaderProps = {
   title: string;
   subtitle?: string;
   right?: ReactNode;
+  /** Replaces the drawer button on the leading edge — used for back buttons. */
+  leading?: ReactNode;
   showMenu?: boolean;
   titleVariant?: TextProps['variant'];
 };
@@ -79,6 +81,7 @@ export function ScreenHeader({
   title,
   subtitle,
   right,
+  leading,
   showMenu = true,
   titleVariant = 'heading',
 }: ScreenHeaderProps) {
@@ -86,7 +89,7 @@ export function ScreenHeader({
 
   return (
     <Animated.View entering={FadeInDown.duration(420)} style={[styles.header, row(isRtl)]}>
-      {showMenu ? <DrawerButton /> : null}
+      {leading ?? (showMenu ? <DrawerButton /> : null)}
       <View style={styles.flex}>
         <Text variant={titleVariant} numberOfLines={1}>
           {title}
