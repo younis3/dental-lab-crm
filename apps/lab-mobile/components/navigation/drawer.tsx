@@ -106,7 +106,7 @@ export function DrawerHost({ children }: { children: ReactNode }) {
   const theme = useTheme();
   const { isRtl, ui } = useLanguage();
   const { width } = useWindowDimensions();
-  const panelWidth = Math.min(338, width * 0.86);
+  const panelWidth = Math.min(278, width * 0.72);
   /** +1 slides the content right (LTR), -1 slides it left (RTL). */
   const dir = isRtl ? -1 : 1;
 

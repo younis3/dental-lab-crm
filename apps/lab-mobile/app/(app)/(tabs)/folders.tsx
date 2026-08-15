@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   storageIcon: { width: 40, height: 40, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   grid: { flexWrap: 'wrap', gap: spacing.md },
   tileWrapper: { width: '47.6%', flexGrow: 1 },
-  tile: { gap: spacing.xs, height: '100%' },
+  tile: { gap: spacing.xs },
   tileIcon: {
     width: 42,
     height: 42,
