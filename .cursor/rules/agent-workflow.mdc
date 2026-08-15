@@ -1,0 +1,23 @@
+---
+description: Core workflow rules the agent must follow on every task
+alwaysApply: true
+---
+
+# Agent Workflow Rules
+
+## Before Starting Any Task
+- Read all applicable rules in `.cursor/rules/` before taking action.
+- Read and understand the files you are about to modify, and get familiar with the surrounding codebase before making changes.
+
+## Making Changes
+- Be conservative: do not break existing, working functionality.
+- Never start a dev server or test server to verify UI changes. The user tests the UI manually. No need for screenshot verify.
+- Instead of running the app, carefully re-read the code you wrote to confirm it is correct and free of errors before considering the task done.
+
+## Communication Style
+- Keep explanations short. Do not narrate every step in detail.
+- Always end a task with a brief summary of what was changed.
+- If the user is in Ask mode, state clearly that they are in Ask mode instead of producing large code blocks, since Ask mode may be enabled unintentionally.
+
+## Git
+- Never run git commands (commit, push, etc.) or interact with the remote repository. The user manages all git operations manually.

@@ -1,0 +1,49 @@
+---
+description: Every user-facing string must be translated into all supported languages (en, he, ar)
+alwaysApply: true
+---
+
+# Translate Every UI String
+
+Supported languages: **en**, **he**, **ar**. No feature is complete until it reads correctly in all three.
+
+## Rules
+
+- **Never hardcode user-visible text** in a component. That includes labels, headings, buttons, placeholders, `aria-label`, `alt`, `title`, toasts, empty states, and error messages.
+- Add the key to the `UiStrings` type in `apps/web-client/lib/i18n.ts`, then add a real translation under `UI_STRINGS.en`, `.he`, and `.ar`. Keep the same key order in all three blocks, grouped by feature (not alphabetical).
+- **Never leave English as a placeholder** in the `he` or `ar` block. Write the actual Hebrew/Arabic translation.
+- Consume strings via the `ui: UiStrings` prop (`{ui.myKey}`), read from `UI_STRINGS[lang]` at the tenant root. There is no `useTranslation` hook.
+- For dynamic values use `{placeholder}` in the string and `interpolate(ui.myKey, { name: value })` — never string concatenation, since word order differs per language.
+- Tenant-authored content uses `LocalizedText` (`{ en, he, ar }`) in `apps/web-client/lib/tenants.ts` and renders via `localized(field, lang)`.
+
+## RTL is part of the job
+
+`he` and `ar` are RTL. When adding layout:
+
+- Use logical Tailwind utilities (`ps-`, `pe-`, `ms-`, `me-`, `start-`, `end-`) instead of `pl-`, `pr-`, `left-`, `right-`.
+- Mirror directional icons with `rtl:-scale-x-100`.
+- Set `dir="ltr"` on phone numbers, OTP inputs, times, and counters so digits stay in order.
+- Check `isRtl(lang)` when direction changes behavior (swipe direction, carousel arrows).
+
+## Example
+
+```ts
+// lib/i18n.ts
+export type UiStrings = {
+  // ...
+  cartEmpty: string;
+  cartItemCount: string;
+};
+
+export const UI_STRINGS: Record<Lang, UiStrings> = {
+  en: { cartEmpty: "Your cart is empty", cartItemCount: "{count} items" },
+  he: { cartEmpty: "העגלה שלך ריקה", cartItemCount: "{count} פריטים" },
+  ar: { cartEmpty: "سلتك فارغة", cartItemCount: "{count} عناصر" },
+};
+```
+
+```tsx
+// component
+<p>{ui.cartEmpty}</p>
+<span>{interpolate(ui.cartItemCount, { count })}</span>
+```
