@@ -1,0 +1,2 @@
+# exocad webview exports embed large STL meshes; exclude from GitHub language stats.
+apps/lab-mobile/assets/exocad/*.html linguist-generated
