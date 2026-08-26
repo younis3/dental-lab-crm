@@ -20,4 +20,4 @@ alwaysApply: true
 - If the user is in Ask mode, state clearly that they are in Ask mode instead of producing large code blocks, since Ask mode may be enabled unintentionally.
 
 ## Git
-- Never run git commands (commit, push, etc.) or interact with the remote repository. The user manages all git operations manually.
+- Follow `.cursor/rules/git-safety.mdc` on every task. Never run git yourself — only give the user terminal commands to copy and run.

@@ -1,0 +1,38 @@
+---
+description: Never run git — only give the user copy-paste terminal commands
+alwaysApply: true
+---
+
+# Git Safety — Never Run Git For the User
+
+The user runs **all** git operations themselves. You must **never** execute git commands that write history or touch the remote — not even when the user asks you to commit, push, amend, or open a PR.
+
+## Always Forbidden (Never Run These)
+
+- `git commit` (including `--amend`)
+- `git push` / `git push --force`
+- `git add` for the purpose of committing on their behalf
+- Branch creation, rebases, merges intended for commit/push
+- `gh pr create`, `gh pr merge`, or any remote/git write operation
+
+## When the User Asks to Commit or Push
+
+Do **not** run it. Give them **copy-paste terminal commands** instead — for example:
+
+```bash
+git add path/to/changed/files
+git commit -m "their message here"
+git push
+```
+
+Include only the files and message that apply. They run it in their own terminal.
+
+Asking for a **commit message**, **PR title**, or **what to run** means provide text or commands only — never execute them.
+
+## No AI Attribution in Commits
+
+Never suggest commit messages or commands that add trailers crediting Cursor, an AI agent, or any bot — for example `Co-authored-by: Cursor <cursoragent@cursor.com>`.
+
+## Default Behavior
+
+After finishing code changes, summarize what changed and stop. Do not offer to commit or push. If git is relevant, offer the commands for them to copy — do not run them.
