@@ -341,6 +341,58 @@ export type UiStrings = {
   staffFormNameRequired: string;
   staffDeleteTitle: string;
   staffDeleteBody: string;
+
+  // tasks
+  navTasks: string;
+  permManageTasks: string;
+  tasksTitle: string;
+  tasksSubtitle: string;
+  tasksTabMine: string;
+  tasksTabReview: string;
+  tasksTabAll: string;
+  tasksTabDone: string;
+  tasksEmptyMine: string;
+  tasksEmptyMineHint: string;
+  tasksEmptyAll: string;
+  tasksEmptyAllHint: string;
+  tasksEmptyReview: string;
+  tasksEmptyReviewHint: string;
+  tasksEmptyDone: string;
+  tasksEmptyDoneHint: string;
+  tasksNew: string;
+  tasksEditTask: string;
+  tasksNewTask: string;
+  tasksNewSubtask: string;
+  tasksAddSubtask: string;
+  tasksFormTitle: string;
+  tasksFormTitlePlaceholder: string;
+  tasksFormNotes: string;
+  tasksFormNotesPlaceholder: string;
+  tasksFormDueDate: string;
+  tasksFormDueToday: string;
+  tasksFormDueTomorrow: string;
+  tasksFormDueNextWeek: string;
+  tasksFormDueNone: string;
+  tasksFormAssignee: string;
+  tasksFormParent: string;
+  tasksTitleRequired: string;
+  tasksMarkDone: string;
+  tasksReopen: string;
+  tasksConfirm: string;
+  tasksUndo: string;
+  tasksDeleteTitle: string;
+  tasksDeleteBody: string;
+  tasksDueToday: string;
+  tasksDueTomorrow: string;
+  tasksOverdue: string;
+  tasksSubtaskCount: string;
+  tasksSubtaskDetail: string;
+  tasksNoNotes: string;
+  tasksOpenSubtaskAria: string;
+  tasksCreatedBy: string;
+  tasksReviewHint: string;
+  tasksDragHandle: string;
+  tasksMyTaskAria: string;
 };
 
 export const UI_STRINGS: Record<Lang, UiStrings> = {
@@ -638,6 +690,57 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     staffFormNameRequired: 'Enter a name before saving.',
     staffDeleteTitle: 'Remove member',
     staffDeleteBody: '{name} will lose access to the lab workspace.',
+
+    navTasks: 'Tasks',
+    permManageTasks: 'Manage all tasks',
+    tasksTitle: 'Tasks',
+    tasksSubtitle: 'Internal work board',
+    tasksTabMine: 'Mine',
+    tasksTabReview: 'Review',
+    tasksTabAll: 'All',
+    tasksTabDone: 'Done',
+    tasksEmptyMine: 'No tasks assigned to you',
+    tasksEmptyMineHint: 'New assignments will appear here.',
+    tasksEmptyAll: 'No open tasks',
+    tasksEmptyAllHint: 'Create the first task for the team.',
+    tasksEmptyReview: 'Nothing to review',
+    tasksEmptyReviewHint: 'Tasks completed by the team wait here for confirmation.',
+    tasksEmptyDone: 'Archive is empty',
+    tasksEmptyDoneHint: 'Completed tasks will be kept here.',
+    tasksNew: 'New task',
+    tasksEditTask: 'Edit task',
+    tasksNewTask: 'New task',
+    tasksNewSubtask: 'New subtask',
+    tasksAddSubtask: 'Add subtask',
+    tasksFormTitle: 'Title',
+    tasksFormTitlePlaceholder: 'e.g. Pour models for ND-2417',
+    tasksFormNotes: 'Notes',
+    tasksFormNotesPlaceholder: 'Details, instructions or context (optional)',
+    tasksFormDueDate: 'Due date',
+    tasksFormDueToday: 'Today',
+    tasksFormDueTomorrow: 'Tomorrow',
+    tasksFormDueNextWeek: 'Next week',
+    tasksFormDueNone: 'No date',
+    tasksFormAssignee: 'Assign to',
+    tasksFormParent: 'Parent task',
+    tasksTitleRequired: 'Enter a title before saving.',
+    tasksMarkDone: 'Mark done',
+    tasksReopen: 'Reopen',
+    tasksConfirm: 'Confirm',
+    tasksUndo: 'Undo',
+    tasksDeleteTitle: 'Delete task',
+    tasksDeleteBody: '“{title}” and its subtasks will be removed.',
+    tasksDueToday: 'Due today',
+    tasksDueTomorrow: 'Due tomorrow',
+    tasksOverdue: 'Overdue',
+    tasksSubtaskCount: '{count} subtasks',
+    tasksSubtaskDetail: 'Subtask',
+    tasksNoNotes: 'No notes on this subtask.',
+    tasksOpenSubtaskAria: 'Open {title}',
+    tasksCreatedBy: 'Created by {name}',
+    tasksReviewHint: 'Completed — waiting for manager confirmation',
+    tasksDragHandle: 'Drag to reorder',
+    tasksMyTaskAria: '{title}, assigned to {assignee}',
   },
 
   he: {
@@ -934,6 +1037,57 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     staffFormNameRequired: 'יש להזין שם לפני השמירה.',
     staffDeleteTitle: 'הסרת חבר צוות',
     staffDeleteBody: '{name} יאבד את הגישה לסביבת העבודה של המעבדה.',
+
+    navTasks: 'משימות',
+    permManageTasks: 'ניהול כל המשימות',
+    tasksTitle: 'משימות',
+    tasksSubtitle: 'לוח העבודה הפנימי',
+    tasksTabMine: 'שלי',
+    tasksTabReview: 'לאישור',
+    tasksTabAll: 'הכול',
+    tasksTabDone: 'הושלמו',
+    tasksEmptyMine: 'אין משימות שהוקצו לך',
+    tasksEmptyMineHint: 'משימות חדשות שיוקצו יופיעו כאן.',
+    tasksEmptyAll: 'אין משימות פתוחות',
+    tasksEmptyAllHint: 'צרו את המשימה הראשונה עבור הצוות.',
+    tasksEmptyReview: 'אין מה לאשר',
+    tasksEmptyReviewHint: 'משימות שהושלמו על ידי הצוות ממתינות כאן לאישור.',
+    tasksEmptyDone: 'הארכיון ריק',
+    tasksEmptyDoneHint: 'משימות שהושלמו יישמרו כאן.',
+    tasksNew: 'משימה חדשה',
+    tasksEditTask: 'עריכת משימה',
+    tasksNewTask: 'משימה חדשה',
+    tasksNewSubtask: 'תת-משימה חדשה',
+    tasksAddSubtask: 'הוספת תת-משימה',
+    tasksFormTitle: 'כותרת',
+    tasksFormTitlePlaceholder: 'לדוגמה: הלחמת מודלים עבור ND-2417',
+    tasksFormNotes: 'הערות',
+    tasksFormNotesPlaceholder: 'פרטים, הוראות או הקשר (אופציונלי)',
+    tasksFormDueDate: 'תאריך יעד',
+    tasksFormDueToday: 'היום',
+    tasksFormDueTomorrow: 'מחר',
+    tasksFormDueNextWeek: 'שבוע הבא',
+    tasksFormDueNone: 'ללא תאריך',
+    tasksFormAssignee: 'הקצאה אל',
+    tasksFormParent: 'משימת אב',
+    tasksTitleRequired: 'יש להזין כותרת לפני השמירה.',
+    tasksMarkDone: 'סימון כהושלמה',
+    tasksReopen: 'פתיחה מחדש',
+    tasksConfirm: 'אישור',
+    tasksUndo: 'ביטול',
+    tasksDeleteTitle: 'מחיקת משימה',
+    tasksDeleteBody: '״{title}״ ותת-המשימות שלה יימחקו.',
+    tasksDueToday: 'ליעד היום',
+    tasksDueTomorrow: 'ליעד מחר',
+    tasksOverdue: 'באיחור',
+    tasksSubtaskCount: '{count} תת-משימות',
+    tasksSubtaskDetail: 'תת-משימה',
+    tasksNoNotes: 'אין הערות לתת-משימה זו.',
+    tasksOpenSubtaskAria: 'פתיחת {title}',
+    tasksCreatedBy: 'נוצרה על ידי {name}',
+    tasksReviewHint: 'הושלמה — ממתינה לאישור מנהל',
+    tasksDragHandle: 'גרירה לשינוי סדר',
+    tasksMyTaskAria: '{title}, מוקצית אל {assignee}',
   },
 
   ar: {
@@ -1230,5 +1384,56 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     staffFormNameRequired: 'أدخل اسمًا قبل الحفظ.',
     staffDeleteTitle: 'إزالة عضو',
     staffDeleteBody: 'سيفقد {name} الوصول إلى مساحة عمل المختبر.',
+
+    navTasks: 'المهام',
+    permManageTasks: 'إدارة جميع المهام',
+    tasksTitle: 'المهام',
+    tasksSubtitle: 'لوحة العمل الداخلية',
+    tasksTabMine: 'مهامي',
+    tasksTabReview: 'للمراجعة',
+    tasksTabAll: 'الكل',
+    tasksTabDone: 'المكتملة',
+    tasksEmptyMine: 'لا توجد مهام مُسندة إليك',
+    tasksEmptyMineHint: 'ستظهر هنا المهام الجديدة التي تُسند إليك.',
+    tasksEmptyAll: 'لا توجد مهام مفتوحة',
+    tasksEmptyAllHint: 'أنشئ أول مهمة للفريق.',
+    tasksEmptyReview: 'لا يوجد ما يجب مراجعته',
+    tasksEmptyReviewHint: 'المهام التي أنجزها الفريق تنتظر هنا التأكيد.',
+    tasksEmptyDone: 'الأرشيف فارغ',
+    tasksEmptyDoneHint: 'ستُحفظ هنا المهام المكتملة.',
+    tasksNew: 'مهمة جديدة',
+    tasksEditTask: 'تعديل المهمة',
+    tasksNewTask: 'مهمة جديدة',
+    tasksNewSubtask: 'مهمة فرعية جديدة',
+    tasksAddSubtask: 'إضافة مهمة فرعية',
+    tasksFormTitle: 'العنوان',
+    tasksFormTitlePlaceholder: 'مثال: صب النماذج للحالة ND-2417',
+    tasksFormNotes: 'ملاحظات',
+    tasksFormNotesPlaceholder: 'تفاصيل أو تعليمات أو سياق (اختياري)',
+    tasksFormDueDate: 'تاريخ الاستحقاق',
+    tasksFormDueToday: 'اليوم',
+    tasksFormDueTomorrow: 'غدًا',
+    tasksFormDueNextWeek: 'الأسبوع المقبل',
+    tasksFormDueNone: 'بدون تاريخ',
+    tasksFormAssignee: 'إسناد إلى',
+    tasksFormParent: 'المهمة الرئيسية',
+    tasksTitleRequired: 'أدخل عنوانًا قبل الحفظ.',
+    tasksMarkDone: 'تعليم كمنجزة',
+    tasksReopen: 'إعادة فتح',
+    tasksConfirm: 'تأكيد',
+    tasksUndo: 'تراجع',
+    tasksDeleteTitle: 'حذف المهمة',
+    tasksDeleteBody: 'سيتم حذف "{title}" ومهامها الفرعية.',
+    tasksDueToday: 'مستحقة اليوم',
+    tasksDueTomorrow: 'مستحقة غدًا',
+    tasksOverdue: 'متأخرة',
+    tasksSubtaskCount: '{count} مهام فرعية',
+    tasksSubtaskDetail: 'مهمة فرعية',
+    tasksNoNotes: 'لا توجد ملاحظات لهذه المهمة الفرعية.',
+    tasksOpenSubtaskAria: 'فتح {title}',
+    tasksCreatedBy: 'أنشأها {name}',
+    tasksReviewHint: 'اكتملت — بانتظار تأكيد المدير',
+    tasksDragHandle: 'اسحب لإعادة الترتيب',
+    tasksMyTaskAria: '{title}، مُسندة إلى {assignee}',
   },
 };

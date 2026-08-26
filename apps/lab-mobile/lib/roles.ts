@@ -20,7 +20,8 @@ export type Permission =
   | 'viewPatients'
   | 'viewDeliveries'
   | 'viewExocad'
-  | 'manageStaff';
+  | 'manageStaff'
+  | 'manageTasks';
 
 /** Order shown in the staff permission editor. */
 export const ASSIGNABLE_PERMISSIONS: readonly Permission[] = [
@@ -34,6 +35,7 @@ export const ASSIGNABLE_PERMISSIONS: readonly Permission[] = [
   'viewDeliveries',
   'viewExocad',
   'manageStaff',
+  'manageTasks',
 ];
 
 export const ROLE_LABEL_KEYS: Record<UserRole, keyof UiStrings> = {
@@ -55,6 +57,7 @@ export const PERMISSION_LABEL_KEYS: Record<Permission, keyof UiStrings> = {
   viewDeliveries: 'permViewDeliveries',
   viewExocad: 'permViewExocad',
   manageStaff: 'permManageStaff',
+  manageTasks: 'permManageTasks',
 };
 
 export const PERMISSION_ICONS: Record<Permission, IconName> = {
@@ -69,6 +72,7 @@ export const PERMISSION_ICONS: Record<Permission, IconName> = {
   viewDeliveries: 'car-outline',
   viewExocad: 'cube-outline',
   manageStaff: 'shield-checkmark-outline',
+  manageTasks: 'checkmark-done-outline',
 };
 
 /** Baseline each role starts from before any per-member override. */
@@ -85,6 +89,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     'viewDeliveries',
     'viewExocad',
     'manageStaff',
+    'manageTasks',
   ],
   lab_staff: ['viewDashboard', 'viewOrders', 'editOrders', 'viewInbox', 'viewFiles', 'viewPatients', 'viewExocad'],
   doctor: ['viewDashboard', 'viewOrders', 'viewInbox', 'viewFiles', 'viewPatients'],
@@ -143,6 +148,7 @@ export function resolveNav(role: UserRole, slug: string, base: NavAspect): NavAs
 export const TAB_PERMISSIONS: Record<string, Permission> = {
   index: 'viewDashboard',
   orders: 'viewOrders',
+  tasks: 'viewDashboard',
   inbox: 'viewInbox',
   folders: 'viewFiles',
 };
@@ -152,8 +158,8 @@ export const TAB_PERMISSIONS: Record<string, Permission> = {
  * overridable, which guarantees every role keeps at least one reachable tab.
  */
 export const ROLE_TABS: Record<UserRole, readonly string[]> = {
-  lab_owner: ['index', 'orders', 'inbox', 'folders'],
-  lab_staff: ['index', 'orders', 'inbox', 'folders'],
+  lab_owner: ['index', 'orders', 'tasks', 'inbox', 'folders'],
+  lab_staff: ['index', 'orders', 'tasks', 'inbox', 'folders'],
   doctor: ['index', 'orders', 'inbox', 'folders'],
   driver: ['index', 'orders', 'inbox'],
 };

@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Icon, type IconName } from '@/components/ui/icon';
+import { NavIcon, type NavIconName } from '@/components/ui/icon';
 import { withAlpha } from '@/components/ui/pill';
 import { PressableScale } from '@/components/ui/pressable-scale';
 import { Text } from '@/components/ui/text';
@@ -21,14 +21,13 @@ export const TAB_BAR_CLEARANCE = TAB_BAR_HEIGHT + 28;
 
 /** Softly rounded top corners on the sticky bar. */
 const BAR_RADIUS = 26;
-/** Width of the selected-tab marker above the icon. */
-const MARKER_WIDTH = 22;
 
-type TabMeta = { active: IconName; inactive: IconName; labelKey: keyof UiStrings };
+type TabMeta = { active: NavIconName; inactive: NavIconName; labelKey: keyof UiStrings };
 
 const TAB_META: Record<string, TabMeta> = {
   index: { active: 'grid', inactive: 'grid-outline', labelKey: 'navHome' },
   orders: { active: 'layers', inactive: 'layers-outline', labelKey: 'navOrders' },
+  tasks: { active: 'todo', inactive: 'todo', labelKey: 'navTasks' },
   inbox: { active: 'chatbubbles', inactive: 'chatbubbles-outline', labelKey: 'navInbox' },
   folders: { active: 'folder-open', inactive: 'folder-outline', labelKey: 'navFiles' },
 };
@@ -119,7 +118,7 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
 }
 
 type TabItemProps = {
-  icon: IconName;
+  icon: NavIconName;
   label: string;
   focused: boolean;
   onPress: () => void;
@@ -137,10 +136,7 @@ function TabItem({ icon, label, focused, onPress }: TabItemProps) {
       accessibilityState={{ selected: focused }}
       accessibilityLabel={label}
       style={styles.tab}>
-      <View
-        style={[styles.marker, { backgroundColor: focused ? theme.color.brand : 'transparent' }]}
-      />
-      <Icon name={icon} size={22} color={color} />
+      <NavIcon name={icon} size={22} color={color} />
       <Text variant="caption" color={color} numberOfLines={1} style={styles.label}>
         {label}
       </Text>
@@ -163,14 +159,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 3,
     height: TAB_BAR_HEIGHT,
-  },
-  marker: {
-    position: 'absolute',
-    top: 0,
-    width: MARKER_WIDTH,
-    height: 3,
-    borderBottomLeftRadius: 2,
-    borderBottomRightRadius: 2,
   },
   label: { fontSize: 11, lineHeight: 14, textAlign: 'center' },
 });

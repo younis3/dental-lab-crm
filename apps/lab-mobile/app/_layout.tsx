@@ -24,6 +24,7 @@ import { hydrateAuth } from '@/store/auth-store';
 import { hydrateLanguage } from '@/store/language-store';
 import { hydrateNotificationPrefs } from '@/store/notifications-store';
 import { hydrateStaff } from '@/store/staff-store';
+import { hydrateTasks } from '@/store/tasks-store';
 import { hydrateThemeMode } from '@/store/theme-store';
 
 void SplashScreen.preventAutoHideAsync();
@@ -49,6 +50,7 @@ export default function RootLayout() {
       hydrateAuth(),
       hydrateNotificationPrefs(),
       hydrateStaff(),
+      hydrateTasks(),
     ]).finally(() => setStoresHydrated(true));
   }, []);
 

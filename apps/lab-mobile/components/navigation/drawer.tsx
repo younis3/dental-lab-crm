@@ -24,7 +24,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/brand/logo-mark';
 import { Avatar } from '@/components/ui/avatar';
-import { Icon, type IconName } from '@/components/ui/icon';
+import { Icon, NavIcon, type IconName, type NavIconName } from '@/components/ui/icon';
 import { LanguageSwitch } from '@/components/ui/language-switch';
 import { Badge, withAlpha } from '@/components/ui/pill';
 import { PressableScale } from '@/components/ui/pressable-scale';
@@ -53,7 +53,7 @@ export const useDrawer = () => useContext(DrawerContext);
 type NavItem = {
   key: string;
   labelKey: keyof UiStrings;
-  icon: IconName;
+  icon: NavIconName;
   route?: Href;
   match?: string;
   /** Hidden unless the signed-in user holds this permission. */
@@ -85,6 +85,14 @@ const NAV_GROUPS: NavGroup[] = [
         route: '/orders',
         match: '/orders',
         permission: 'viewOrders',
+      },
+      {
+        key: 'tasks',
+        labelKey: 'navTasks',
+        icon: 'todo',
+        route: '/tasks',
+        match: '/tasks',
+        permission: 'viewDashboard',
       },
       {
         key: 'inbox',
@@ -570,7 +578,7 @@ function DrawerRow({
           styles.rowIcon,
           { backgroundColor: active ? theme.color.brand : theme.color.surfaceMuted },
         ]}>
-        <Icon name={item.icon} size={17} color={active ? theme.color.onBrand : theme.color.textMuted} />
+        <NavIcon name={item.icon} size={17} color={active ? theme.color.onBrand : theme.color.textMuted} />
       </View>
       <Text variant="bodyMedium" color={active ? theme.color.brand : theme.color.text} style={styles.flex}>
         {label}

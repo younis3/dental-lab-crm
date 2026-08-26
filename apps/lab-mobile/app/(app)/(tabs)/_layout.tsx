@@ -17,6 +17,7 @@ export default function TabLayout() {
       }}>
       <Tabs.Screen name="index" />
       <Tabs.Screen name="orders" />
+      <Tabs.Screen name="tasks" />
       <Tabs.Screen name="inbox" />
       <Tabs.Screen name="folders" />
     </Tabs>
