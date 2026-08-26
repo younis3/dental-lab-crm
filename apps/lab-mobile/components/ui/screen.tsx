@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { DrawerButton } from '@/components/navigation/drawer';
-import { TAB_BAR_CLEARANCE } from '@/components/navigation/floating-tab-bar';
+import { TAB_BAR_CLEARANCE } from '@/components/navigation/tab-bar';
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { Text, type TextProps } from '@/components/ui/text';
 import { spacing } from '@/constants/design';
@@ -19,7 +19,7 @@ type ScreenProps = {
   refreshing?: boolean;
   onRefresh?: () => void;
   contentStyle?: StyleProp<ViewStyle>;
-  /** Leaves room for the floating tab bar. */
+  /** Leaves room for the sticky tab bar. Only applies to scrollable screens. */
   withTabBarInset?: boolean;
 };
 
@@ -36,7 +36,7 @@ export function Screen({
   const insets = useSafeAreaInsets();
 
   const padding = {
-    paddingBottom: withTabBarInset ? TAB_BAR_CLEARANCE + insets.bottom : spacing['2xl'],
+    paddingBottom: insets.bottom + (withTabBarInset ? TAB_BAR_CLEARANCE : spacing['2xl']),
   };
 
   return (
@@ -46,6 +46,8 @@ export function Screen({
       {scrollable ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          automaticallyAdjustKeyboardInsets
           contentContainerStyle={[styles.content, padding, contentStyle]}
           refreshControl={
             onRefresh ? (

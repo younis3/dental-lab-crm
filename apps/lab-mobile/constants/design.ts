@@ -68,6 +68,8 @@ export type Theme = {
     surfaceFade: GradientStops;
     hero: GradientStops;
     gold: GradientStops;
+    /** Card fill — a barely-there wash so panels lift off the canvas. */
+    card: GradientStops;
     success: GradientStops;
     warning: GradientStops;
     danger: GradientStops;
@@ -75,19 +77,19 @@ export type Theme = {
   blurTint: 'light' | 'dark';
 };
 
-/** Warm cream canvas, slate ink, rose brand. */
+/** Clean white canvas with neutral grey cards; the rose brand carries the accent. */
 const light: Theme = {
   scheme: 'light',
   color: {
-    background: '#F6F1EC',
+    background: '#FFFFFF',
     surface: '#FFFFFF',
-    surfaceMuted: logo.creamSoft,
-    surfaceRaised: '#FCFAF8',
-    border: 'rgba(34, 50, 63, 0.10)',
-    borderStrong: 'rgba(34, 50, 63, 0.20)',
-    text: logo.slateDeep,
-    textMuted: '#5C6E7C',
-    textFaint: '#8C9AA6',
+    surfaceMuted: '#F3F4F6',
+    surfaceRaised: '#FFFFFF',
+    border: 'rgba(17, 19, 24, 0.08)',
+    borderStrong: 'rgba(17, 19, 24, 0.16)',
+    text: '#15171C',
+    textMuted: '#5B6069',
+    textFaint: '#8D929B',
     brand: logo.roseDeep,
     brandSoft: 'rgba(138, 110, 98, 0.10)',
     onBrand: '#FFFFFF',
@@ -97,16 +99,18 @@ const light: Theme = {
     danger: semantic.danger,
     glass: 'rgba(255, 255, 255, 0.72)',
     glassBorder: 'rgba(255, 255, 255, 0.90)',
-    scrim: 'rgba(22, 33, 43, 0.48)',
-    highlight: 'rgba(255, 255, 255, 0.55)',
-    glow: logo.roseLight,
+    scrim: 'rgba(17, 19, 24, 0.45)',
+    highlight: 'rgba(255, 255, 255, 0.60)',
+    // Neutral ambience: any warm tint reads as glare on a white canvas.
+    glow: '#E9EBEF',
   },
   gradient: {
     brand: brandRamp,
-    aurora: ['#F8F4EF', '#F3EDE6', '#F6F1EC'],
-    surfaceFade: ['rgba(246,241,236,0)', 'rgba(246,241,236,0.94)'],
+    aurora: ['#FFFFFF', '#FCFCFD', '#F4F5F7'],
+    surfaceFade: ['rgba(255,255,255,0)', 'rgba(255,255,255,0.94)'],
     hero: [logo.slateLift, logo.slate, logo.slateDeep],
     gold: [logo.roseLight, logo.roseDeep],
+    card: ['#FFFFFF', '#F1F2F4'],
     success: [semantic.successLight, semantic.success],
     warning: [semantic.warningLight, semantic.warning],
     danger: [semantic.dangerLight, semantic.danger],
@@ -146,6 +150,7 @@ const dark: Theme = {
     surfaceFade: ['rgba(22,33,43,0)', 'rgba(22,33,43,0.94)'],
     hero: [logo.slateSoft, logo.slate, logo.slateInk],
     gold: [logo.roseLight, logo.roseDeep],
+    card: [logo.slateLift, logo.slate],
     success: [semantic.successLight, semantic.success],
     warning: [semantic.warningLight, semantic.warning],
     danger: [semantic.dangerLight, semantic.danger],
@@ -185,6 +190,7 @@ const auth: Theme = {
     surfaceFade: ['rgba(43,61,79,0)', 'rgba(43,61,79,0.94)'],
     hero: [logo.slateLift, logo.slate, logo.slateDeep],
     gold: [logo.roseLight, logo.roseDeep],
+    card: [logo.slateSoft, logo.slateLift],
     success: [semantic.successLight, semantic.success],
     warning: [semantic.warningLight, semantic.warning],
     danger: [semantic.dangerLight, semantic.danger],
@@ -252,14 +258,14 @@ export function elevation(level: 0 | 1 | 2 | 3, scheme: ColorScheme): ViewStyle 
 
   return Platform.select<ViewStyle>({
     ios: {
-      shadowColor: scheme === 'dark' ? '#000000' : '#0B1C18',
+      shadowColor: scheme === 'dark' ? '#000000' : '#0F1319',
       shadowOpacity: scheme === 'dark' ? config.opacity * 2.1 : config.opacity,
       shadowRadius: config.radius,
       shadowOffset: { width: 0, height: config.offset },
     },
     android: { elevation: config.elevation },
     default: {
-      boxShadow: `0px ${config.offset}px ${config.radius}px rgba(11, 28, 24, ${config.opacity})`,
+      boxShadow: `0px ${config.offset}px ${config.radius}px rgba(15, 19, 25, ${config.opacity})`,
     },
   }) as ViewStyle;
 }

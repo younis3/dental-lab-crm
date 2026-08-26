@@ -116,6 +116,8 @@ type IconButtonProps = {
   onPress?: () => void;
   size?: number;
   tone?: 'surface' | 'glass' | 'brand';
+  /** `circle` is the default pill; `rounded` is a square with soft corners. */
+  shape?: 'circle' | 'rounded';
   accessibilityLabel: string;
   badge?: number;
 };
@@ -125,6 +127,7 @@ export function IconButton({
   onPress,
   size = 44,
   tone = 'surface',
+  shape = 'circle',
   accessibilityLabel,
   badge,
 }: IconButtonProps) {
@@ -145,7 +148,7 @@ export function IconButton({
         {
           width: size,
           height: size,
-          borderRadius: size / 2,
+          borderRadius: shape === 'rounded' ? radius.md : size / 2,
           backgroundColor: background,
           borderColor: theme.color.border,
         },

@@ -1,4 +1,5 @@
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -12,6 +13,11 @@ type CardProps = {
   level?: 0 | 1 | 2 | 3;
 };
 
+/**
+ * Panel surface. The fill is a soft gradient rather than a flat colour, so cards
+ * read as lit paper instead of a plain block. The gradient carries its own
+ * radius, which keeps `overflow: hidden` off the shadowed view.
+ */
 export function Card({ children, style, padded = true, level = 1 }: CardProps) {
   const theme = useTheme();
 
@@ -27,6 +33,12 @@ export function Card({ children, style, padded = true, level = 1 }: CardProps) {
         elevation(level, theme.scheme),
         style,
       ]}>
+      <LinearGradient
+        colors={theme.gradient.card}
+        start={{ x: 0.1, y: 0 }}
+        end={{ x: 0.9, y: 1 }}
+        style={[StyleSheet.absoluteFill, styles.fill]}
+      />
       <View pointerEvents="none" style={[styles.sheen, { backgroundColor: theme.color.highlight }]} />
       {children}
     </View>
@@ -66,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.xl,
     borderWidth: StyleSheet.hairlineWidth,
   },
+  fill: { borderRadius: radius.xl },
   clip: { overflow: 'hidden', borderWidth: 0 },
   glassBorder: { borderWidth: StyleSheet.hairlineWidth, borderRadius: radius.xl },
   sheen: {

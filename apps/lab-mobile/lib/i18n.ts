@@ -37,7 +37,6 @@ export type UiStrings = {
   loginShowPassword: string;
   loginHidePassword: string;
   loginSendCode: string;
-  loginFillDemo: string;
   loginVerifyTitle: string;
   loginVerifySubtitle: string;
   loginDemoCode: string;
@@ -88,7 +87,6 @@ export type UiStrings = {
   dashOnTime: string;
   dashRushJobs: string;
   dashPickups: string;
-  dashNotifications: string;
   dashProfile: string;
   dashAttentionOne: string;
   dashAttentionMany: string;
@@ -190,6 +188,159 @@ export type UiStrings = {
   exocadBackToList: string;
   exocadNotFoundTitle: string;
   exocadNotFoundBody: string;
+
+  // shared actions
+  actionBack: string;
+  actionClose: string;
+  actionSave: string;
+  actionCancel: string;
+  actionEdit: string;
+  actionDelete: string;
+  filterAll: string;
+  searchClear: string;
+  accessDeniedTitle: string;
+  accessDeniedBody: string;
+
+  // relative time
+  timeJustNow: string;
+  timeMinutes: string;
+  timeHours: string;
+  timeDays: string;
+
+  // roles
+  roleLabOwner: string;
+  roleLabStaff: string;
+  roleDoctor: string;
+  roleDriver: string;
+  loginDemoRoles: string;
+
+  // permissions
+  permViewDashboard: string;
+  permViewOrders: string;
+  permEditOrders: string;
+  permViewInbox: string;
+  permViewFiles: string;
+  permViewDoctors: string;
+  permViewClinics: string;
+  permViewPatients: string;
+  permViewDeliveries: string;
+  permViewExocad: string;
+  permManageStaff: string;
+
+  // navigation added with the directory and team screens
+  navNotifications: string;
+  navDoctors: string;
+  navClinics: string;
+  navPatients: string;
+  navDeliveries: string;
+  navMyCases: string;
+  drawerDirectory: string;
+  drawerManage: string;
+
+  // notifications
+  notificationsUnread: string;
+  notificationsAllRead: string;
+  notificationsMarkAll: string;
+  notificationsSettings: string;
+  notificationsSettingsHint: string;
+  notificationsEmptyTitle: string;
+  notificationsEmptyBody: string;
+  notificationsOpenAria: string;
+  notifTypeNewCase: string;
+  notifTypeNewCaseHint: string;
+  notifTypeDueSoon: string;
+  notifTypeDueSoonHint: string;
+  notifTypeMessage: string;
+  notifTypeMessageHint: string;
+  notifTypeDelivery: string;
+  notifTypeDeliveryHint: string;
+  notifTypeInvoice: string;
+  notifTypeInvoiceHint: string;
+
+  // data table
+  tableRange: string;
+  tableRangeEmpty: string;
+  tablePageOf: string;
+  tablePrevious: string;
+  tableNext: string;
+  tableSortBy: string;
+
+  // directory status
+  statusActive: string;
+  statusPending: string;
+  statusInactive: string;
+
+  // directory columns
+  colDoctor: string;
+  colClinic: string;
+  colSpecialty: string;
+  colPhone: string;
+  colActiveCases: string;
+  colTotalCases: string;
+  colStatus: string;
+  colCity: string;
+  colDoctorsCount: string;
+  colOutstanding: string;
+  colPatient: string;
+  colCase: string;
+  colWorkType: string;
+  colAge: string;
+  colStage: string;
+
+  // doctors
+  doctorsTitle: string;
+  doctorsSubtitle: string;
+  doctorsSearch: string;
+  doctorsEmptyTitle: string;
+  doctorsEmptyBody: string;
+
+  // clinics
+  clinicsTitle: string;
+  clinicsSubtitle: string;
+  clinicsSearch: string;
+  clinicsEmptyTitle: string;
+  clinicsEmptyBody: string;
+
+  // patients
+  patientsTitle: string;
+  patientsSubtitle: string;
+  patientsSearch: string;
+  patientsEmptyTitle: string;
+  patientsEmptyBody: string;
+
+  // team and roles
+  staffTitle: string;
+  staffSubtitle: string;
+  staffAdd: string;
+  staffEmptyTitle: string;
+  staffEmptyBody: string;
+  staffOwnerBadge: string;
+  staffOwnerProtected: string;
+  staffInactiveBadge: string;
+  staffPermissionsCount: string;
+  staffMemberAria: string;
+  staffFormNewTitle: string;
+  staffFormEditTitle: string;
+  staffFormName: string;
+  staffFormNamePlaceholder: string;
+  staffFormJobTitle: string;
+  staffFormJobTitlePlaceholder: string;
+  staffFormPhone: string;
+  staffFormPhonePlaceholder: string;
+  staffFormEmail: string;
+  staffFormEmailPlaceholder: string;
+  staffFormRoleTitle: string;
+  staffFormRoleHint: string;
+  staffFormRoleLocked: string;
+  staffFormAccessTitle: string;
+  staffFormAccessHint: string;
+  staffFormStatusTitle: string;
+  staffFormStatusHint: string;
+  staffFormColorTitle: string;
+  staffFormColorAria: string;
+  staffFormNameRequired: string;
+  staffDeleteTitle: string;
+  staffDeleteBody: string;
 };
 
 export const UI_STRINGS: Record<Lang, UiStrings> = {
@@ -203,7 +354,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginShowPassword: 'Show password',
     loginHidePassword: 'Hide password',
     loginSendCode: 'Send verification code',
-    loginFillDemo: 'Fill demo credentials',
     loginVerifyTitle: 'Verify it’s you',
     loginVerifySubtitle: 'Enter the {count}-digit code sent to your phone.',
     loginDemoCode: 'Demo code is {code}',
@@ -212,7 +362,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginChangeNumber: 'Change number',
     loginResendIn: 'Resend in {seconds}s',
     loginResend: 'Resend code',
-    loginSecureNote: 'Encrypted session · Lab admin access only',
+    loginSecureNote: 'Encrypted session · Nadeem Dental Lab',
     loginStepStatus: 'Step {current} of {total}',
     loginErrorCredentials: 'That phone number and password do not match.',
     loginErrorCode: 'Incorrect code. The demo code is {code}.',
@@ -251,7 +401,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashOnTime: 'on time',
     dashRushJobs: '{count} rush jobs',
     dashPickups: '{count} pickups',
-    dashNotifications: 'Notifications',
     dashProfile: 'Your profile',
     dashAttentionOne: '1 case needs attention',
     dashAttentionMany: '{count} cases need attention',
@@ -349,6 +498,146 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     exocadBackToList: 'Back to files',
     exocadNotFoundTitle: 'File not found',
     exocadNotFoundBody: 'This exocad file is no longer bundled with the app.',
+
+    actionBack: 'Back',
+    actionClose: 'Close',
+    actionSave: 'Save',
+    actionCancel: 'Cancel',
+    actionEdit: 'Edit',
+    actionDelete: 'Delete',
+    filterAll: 'All',
+    searchClear: 'Clear search',
+    accessDeniedTitle: 'No access',
+    accessDeniedBody: 'Ask the lab owner to grant you this permission.',
+
+    timeJustNow: 'Just now',
+    timeMinutes: '{count}m ago',
+    timeHours: '{count}h ago',
+    timeDays: '{count}d ago',
+
+    roleLabOwner: 'Lab owner',
+    roleLabStaff: 'Lab technician',
+    roleDoctor: 'Doctor',
+    roleDriver: 'Courier',
+    loginDemoRoles: 'Sign in as',
+
+    permViewDashboard: 'View dashboard',
+    permViewOrders: 'View orders',
+    permEditOrders: 'Edit orders',
+    permViewInbox: 'View inbox',
+    permViewFiles: 'View files',
+    permViewDoctors: 'View doctors',
+    permViewClinics: 'View clinics',
+    permViewPatients: 'View patients',
+    permViewDeliveries: 'View deliveries',
+    permViewExocad: 'Open exocad viewer',
+    permManageStaff: 'Manage team',
+
+    navNotifications: 'Notifications',
+    navDoctors: 'Doctors',
+    navClinics: 'Clinics',
+    navPatients: 'Patients',
+    navDeliveries: 'Deliveries',
+    navMyCases: 'My cases',
+    drawerDirectory: 'Directory',
+    drawerManage: 'Management',
+
+    notificationsUnread: '{count} unread',
+    notificationsAllRead: 'You are all caught up',
+    notificationsMarkAll: 'Mark all as read',
+    notificationsSettings: 'Notification settings',
+    notificationsSettingsHint: 'Choose which updates reach this device.',
+    notificationsEmptyTitle: 'No notifications',
+    notificationsEmptyBody: 'Turn a category back on in settings to see its history.',
+    notificationsOpenAria: 'Open notifications',
+    notifTypeNewCase: 'New case',
+    notifTypeNewCaseHint: 'A clinic sent a new prescription',
+    notifTypeDueSoon: 'Deadline',
+    notifTypeDueSoonHint: 'A case is close to its due date',
+    notifTypeMessage: 'Message',
+    notifTypeMessageHint: 'A doctor replied in the inbox',
+    notifTypeDelivery: 'Delivery',
+    notifTypeDeliveryHint: 'Pickup and drop-off updates',
+    notifTypeInvoice: 'Billing',
+    notifTypeInvoiceHint: 'Invoice and payment alerts',
+
+    tableRange: '{from}–{to} of {total}',
+    tableRangeEmpty: 'No results',
+    tablePageOf: '{page} / {total}',
+    tablePrevious: 'Previous page',
+    tableNext: 'Next page',
+    tableSortBy: 'Sort by {column}',
+
+    statusActive: 'Active',
+    statusPending: 'Pending',
+    statusInactive: 'Inactive',
+
+    colDoctor: 'Doctor',
+    colClinic: 'Clinic',
+    colSpecialty: 'Specialty',
+    colPhone: 'Phone',
+    colActiveCases: 'Active',
+    colTotalCases: 'Total',
+    colStatus: 'Status',
+    colCity: 'City',
+    colDoctorsCount: 'Doctors',
+    colOutstanding: 'Balance',
+    colPatient: 'Patient',
+    colCase: 'Case',
+    colWorkType: 'Work type',
+    colAge: 'Age',
+    colStage: 'Stage',
+
+    doctorsTitle: 'Doctors',
+    doctorsSubtitle: '{count} referring doctors',
+    doctorsSearch: 'Search doctor, clinic or specialty',
+    doctorsEmptyTitle: 'No doctors found',
+    doctorsEmptyBody: 'Try a different search term or clear the filter.',
+
+    clinicsTitle: 'Clinics',
+    clinicsSubtitle: '{count} partner clinics',
+    clinicsSearch: 'Search clinic or city',
+    clinicsEmptyTitle: 'No clinics found',
+    clinicsEmptyBody: 'Try a different search term or clear the filter.',
+
+    patientsTitle: 'Patients',
+    patientsSubtitle: '{count} patients on file',
+    patientsSearch: 'Search patient, case or doctor',
+    patientsEmptyTitle: 'No patients found',
+    patientsEmptyBody: 'Try a different search term or clear the filter.',
+
+    staffTitle: 'Team & roles',
+    staffSubtitle: '{count} team members',
+    staffAdd: 'Add member',
+    staffEmptyTitle: 'No team members',
+    staffEmptyBody: 'Add your first lab worker to assign access.',
+    staffOwnerBadge: 'Owner',
+    staffOwnerProtected: 'The owner seat always keeps full access.',
+    staffInactiveBadge: 'Suspended',
+    staffPermissionsCount: '{count} of {total} permissions',
+    staffMemberAria: 'Edit {name}',
+    staffFormNewTitle: 'New team member',
+    staffFormEditTitle: 'Edit team member',
+    staffFormName: 'Full name',
+    staffFormNamePlaceholder: 'e.g. Karim Haddad',
+    staffFormJobTitle: 'Job title',
+    staffFormJobTitlePlaceholder: 'e.g. Ceramist',
+    staffFormPhone: 'Phone number',
+    staffFormPhonePlaceholder: 'Number used to sign in',
+    staffFormEmail: 'Email',
+    staffFormEmailPlaceholder: 'name@nadeemlab.com',
+    staffFormRoleTitle: 'Role',
+    staffFormRoleHint: 'The role sets the starting permissions.',
+    staffFormRoleLocked: 'The owner role cannot be changed.',
+    staffFormAccessTitle: 'Access',
+    staffFormAccessHint: 'Turn single permissions on or off for this member.',
+    staffFormStatusTitle: 'Account status',
+    staffFormStatusHint: 'A suspended member cannot sign in.',
+    staffFormColorTitle: 'Roster colour',
+    staffFormColorAria: 'Use colour {index}',
+    staffFormNameRequired: 'Enter a name before saving.',
+    staffDeleteTitle: 'Remove member',
+    staffDeleteBody: '{name} will lose access to the lab workspace.',
   },
 
   he: {
@@ -361,7 +650,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginShowPassword: 'הצגת הסיסמה',
     loginHidePassword: 'הסתרת הסיסמה',
     loginSendCode: 'שליחת קוד אימות',
-    loginFillDemo: 'מילוי פרטי הדגמה',
     loginVerifyTitle: 'אימות זהות',
     loginVerifySubtitle: 'הזינו את הקוד בן {count} הספרות שנשלח לטלפון שלכם.',
     loginDemoCode: 'קוד ההדגמה הוא {code}',
@@ -370,7 +658,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginChangeNumber: 'שינוי מספר',
     loginResendIn: 'שליחה חוזרת בעוד {seconds} שנ׳',
     loginResend: 'שליחת קוד מחדש',
-    loginSecureNote: 'חיבור מוצפן · גישה למנהלי מעבדה בלבד',
+    loginSecureNote: 'חיבור מוצפן · Nadeem Dental Lab',
     loginStepStatus: 'שלב {current} מתוך {total}',
     loginErrorCredentials: 'מספר הטלפון והסיסמה אינם תואמים.',
     loginErrorCode: 'קוד שגוי. קוד ההדגמה הוא {code}.',
@@ -409,7 +697,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashOnTime: 'בזמן',
     dashRushJobs: '{count} עבודות דחופות',
     dashPickups: '{count} איסופים',
-    dashNotifications: 'התראות',
     dashProfile: 'הפרופיל שלך',
     dashAttentionOne: 'תיק אחד דורש טיפול',
     dashAttentionMany: '{count} תיקים דורשים טיפול',
@@ -507,6 +794,146 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     exocadBackToList: 'חזרה לרשימת הקבצים',
     exocadNotFoundTitle: 'הקובץ לא נמצא',
     exocadNotFoundBody: 'הקובץ הזה אינו מצורף יותר לאפליקציה.',
+
+    actionBack: 'חזרה',
+    actionClose: 'סגירה',
+    actionSave: 'שמירה',
+    actionCancel: 'ביטול',
+    actionEdit: 'עריכה',
+    actionDelete: 'מחיקה',
+    filterAll: 'הכול',
+    searchClear: 'ניקוי החיפוש',
+    accessDeniedTitle: 'אין גישה',
+    accessDeniedBody: 'בקשו מבעל המעבדה להעניק לכם את ההרשאה הזו.',
+
+    timeJustNow: 'עכשיו',
+    timeMinutes: 'לפני {count} דק׳',
+    timeHours: 'לפני {count} שע׳',
+    timeDays: 'לפני {count} ימים',
+
+    roleLabOwner: 'בעל המעבדה',
+    roleLabStaff: 'טכנאי מעבדה',
+    roleDoctor: 'רופא',
+    roleDriver: 'שליח',
+    loginDemoRoles: 'התחברות בתור',
+
+    permViewDashboard: 'צפייה בלוח הבקרה',
+    permViewOrders: 'צפייה בהזמנות',
+    permEditOrders: 'עריכת הזמנות',
+    permViewInbox: 'צפייה בהודעות',
+    permViewFiles: 'צפייה בקבצים',
+    permViewDoctors: 'צפייה ברופאים',
+    permViewClinics: 'צפייה במרפאות',
+    permViewPatients: 'צפייה במטופלים',
+    permViewDeliveries: 'צפייה במשלוחים',
+    permViewExocad: 'פתיחת מציג exocad',
+    permManageStaff: 'ניהול הצוות',
+
+    navNotifications: 'התראות',
+    navDoctors: 'רופאים',
+    navClinics: 'מרפאות',
+    navPatients: 'מטופלים',
+    navDeliveries: 'משלוחים',
+    navMyCases: 'התיקים שלי',
+    drawerDirectory: 'ספריית לקוחות',
+    drawerManage: 'ניהול',
+
+    notificationsUnread: '{count} שלא נקראו',
+    notificationsAllRead: 'אין התראות חדשות',
+    notificationsMarkAll: 'סימון הכול כנקרא',
+    notificationsSettings: 'הגדרות התראות',
+    notificationsSettingsHint: 'בחרו אילו עדכונים יגיעו למכשיר הזה.',
+    notificationsEmptyTitle: 'אין התראות',
+    notificationsEmptyBody: 'הפעילו קטגוריה מחדש בהגדרות כדי לראות את ההיסטוריה שלה.',
+    notificationsOpenAria: 'פתיחת ההתראות',
+    notifTypeNewCase: 'תיק חדש',
+    notifTypeNewCaseHint: 'מרפאה שלחה הזמנת עבודה חדשה',
+    notifTypeDueSoon: 'מועד יעד',
+    notifTypeDueSoonHint: 'תיק מתקרב למועד היעד שלו',
+    notifTypeMessage: 'הודעה',
+    notifTypeMessageHint: 'רופא השיב בתיבת ההודעות',
+    notifTypeDelivery: 'משלוח',
+    notifTypeDeliveryHint: 'עדכוני איסוף ומסירה',
+    notifTypeInvoice: 'חיובים',
+    notifTypeInvoiceHint: 'התראות על חשבוניות ותשלומים',
+
+    tableRange: '{from}–{to} מתוך {total}',
+    tableRangeEmpty: 'אין תוצאות',
+    tablePageOf: '{page} / {total}',
+    tablePrevious: 'העמוד הקודם',
+    tableNext: 'העמוד הבא',
+    tableSortBy: 'מיון לפי {column}',
+
+    statusActive: 'פעיל',
+    statusPending: 'ממתין',
+    statusInactive: 'לא פעיל',
+
+    colDoctor: 'רופא',
+    colClinic: 'מרפאה',
+    colSpecialty: 'התמחות',
+    colPhone: 'טלפון',
+    colActiveCases: 'פעילים',
+    colTotalCases: 'סה״כ',
+    colStatus: 'סטטוס',
+    colCity: 'עיר',
+    colDoctorsCount: 'רופאים',
+    colOutstanding: 'יתרה',
+    colPatient: 'מטופל',
+    colCase: 'תיק',
+    colWorkType: 'סוג עבודה',
+    colAge: 'גיל',
+    colStage: 'שלב',
+
+    doctorsTitle: 'רופאים',
+    doctorsSubtitle: '{count} רופאים מפנים',
+    doctorsSearch: 'חיפוש רופא, מרפאה או התמחות',
+    doctorsEmptyTitle: 'לא נמצאו רופאים',
+    doctorsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+
+    clinicsTitle: 'מרפאות',
+    clinicsSubtitle: '{count} מרפאות שותפות',
+    clinicsSearch: 'חיפוש מרפאה או עיר',
+    clinicsEmptyTitle: 'לא נמצאו מרפאות',
+    clinicsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+
+    patientsTitle: 'מטופלים',
+    patientsSubtitle: '{count} מטופלים בתיקייה',
+    patientsSearch: 'חיפוש מטופל, תיק או רופא',
+    patientsEmptyTitle: 'לא נמצאו מטופלים',
+    patientsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+
+    staffTitle: 'צוות והרשאות',
+    staffSubtitle: '{count} חברי צוות',
+    staffAdd: 'הוספת חבר צוות',
+    staffEmptyTitle: 'אין חברי צוות',
+    staffEmptyBody: 'הוסיפו עובד מעבדה ראשון כדי להגדיר הרשאות.',
+    staffOwnerBadge: 'בעלים',
+    staffOwnerProtected: 'מושב הבעלים שומר תמיד על גישה מלאה.',
+    staffInactiveBadge: 'מושהה',
+    staffPermissionsCount: '{count} מתוך {total} הרשאות',
+    staffMemberAria: 'עריכת {name}',
+    staffFormNewTitle: 'חבר צוות חדש',
+    staffFormEditTitle: 'עריכת חבר צוות',
+    staffFormName: 'שם מלא',
+    staffFormNamePlaceholder: 'לדוגמה: כרים חדאד',
+    staffFormJobTitle: 'תפקיד',
+    staffFormJobTitlePlaceholder: 'לדוגמה: קרמיסט',
+    staffFormPhone: 'מספר טלפון',
+    staffFormPhonePlaceholder: 'המספר שמשמש להתחברות',
+    staffFormEmail: 'דוא״ל',
+    staffFormEmailPlaceholder: 'name@nadeemlab.com',
+    staffFormRoleTitle: 'תפקיד במערכת',
+    staffFormRoleHint: 'התפקיד קובע את ההרשאות ההתחלתיות.',
+    staffFormRoleLocked: 'לא ניתן לשנות את תפקיד הבעלים.',
+    staffFormAccessTitle: 'הרשאות',
+    staffFormAccessHint: 'הפעילו או כבו הרשאות בודדות עבור חבר הצוות הזה.',
+    staffFormStatusTitle: 'סטטוס החשבון',
+    staffFormStatusHint: 'חבר צוות מושהה אינו יכול להתחבר.',
+    staffFormColorTitle: 'צבע ברשימת הצוות',
+    staffFormColorAria: 'בחירת צבע {index}',
+    staffFormNameRequired: 'יש להזין שם לפני השמירה.',
+    staffDeleteTitle: 'הסרת חבר צוות',
+    staffDeleteBody: '{name} יאבד את הגישה לסביבת העבודה של המעבדה.',
   },
 
   ar: {
@@ -519,7 +946,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginShowPassword: 'إظهار كلمة المرور',
     loginHidePassword: 'إخفاء كلمة المرور',
     loginSendCode: 'إرسال رمز التحقق',
-    loginFillDemo: 'تعبئة بيانات العرض',
     loginVerifyTitle: 'تأكيد هويتك',
     loginVerifySubtitle: 'أدخل الرمز المكوّن من {count} أرقام المُرسل إلى هاتفك.',
     loginDemoCode: 'رمز العرض هو {code}',
@@ -528,7 +954,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     loginChangeNumber: 'تغيير الرقم',
     loginResendIn: 'إعادة الإرسال خلال {seconds} ث',
     loginResend: 'إعادة إرسال الرمز',
-    loginSecureNote: 'جلسة مشفّرة · لمشرفي المختبر فقط',
+    loginSecureNote: 'جلسة مشفّرة · Nadeem Dental Lab',
     loginStepStatus: 'الخطوة {current} من {total}',
     loginErrorCredentials: 'رقم الهاتف وكلمة المرور غير متطابقين.',
     loginErrorCode: 'رمز غير صحيح. رمز العرض هو {code}.',
@@ -567,7 +993,6 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashOnTime: 'في الموعد',
     dashRushJobs: '{count} أعمال مستعجلة',
     dashPickups: '{count} عمليات استلام',
-    dashNotifications: 'الإشعارات',
     dashProfile: 'ملفك الشخصي',
     dashAttentionOne: 'حالة واحدة تحتاج إلى متابعة',
     dashAttentionMany: '{count} حالات تحتاج إلى متابعة',
@@ -665,5 +1090,145 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     exocadBackToList: 'العودة إلى الملفات',
     exocadNotFoundTitle: 'الملف غير موجود',
     exocadNotFoundBody: 'هذا الملف لم يعد مضمّنًا في التطبيق.',
+
+    actionBack: 'رجوع',
+    actionClose: 'إغلاق',
+    actionSave: 'حفظ',
+    actionCancel: 'إلغاء',
+    actionEdit: 'تعديل',
+    actionDelete: 'حذف',
+    filterAll: 'الكل',
+    searchClear: 'مسح البحث',
+    accessDeniedTitle: 'لا توجد صلاحية',
+    accessDeniedBody: 'اطلب من مالك المختبر منحك هذه الصلاحية.',
+
+    timeJustNow: 'الآن',
+    timeMinutes: 'قبل {count} د',
+    timeHours: 'قبل {count} س',
+    timeDays: 'قبل {count} أيام',
+
+    roleLabOwner: 'مالك المختبر',
+    roleLabStaff: 'فني مختبر',
+    roleDoctor: 'طبيب',
+    roleDriver: 'مندوب توصيل',
+    loginDemoRoles: 'تسجيل الدخول كـ',
+
+    permViewDashboard: 'عرض لوحة التحكم',
+    permViewOrders: 'عرض الطلبات',
+    permEditOrders: 'تعديل الطلبات',
+    permViewInbox: 'عرض الرسائل',
+    permViewFiles: 'عرض الملفات',
+    permViewDoctors: 'عرض الأطباء',
+    permViewClinics: 'عرض العيادات',
+    permViewPatients: 'عرض المرضى',
+    permViewDeliveries: 'عرض عمليات التوصيل',
+    permViewExocad: 'فتح عارض exocad',
+    permManageStaff: 'إدارة الفريق',
+
+    navNotifications: 'الإشعارات',
+    navDoctors: 'الأطباء',
+    navClinics: 'العيادات',
+    navPatients: 'المرضى',
+    navDeliveries: 'التوصيلات',
+    navMyCases: 'حالاتي',
+    drawerDirectory: 'دليل العملاء',
+    drawerManage: 'الإدارة',
+
+    notificationsUnread: '{count} غير مقروءة',
+    notificationsAllRead: 'لا توجد إشعارات جديدة',
+    notificationsMarkAll: 'تعليم الكل كمقروء',
+    notificationsSettings: 'إعدادات الإشعارات',
+    notificationsSettingsHint: 'اختر التحديثات التي تصل إلى هذا الجهاز.',
+    notificationsEmptyTitle: 'لا توجد إشعارات',
+    notificationsEmptyBody: 'أعد تفعيل فئة من الإعدادات لعرض سجلها.',
+    notificationsOpenAria: 'فتح الإشعارات',
+    notifTypeNewCase: 'حالة جديدة',
+    notifTypeNewCaseHint: 'أرسلت عيادة أمر عمل جديد',
+    notifTypeDueSoon: 'موعد التسليم',
+    notifTypeDueSoonHint: 'حالة تقترب من موعد استحقاقها',
+    notifTypeMessage: 'رسالة',
+    notifTypeMessageHint: 'رد طبيب في صندوق الرسائل',
+    notifTypeDelivery: 'التوصيل',
+    notifTypeDeliveryHint: 'تحديثات الاستلام والتسليم',
+    notifTypeInvoice: 'الفواتير',
+    notifTypeInvoiceHint: 'تنبيهات الفواتير والمدفوعات',
+
+    tableRange: '{from}–{to} من {total}',
+    tableRangeEmpty: 'لا نتائج',
+    tablePageOf: '{page} / {total}',
+    tablePrevious: 'الصفحة السابقة',
+    tableNext: 'الصفحة التالية',
+    tableSortBy: 'ترتيب حسب {column}',
+
+    statusActive: 'نشط',
+    statusPending: 'قيد الانتظار',
+    statusInactive: 'غير نشط',
+
+    colDoctor: 'الطبيب',
+    colClinic: 'العيادة',
+    colSpecialty: 'التخصص',
+    colPhone: 'الهاتف',
+    colActiveCases: 'نشطة',
+    colTotalCases: 'الإجمالي',
+    colStatus: 'الحالة',
+    colCity: 'المدينة',
+    colDoctorsCount: 'الأطباء',
+    colOutstanding: 'الرصيد',
+    colPatient: 'المريض',
+    colCase: 'الحالة',
+    colWorkType: 'نوع العمل',
+    colAge: 'العمر',
+    colStage: 'المرحلة',
+
+    doctorsTitle: 'الأطباء',
+    doctorsSubtitle: '{count} طبيبًا محوّلًا',
+    doctorsSearch: 'ابحث عن طبيب أو عيادة أو تخصص',
+    doctorsEmptyTitle: 'لم يتم العثور على أطباء',
+    doctorsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
+
+    clinicsTitle: 'العيادات',
+    clinicsSubtitle: '{count} عيادة شريكة',
+    clinicsSearch: 'ابحث عن عيادة أو مدينة',
+    clinicsEmptyTitle: 'لم يتم العثور على عيادات',
+    clinicsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
+
+    patientsTitle: 'المرضى',
+    patientsSubtitle: '{count} مريضًا في السجل',
+    patientsSearch: 'ابحث عن مريض أو حالة أو طبيب',
+    patientsEmptyTitle: 'لم يتم العثور على مرضى',
+    patientsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
+
+    staffTitle: 'الفريق والصلاحيات',
+    staffSubtitle: '{count} أعضاء فريق',
+    staffAdd: 'إضافة عضو',
+    staffEmptyTitle: 'لا يوجد أعضاء فريق',
+    staffEmptyBody: 'أضف أول عامل مختبر لتعيين الصلاحيات.',
+    staffOwnerBadge: 'المالك',
+    staffOwnerProtected: 'مقعد المالك يحتفظ دائمًا بصلاحية كاملة.',
+    staffInactiveBadge: 'موقوف',
+    staffPermissionsCount: '{count} من {total} صلاحيات',
+    staffMemberAria: 'تعديل {name}',
+    staffFormNewTitle: 'عضو فريق جديد',
+    staffFormEditTitle: 'تعديل عضو الفريق',
+    staffFormName: 'الاسم الكامل',
+    staffFormNamePlaceholder: 'مثال: كريم حداد',
+    staffFormJobTitle: 'المسمى الوظيفي',
+    staffFormJobTitlePlaceholder: 'مثال: أخصائي سيراميك',
+    staffFormPhone: 'رقم الهاتف',
+    staffFormPhonePlaceholder: 'الرقم المستخدم لتسجيل الدخول',
+    staffFormEmail: 'البريد الإلكتروني',
+    staffFormEmailPlaceholder: 'name@nadeemlab.com',
+    staffFormRoleTitle: 'الدور في النظام',
+    staffFormRoleHint: 'يحدد الدور الصلاحيات الأولية.',
+    staffFormRoleLocked: 'لا يمكن تغيير دور المالك.',
+    staffFormAccessTitle: 'الصلاحيات',
+    staffFormAccessHint: 'فعّل أو عطّل صلاحيات فردية لهذا العضو.',
+    staffFormStatusTitle: 'حالة الحساب',
+    staffFormStatusHint: 'العضو الموقوف لا يمكنه تسجيل الدخول.',
+    staffFormColorTitle: 'اللون في قائمة الفريق',
+    staffFormColorAria: 'اختيار اللون {index}',
+    staffFormNameRequired: 'أدخل اسمًا قبل الحفظ.',
+    staffDeleteTitle: 'إزالة عضو',
+    staffDeleteBody: 'سيفقد {name} الوصول إلى مساحة عمل المختبر.',
   },
 };

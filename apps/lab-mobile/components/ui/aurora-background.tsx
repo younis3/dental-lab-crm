@@ -63,13 +63,20 @@ function Blob({ color, size, left, top, opacity, driftX, driftY, duration, delay
   );
 }
 
-/** Ambient animated backdrop: a base gradient plus slowly drifting colour blobs. */
+/**
+ * Ambient animated backdrop: a base gradient, slowly drifting colour blobs and a
+ * soft top spotlight. Light mode keeps the blobs neutral — any brand tint on a
+ * white canvas reads as a colour cast rather than depth.
+ */
 export function AuroraBackground({ intense = false }: { intense?: boolean }) {
   const theme = useTheme();
   const { width, height } = useWindowDimensions();
   const base = Math.max(width, 360);
   const strength = intense ? 1 : 0.58;
   const dark = theme.scheme === 'dark';
+  const depth = dark ? 1 : 0.16;
+  const warm = dark ? theme.color.brand : theme.color.glow;
+  const warmAlt = dark ? theme.color.accent : theme.color.glow;
 
   return (
     <Animated.View pointerEvents="none" style={StyleSheet.absoluteFill}>
@@ -80,22 +87,22 @@ export function AuroraBackground({ intense = false }: { intense?: boolean }) {
         style={StyleSheet.absoluteFill}
       />
       <Blob
-        color={theme.color.brand}
+        color={warm}
         size={base * 1.28}
         left={-base * 0.48}
         top={-base * 0.4}
-        opacity={(dark ? 0.5 : 0.2) * strength}
+        opacity={0.5 * strength * depth}
         driftX={42}
         driftY={28}
         duration={12000}
         delay={0}
       />
       <Blob
-        color={theme.color.accent}
+        color={warmAlt}
         size={base * 1.08}
         left={width - base * 0.58}
         top={height * 0.04}
-        opacity={(dark ? 0.34 : 0.16) * strength}
+        opacity={0.34 * strength * depth}
         driftX={-36}
         driftY={44}
         duration={14000}
@@ -106,12 +113,22 @@ export function AuroraBackground({ intense = false }: { intense?: boolean }) {
         size={base * 1.12}
         left={-base * 0.18}
         top={height * 0.52}
-        opacity={(dark ? 0.32 : 0.22) * strength}
+        opacity={0.32 * strength * depth}
         driftX={48}
         driftY={-32}
         duration={16000}
         delay={1400}
       />
+      <LinearGradient
+        colors={[theme.color.highlight, 'transparent']}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+        style={[styles.spotlight, { opacity: dark ? 1 : 0.35 }]}
+      />
     </Animated.View>
   );
 }
+
+const styles = StyleSheet.create({
+  spotlight: { position: 'absolute', left: 0, right: 0, top: 0, height: '38%' },
+});

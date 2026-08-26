@@ -16,8 +16,10 @@ export function useTheme(): Theme {
   const systemScheme = useColorScheme();
   const { mode } = useThemeMode();
 
-  if (override) return themes[override];
-
+  // Single return: a branch here previously tripped the experimental React
+  // Compiler into miscounting hooks for callers that mix override and
+  // non-override renders (e.g. the tab bar), throwing "Rendered fewer hooks
+  // than expected" on navigation.
   const scheme: ColorScheme = mode === 'system' ? (systemScheme ?? 'light') : mode;
-  return themes[scheme];
+  return themes[override ?? scheme];
 }

@@ -22,6 +22,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 import { hydrateAuth } from '@/store/auth-store';
 import { hydrateLanguage } from '@/store/language-store';
+import { hydrateNotificationPrefs } from '@/store/notifications-store';
+import { hydrateStaff } from '@/store/staff-store';
 import { hydrateThemeMode } from '@/store/theme-store';
 
 void SplashScreen.preventAutoHideAsync();
@@ -41,9 +43,13 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    void Promise.all([hydrateThemeMode(), hydrateLanguage(), hydrateAuth()]).finally(() =>
-      setStoresHydrated(true)
-    );
+    void Promise.all([
+      hydrateThemeMode(),
+      hydrateLanguage(),
+      hydrateAuth(),
+      hydrateNotificationPrefs(),
+      hydrateStaff(),
+    ]).finally(() => setStoresHydrated(true));
   }, []);
 
   const ready = fontsLoaded && storesHydrated;

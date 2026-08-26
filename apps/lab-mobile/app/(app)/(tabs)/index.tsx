@@ -22,6 +22,7 @@ import { row, startSpacing } from '@/lib/rtl';
 import { ACTIVITY, ORDERS, PIPELINE, QUICK_ACTIONS, STAGE_META } from '@/lib/mock-data';
 import { useAuth } from '@/store/auth-store';
 import { useLanguage } from '@/store/language-store';
+import { useNotifications } from '@/store/notifications-store';
 
 type Stat = {
   id: string;
@@ -90,6 +91,7 @@ export default function DashboardScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { isRtl, lang, ui } = useLanguage();
+  const { unread } = useNotifications();
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
@@ -121,7 +123,12 @@ export default function DashboardScreen() {
           titleVariant={lang === 'en' ? 'editorial' : 'heading'}
           right={
             <View style={[styles.headerActions, row(isRtl)]}>
-              <IconButton icon="notifications-outline" accessibilityLabel={ui.dashNotifications} badge={3} />
+              <IconButton
+                icon="notifications-outline"
+                accessibilityLabel={ui.notificationsOpenAria}
+                badge={unread}
+                onPress={() => router.push('/notifications')}
+              />
               <PressableScale accessibilityRole="button" accessibilityLabel={ui.dashProfile} scaleTo={0.92}>
                 <Avatar initials={user?.initials ?? 'NY'} size={44} online />
               </PressableScale>

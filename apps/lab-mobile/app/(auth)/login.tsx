@@ -27,10 +27,12 @@ import { elevation, motion, radius, spacing } from '@/constants/design';
 import { ThemeOverride, useTheme } from '@/hooks/use-theme';
 import { interpolate } from '@/lib/i18n';
 import { row } from '@/lib/rtl';
+import { ROLE_LABEL_KEYS } from '@/lib/roles';
 import {
+  DEMO_ACCOUNTS,
+  DEMO_ACCOUNT_PHONES,
   DEMO_OTP,
   DEMO_PASSWORD,
-  DEMO_PHONE,
   cancelOtp,
   requestOtp,
   verifyOtp,
@@ -245,21 +247,51 @@ function LoginCanvas() {
                     onPress={() => void handleSendCode()}
                   />
 
-                  <PressableScale
-                    scaleTo={0.98}
-                    accessibilityRole="button"
-                    accessibilityLabel={ui.loginFillDemo}
-                    onPress={() => {
-                      setPhone(DEMO_PHONE);
-                      setPassword(DEMO_PASSWORD);
-                      setErrorCode(null);
-                    }}
-                    style={[styles.demoRow, row(isRtl)]}>
-                    <Icon name="sparkles-outline" size={14} color={theme.color.textMuted} />
-                    <Text variant="caption" tone="muted">
-                      {ui.loginFillDemo}
-                    </Text>
-                  </PressableScale>
+                  <View style={styles.demoBlock}>
+                    <View style={[styles.demoRow, row(isRtl)]}>
+                      <Icon name="sparkles-outline" size={14} color={theme.color.textMuted} />
+                      <Text variant="caption" tone="muted">
+                        {ui.loginDemoRoles}
+                      </Text>
+                    </View>
+                    <View style={[styles.demoRoles, row(isRtl)]}>
+                      {DEMO_ACCOUNT_PHONES.map((demoPhone) => {
+                        const account = DEMO_ACCOUNTS[demoPhone];
+                        const label = ui[ROLE_LABEL_KEYS[account.role]];
+                        const selected = phone === demoPhone;
+
+                        return (
+                          <PressableScale
+                            key={demoPhone}
+                            scaleTo={0.94}
+                            accessibilityRole="button"
+                            accessibilityLabel={label}
+                            accessibilityState={{ selected }}
+                            onPress={() => {
+                              setPhone(demoPhone);
+                              setPassword(DEMO_PASSWORD);
+                              setErrorCode(null);
+                            }}
+                            style={[
+                              styles.rolePill,
+                              {
+                                backgroundColor: selected
+                                  ? theme.color.brandSoft
+                                  : theme.color.surfaceMuted,
+                                borderColor: selected ? theme.color.brand : theme.color.border,
+                              },
+                            ]}>
+                            <Text
+                              variant="caption"
+                              numberOfLines={1}
+                              color={selected ? theme.color.brand : theme.color.textMuted}>
+                              {label}
+                            </Text>
+                          </PressableScale>
+                        );
+                      })}
+                    </View>
+                  </View>
                 </Animated.View>
               ) : (
                 <Animated.View
@@ -404,7 +436,15 @@ const styles = StyleSheet.create({
   stepHeader: { gap: 2, marginBottom: spacing.xs },
   dots: { alignSelf: 'center', gap: 5 },
   dot: { height: 6, borderRadius: 3 },
-  demoRow: { alignItems: 'center', justifyContent: 'center', gap: 6, paddingTop: spacing.xs },
+  demoBlock: { gap: spacing.sm, paddingTop: spacing.xs },
+  demoRow: { alignItems: 'center', justifyContent: 'center', gap: 6 },
+  demoRoles: { flexWrap: 'wrap', justifyContent: 'center', gap: 6 },
+  rolePill: {
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: 5,
+    borderRadius: radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
   hint: {
     alignItems: 'center',
     justifyContent: 'center',

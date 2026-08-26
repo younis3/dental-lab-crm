@@ -1,20 +1,24 @@
 import { Tabs } from 'expo-router';
 
-import { FloatingTabBar } from '@/components/navigation/floating-tab-bar';
+import { TabBar } from '@/components/navigation/tab-bar';
 
+/**
+ * Every workspace tab is registered here; the bar itself decides which of them
+ * the signed-in role sees, and supplies the translated labels.
+ */
 export default function TabLayout() {
   return (
     <Tabs
-      tabBar={(props) => <FloatingTabBar {...props} />}
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         headerShown: false,
         animation: 'shift',
         sceneStyle: { backgroundColor: 'transparent' },
       }}>
-      <Tabs.Screen name="index" options={{ title: 'Home' }} />
-      <Tabs.Screen name="orders" options={{ title: 'Orders' }} />
-      <Tabs.Screen name="inbox" options={{ title: 'Inbox' }} />
-      <Tabs.Screen name="folders" options={{ title: 'Files' }} />
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="orders" />
+      <Tabs.Screen name="inbox" />
+      <Tabs.Screen name="folders" />
     </Tabs>
   );
 }

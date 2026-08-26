@@ -32,9 +32,12 @@ import { Text } from '@/components/ui/text';
 import { elevation, motion, radius, spacing } from '@/constants/design';
 import { ThemeOverride, useTheme } from '@/hooks/use-theme';
 import type { UiStrings } from '@/lib/i18n';
+import { MESSAGES } from '@/lib/mock-data';
+import { ROLE_LABEL_KEYS, resolveNav, type Permission } from '@/lib/roles';
 import { alignStart, row } from '@/lib/rtl';
-import { logout, useAuth } from '@/store/auth-store';
+import { logout, useAuth, usePermissions } from '@/store/auth-store';
 import { useLanguage } from '@/store/language-store';
+import { useNotifications } from '@/store/notifications-store';
 import { setThemeMode, useThemeMode, type ThemeMode } from '@/store/theme-store';
 
 type DrawerContextValue = { open: () => void; close: () => void; isOpen: boolean };
@@ -53,39 +56,128 @@ type NavItem = {
   icon: IconName;
   route?: Href;
   match?: string;
-  badge?: number;
+  /** Hidden unless the signed-in user holds this permission. */
+  permission?: Permission;
+  /** Live counter resolved at render time. */
+  badgeSource?: 'inbox' | 'notifications';
   soon?: boolean;
 };
 
-const PRIMARY_NAV: NavItem[] = [
-  { key: 'dashboard', labelKey: 'navDashboard', icon: 'grid-outline', route: '/', match: '/' },
-  { key: 'orders', labelKey: 'navOrders', icon: 'layers-outline', route: '/orders', match: '/orders' },
-  { key: 'inbox', labelKey: 'navInbox', icon: 'chatbubbles-outline', route: '/inbox', match: '/inbox', badge: 2 },
-  { key: 'folders', labelKey: 'navFiles', icon: 'folder-open-outline', route: '/folders', match: '/folders' },
+type NavGroup = { key: string; titleKey: keyof UiStrings; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
   {
-    key: 'exocad',
-    labelKey: 'navExocad',
-    icon: 'cube-outline',
-    route: '/demo-exocad',
-    match: '/demo-exocad',
+    key: 'workspace',
+    titleKey: 'drawerWorkspace',
+    items: [
+      {
+        key: 'dashboard',
+        labelKey: 'navDashboard',
+        icon: 'grid-outline',
+        route: '/',
+        match: '/',
+        permission: 'viewDashboard',
+      },
+      {
+        key: 'orders',
+        labelKey: 'navOrders',
+        icon: 'layers-outline',
+        route: '/orders',
+        match: '/orders',
+        permission: 'viewOrders',
+      },
+      {
+        key: 'inbox',
+        labelKey: 'navInbox',
+        icon: 'chatbubbles-outline',
+        route: '/inbox',
+        match: '/inbox',
+        permission: 'viewInbox',
+        badgeSource: 'inbox',
+      },
+      {
+        key: 'folders',
+        labelKey: 'navFiles',
+        icon: 'folder-open-outline',
+        route: '/folders',
+        match: '/folders',
+        permission: 'viewFiles',
+      },
+      {
+        key: 'notifications',
+        labelKey: 'navNotifications',
+        icon: 'notifications-outline',
+        route: '/notifications',
+        match: '/notifications',
+        badgeSource: 'notifications',
+      },
+      {
+        key: 'exocad',
+        labelKey: 'navExocad',
+        icon: 'cube-outline',
+        route: '/demo-exocad',
+        match: '/demo-exocad',
+        permission: 'viewExocad',
+      },
+    ],
+  },
+  {
+    key: 'directory',
+    titleKey: 'drawerDirectory',
+    items: [
+      {
+        key: 'doctors',
+        labelKey: 'navDoctors',
+        icon: 'medkit-outline',
+        route: '/doctors',
+        match: '/doctors',
+        permission: 'viewDoctors',
+      },
+      {
+        key: 'clinics',
+        labelKey: 'navClinics',
+        icon: 'business-outline',
+        route: '/clinics',
+        match: '/clinics',
+        permission: 'viewClinics',
+      },
+      {
+        key: 'patients',
+        labelKey: 'navPatients',
+        icon: 'people-outline',
+        route: '/patients',
+        match: '/patients',
+        permission: 'viewPatients',
+      },
+    ],
+  },
+  {
+    key: 'manage',
+    titleKey: 'drawerManage',
+    items: [
+      {
+        key: 'staff',
+        labelKey: 'navTeam',
+        icon: 'shield-checkmark-outline',
+        route: '/staff',
+        match: '/staff',
+        permission: 'manageStaff',
+      },
+    ],
+  },
+  {
+    key: 'soon',
+    titleKey: 'drawerComingSoon',
+    items: [
+      { key: 'analytics', labelKey: 'navAnalytics', icon: 'stats-chart-outline', soon: true },
+      { key: 'financials', labelKey: 'navFinancials', icon: 'wallet-outline', soon: true },
+      { key: 'courier', labelKey: 'navCourier', icon: 'car-outline', soon: true },
+    ],
   },
 ];
 
-const SECONDARY_NAV: NavItem[] = [
-  { key: 'analytics', labelKey: 'navAnalytics', icon: 'stats-chart-outline', soon: true },
-  { key: 'financials', labelKey: 'navFinancials', icon: 'wallet-outline', soon: true },
-  { key: 'courier', labelKey: 'navCourier', icon: 'car-outline', soon: true },
-  { key: 'team', labelKey: 'navTeam', icon: 'people-outline', soon: true },
-];
-
-/** Stagger slots, derived so adding a nav item never desyncs the animation. */
-const STAGGER = {
-  primaryTitle: 2,
-  primary: 3,
-  secondaryTitle: 3 + PRIMARY_NAV.length,
-  secondary: 4 + PRIMARY_NAV.length,
-  tail: 4 + PRIMARY_NAV.length + SECONDARY_NAV.length,
-} as const;
+/** Slots 0 and 1 belong to the brand row and the profile card. */
+const FIRST_GROUP_SLOT = 2;
 
 const THEME_OPTIONS: { key: ThemeMode; icon: IconName; labelKey: keyof UiStrings }[] = [
   { key: 'system', icon: 'phone-portrait-outline', labelKey: 'themeAuto' },
@@ -245,8 +337,48 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useAuth();
+  const { role, can } = usePermissions();
   const { mode } = useThemeMode();
   const { isRtl, ui } = useLanguage();
+  const { unread } = useNotifications();
+
+  const unreadMessages = useMemo(() => MESSAGES.filter((message) => message.unread).length, []);
+
+  // Slots are assigned once per render pass so the stagger stays continuous no
+  // matter how many entries the current role can actually see.
+  const { groups, tailSlot } = useMemo(() => {
+    let slot = FIRST_GROUP_SLOT;
+    const activeRole = role ?? 'lab_owner';
+
+    const visible = NAV_GROUPS.map((group) => ({
+      ...group,
+      items: group.items.flatMap((item) => {
+        if (!item.permission) return [item];
+        // Shares the tab bar's resolution, so a driver gets the same
+        // "Deliveries" wording and gate in both navigators.
+        const nav = resolveNav(activeRole, item.key, {
+          permission: item.permission,
+          labelKey: item.labelKey,
+        });
+        return can(nav.permission) ? [{ ...item, labelKey: nav.labelKey }] : [];
+      }),
+    }))
+      .filter((group) => group.items.length > 0)
+      .map((group) => ({
+        key: group.key,
+        titleKey: group.titleKey,
+        titleSlot: slot++,
+        entries: group.items.map((item) => ({ item, slot: slot++ })),
+      }));
+
+    return { groups: visible, tailSlot: slot };
+  }, [can, role]);
+
+  const badgeFor = (item: NavItem) => {
+    if (item.badgeSource === 'notifications') return unread;
+    if (item.badgeSource === 'inbox') return unreadMessages;
+    return 0;
+  };
 
   const go = (item: NavItem) => {
     if (!item.route) return;
@@ -300,40 +432,34 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
                 {user?.name ?? 'Nadeem Dental Lab'}
               </Text>
               <Text variant="caption" tone="faint" numberOfLines={1}>
-                {user?.labName ?? 'Nadeem Dental Lab'}
+                {user ? ui[ROLE_LABEL_KEYS[user.role]] : 'Nadeem Dental Lab'}
               </Text>
             </View>
             <Icon name="chevron-forward" size={16} color={theme.color.textFaint} directional />
           </PressableScale>
         </StaggerItem>
 
-        <View style={styles.group}>
-          <StaggerItem progress={progress} index={STAGGER.primaryTitle}>
-            <Text variant="overline" tone="faint" style={styles.groupTitle}>
-              {ui.drawerWorkspace}
-            </Text>
-          </StaggerItem>
-          {PRIMARY_NAV.map((item, index) => (
-            <StaggerItem key={item.key} progress={progress} index={STAGGER.primary + index}>
-              <DrawerRow item={item} active={pathname === item.match} onPress={() => go(item)} />
+        {groups.map((group) => (
+          <View key={group.key} style={styles.group}>
+            <StaggerItem progress={progress} index={group.titleSlot}>
+              <Text variant="overline" tone="faint" style={styles.groupTitle}>
+                {ui[group.titleKey]}
+              </Text>
             </StaggerItem>
-          ))}
-        </View>
+            {group.entries.map(({ item, slot }) => (
+              <StaggerItem key={item.key} progress={progress} index={slot}>
+                <DrawerRow
+                  item={item}
+                  badge={badgeFor(item)}
+                  active={pathname === item.match}
+                  onPress={item.soon ? undefined : () => go(item)}
+                />
+              </StaggerItem>
+            ))}
+          </View>
+        ))}
 
-        <View style={styles.group}>
-          <StaggerItem progress={progress} index={STAGGER.secondaryTitle}>
-            <Text variant="overline" tone="faint" style={styles.groupTitle}>
-              {ui.drawerComingSoon}
-            </Text>
-          </StaggerItem>
-          {SECONDARY_NAV.map((item, index) => (
-            <StaggerItem key={item.key} progress={progress} index={STAGGER.secondary + index}>
-              <DrawerRow item={item} active={false} />
-            </StaggerItem>
-          ))}
-        </View>
-
-        <StaggerItem progress={progress} index={STAGGER.tail}>
+        <StaggerItem progress={progress} index={tailSlot}>
           <View style={styles.group}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerLanguage}
@@ -342,7 +468,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={STAGGER.tail + 1}>
+        <StaggerItem progress={progress} index={tailSlot + 1}>
           <View style={styles.group}>
             <Text variant="overline" tone="faint" style={styles.groupTitle}>
               {ui.drawerAppearance}
@@ -380,7 +506,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={STAGGER.tail + 2}>
+        <StaggerItem progress={progress} index={tailSlot + 2}>
           <View
             style={[styles.status, row(isRtl), { backgroundColor: withAlpha(theme.color.success, 0.12) }]}>
             <View style={[styles.statusDot, { backgroundColor: theme.color.success }]} />
@@ -390,7 +516,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
           </View>
         </StaggerItem>
 
-        <StaggerItem progress={progress} index={STAGGER.tail + 3}>
+        <StaggerItem progress={progress} index={tailSlot + 3}>
           <PressableScale
             onPress={() => {
               onNavigate();
@@ -410,7 +536,17 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
   );
 }
 
-function DrawerRow({ item, active, onPress }: { item: NavItem; active: boolean; onPress?: () => void }) {
+function DrawerRow({
+  item,
+  active,
+  badge,
+  onPress,
+}: {
+  item: NavItem;
+  active: boolean;
+  badge: number;
+  onPress?: () => void;
+}) {
   const theme = useTheme();
   const { isRtl, ui } = useLanguage();
   const label = ui[item.labelKey];
@@ -439,7 +575,7 @@ function DrawerRow({ item, active, onPress }: { item: NavItem; active: boolean; 
       <Text variant="bodyMedium" color={active ? theme.color.brand : theme.color.text} style={styles.flex}>
         {label}
       </Text>
-      {item.badge ? <Badge label={String(item.badge)} tone="danger" /> : null}
+      {badge > 0 ? <Badge label={String(badge)} tone="danger" /> : null}
       {item.soon ? <Badge label={ui.drawerSoonBadge} tone="neutral" /> : null}
     </PressableScale>
   );

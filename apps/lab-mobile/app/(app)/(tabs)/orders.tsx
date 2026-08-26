@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { TAB_BAR_CLEARANCE } from '@/components/navigation/floating-tab-bar';
+import { TAB_BAR_CLEARANCE } from '@/components/navigation/tab-bar';
 import { IconButton } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icon, type IconName } from '@/components/ui/icon';
