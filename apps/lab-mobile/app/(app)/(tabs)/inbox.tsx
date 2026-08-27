@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -12,9 +13,10 @@ import { Screen, ScreenHeader } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { radius, spacing } from '@/constants/design';
 import { useTheme } from '@/hooks/use-theme';
+import { formatRelative } from '@/lib/format';
 import { interpolate, localized, type UiStrings } from '@/lib/i18n';
 import { row } from '@/lib/rtl';
-import { MESSAGES, type Message } from '@/lib/mock-data';
+import { useChat, type Conversation } from '@/store/chat-store';
 import { useLanguage } from '@/store/language-store';
 
 type Filter = 'all' | 'unread' | 'priority';
@@ -27,29 +29,32 @@ const FILTERS: { key: Filter; labelKey: keyof UiStrings }[] = [
 
 export default function InboxScreen() {
   const theme = useTheme();
+  const router = useRouter();
   const { isRtl, ui } = useLanguage();
+  const { conversations, unread } = useChat();
   const [filter, setFilter] = useState<Filter>('all');
 
-  const messages = useMemo(
+  const visible = useMemo(
     () =>
-      MESSAGES.filter((message) =>
+      conversations.filter((conversation) =>
         filter === 'unread'
-          ? message.unread
+          ? conversation.unread > 0
           : filter === 'priority'
-            ? message.priority !== 'normal'
+            ? conversation.priority !== 'normal'
             : true
       ),
-    [filter]
+    [conversations, filter]
   );
-
-  const unread = MESSAGES.filter((message) => message.unread).length;
 
   const countFor = (key: Filter) =>
     key === 'all'
-      ? MESSAGES.length
+      ? conversations.length
       : key === 'unread'
-        ? unread
-        : MESSAGES.filter((message) => message.priority !== 'normal').length;
+        ? conversations.filter((conversation) => conversation.unread > 0).length
+        : conversations.filter((conversation) => conversation.priority !== 'normal').length;
+
+  const openConversation = (id: string) =>
+    router.push({ pathname: '/inbox/[id]', params: { id } });
 
   return (
     <Screen
@@ -58,7 +63,12 @@ export default function InboxScreen() {
           title={ui.inboxTitle}
           subtitle={unread > 0 ? interpolate(ui.inboxUnreadSubtitle, { count: unread }) : ui.inboxAllRead}
           right={
-            <IconButton icon="create-outline" accessibilityLabel={ui.inboxNewMessage} tone="brand" />
+            <IconButton
+              icon="create-outline"
+              accessibilityLabel={ui.inboxNewMessage}
+              tone="brand"
+              onPress={() => router.push('/inbox/new')}
+            />
           }
         />
       }>
@@ -77,6 +87,7 @@ export default function InboxScreen() {
       <PressableScale
         accessibilityRole="button"
         accessibilityLabel={ui.inboxSupportAria}
+        onPress={() => openConversation('support')}
         style={[styles.support, row(isRtl), { backgroundColor: withAlpha(theme.color.accent, 0.12) }]}>
         <View style={[styles.supportIcon, { backgroundColor: theme.color.accent }]}>
           <Icon name="headset-outline" size={19} color="#FFFFFF" />
@@ -91,13 +102,13 @@ export default function InboxScreen() {
       </PressableScale>
 
       <View style={styles.list}>
-        {messages.map((message, index) => (
-          <Animated.View key={message.id} entering={FadeInDown.delay(index * 55).duration(420)}>
-            <MessageRow message={message} />
+        {visible.map((conversation, index) => (
+          <Animated.View key={conversation.id} entering={FadeInDown.delay(index * 55).duration(420)}>
+            <MessageRow conversation={conversation} onPress={() => openConversation(conversation.id)} />
           </Animated.View>
         ))}
 
-        {messages.length === 0 ? (
+        {visible.length === 0 ? (
           <Card style={styles.empty}>
             <Icon name="mail-open-outline" size={30} color={theme.color.textFaint} />
             <Text variant="subheading">{ui.inboxEmptyTitle}</Text>
@@ -111,54 +122,81 @@ export default function InboxScreen() {
   );
 }
 
-function MessageRow({ message }: { message: Message }) {
+function MessageRow({
+  conversation,
+  onPress,
+}: {
+  conversation: Conversation;
+  onPress: () => void;
+}) {
   const theme = useTheme();
   const { isRtl, lang, ui } = useLanguage();
-  const sender = localized(message.sender, lang);
+  const sender = localized(conversation.name, lang);
+  const last = conversation.bubbles[conversation.bubbles.length - 1];
+
+  const preview = last?.text
+    ? localized(last.text, lang)
+    : last?.attachment
+      ? last.attachment.name
+      : '';
+  const previewIsMine = last?.author === 'me';
 
   return (
     <PressableScale
+      onPress={onPress}
       scaleTo={0.98}
       accessibilityRole="button"
       accessibilityLabel={interpolate(ui.inboxConversationAria, { name: sender })}>
       <Card style={styles.row}>
         <View style={[styles.rowTop, row(isRtl)]}>
-          <Avatar initials={message.initials} size={44} online={message.unread} />
+          <Avatar initials={conversation.initials} size={44} online={conversation.unread > 0} />
 
           <View style={styles.flex}>
             <View style={[styles.rowHeader, row(isRtl)]}>
               <Text variant="label" numberOfLines={1} style={styles.flex}>
                 {sender}
               </Text>
-              <Text variant="caption" tone="faint">
-                {localized(message.time, lang)}
-              </Text>
+              {last ? (
+                <Text variant="caption" tone="faint">
+                  {formatRelative(last.at, ui)}
+                </Text>
+              ) : null}
             </View>
             <Text variant="caption" tone="faint" numberOfLines={1}>
-              {localized(message.clinic, lang)}
+              {localized(conversation.clinic, lang)}
             </Text>
           </View>
         </View>
 
-        <Text
-          variant="body"
-          tone={message.unread ? 'default' : 'muted'}
-          numberOfLines={2}
-          style={styles.preview}>
-          {localized(message.preview, lang)}
-        </Text>
+        <View style={[styles.previewRow, row(isRtl)]}>
+          {last?.attachment && !last.text ? (
+            <Icon name="attach-outline" size={14} color={theme.color.textFaint} />
+          ) : null}
+          <Text
+            variant="body"
+            tone={conversation.unread > 0 ? 'default' : 'muted'}
+            numberOfLines={2}
+            style={styles.flex}
+            ltr={Boolean(last?.attachment && !last?.text)}>
+            {previewIsMine ? interpolate(ui.inboxYouPreview, { text: preview }) : preview}
+          </Text>
+        </View>
 
         <View style={[styles.rowFooter, row(isRtl)]}>
           <View style={[styles.tags, row(isRtl)]}>
-            {message.priority === 'action' ? (
+            {conversation.priority === 'action' ? (
               <Badge label={ui.inboxActionRequired} tone="danger" icon="alert-circle" />
             ) : null}
-            {message.priority === 'high' ? (
+            {conversation.priority === 'high' ? (
               <Badge label={ui.inboxHighPriority} tone="warning" icon="arrow-up" />
             ) : null}
-            {message.orderId ? <Badge label={message.orderId} tone="brand" icon="layers-outline" /> : null}
+            {conversation.orderId ? (
+              <Badge label={conversation.orderId} tone="brand" icon="layers-outline" />
+            ) : null}
           </View>
-          {message.unread ? <View style={[styles.dot, { backgroundColor: theme.color.brand }]} /> : null}
+          {conversation.unread > 0 ? (
+            <View style={[styles.dot, { backgroundColor: theme.color.brand }]} />
+          ) : null}
         </View>
       </Card>
     </PressableScale>
@@ -179,7 +217,7 @@ const styles = StyleSheet.create({
   row: { gap: spacing.md },
   rowTop: { alignItems: 'center', gap: spacing.md },
   rowHeader: { alignItems: 'center', gap: spacing.sm },
-  preview: { marginTop: -spacing.xs },
+  previewRow: { alignItems: 'flex-start', gap: spacing.xs, marginTop: -spacing.xs },
   rowFooter: { alignItems: 'center', justifyContent: 'space-between' },
   tags: { flexWrap: 'wrap', gap: spacing.sm, flex: 1 },
   dot: { width: 9, height: 9, borderRadius: 5 },

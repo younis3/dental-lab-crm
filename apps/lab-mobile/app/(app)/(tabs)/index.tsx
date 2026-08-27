@@ -448,7 +448,6 @@ function CapacitySheet({
         <View style={styles.flex}>
           <Button
             label={ui.actionSave}
-            icon="checkmark"
             disabled={!valid}
             onPress={() => {
               if (!valid) return;

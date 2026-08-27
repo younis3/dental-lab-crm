@@ -21,7 +21,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/hooks/use-theme';
 import { hydrateAuth } from '@/store/auth-store';
+import { hydrateChat } from '@/store/chat-store';
 import { hydrateDirectory } from '@/store/directory-store';
+import { hydrateFiles } from '@/store/files-store';
+import { hydrateIntegrations } from '@/store/integrations-store';
 import { hydrateBilling } from '@/store/invoices-store';
 import { hydrateLanguage } from '@/store/language-store';
 import { hydrateNotificationPrefs } from '@/store/notifications-store';
@@ -57,6 +60,9 @@ export default function RootLayout() {
       hydrateBilling(),
       hydrateWorkPressure(),
       hydrateDirectory(),
+      hydrateChat(),
+      hydrateFiles(),
+      hydrateIntegrations(),
     ]).finally(() => setStoresHydrated(true));
   }, []);
 

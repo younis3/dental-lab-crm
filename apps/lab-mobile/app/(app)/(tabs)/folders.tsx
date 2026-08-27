@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
+import { BottomSheet } from '@/components/ui/bottom-sheet';
 import { IconButton } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
@@ -12,14 +14,23 @@ import { Section } from '@/components/ui/section';
 import { Text } from '@/components/ui/text';
 import { radius, spacing } from '@/constants/design';
 import { useTheme } from '@/hooks/use-theme';
-import { interpolate, localized } from '@/lib/i18n';
+import { interpolate, localized, type UiStrings } from '@/lib/i18n';
 import { row, startSpacing } from '@/lib/rtl';
-import { FOLDERS, RECENT_FILES, STORAGE, type FileFolder, type RecentFile } from '@/lib/mock-data';
+import { FOLDERS, STORAGE, type FileFolder, type RecentFile } from '@/lib/mock-data';
+import { addRecentFile, useFiles, UPLOAD_META, type UploadKind } from '@/store/files-store';
 import { useLanguage } from '@/store/language-store';
+
+const UPLOAD_OPTIONS: { kind: UploadKind; labelKey: keyof UiStrings; hintKey: keyof UiStrings }[] = [
+  { kind: 'scan', labelKey: 'filesUploadScan', hintKey: 'filesUploadScanHint' },
+  { kind: 'photo', labelKey: 'filesUploadPhoto', hintKey: 'filesUploadPhotoHint' },
+  { kind: 'document', labelKey: 'filesUploadDocument', hintKey: 'filesUploadDocumentHint' },
+];
 
 export default function FoldersScreen() {
   const theme = useTheme();
   const { isRtl, ui } = useLanguage();
+  const { recent } = useFiles();
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   return (
     <Screen
@@ -27,7 +38,14 @@ export default function FoldersScreen() {
         <ScreenHeader
           title={ui.filesTitle}
           subtitle={ui.filesSubtitle}
-          right={<IconButton icon="cloud-upload-outline" accessibilityLabel={ui.filesUpload} tone="brand" />}
+          right={
+            <IconButton
+              icon="cloud-upload-outline"
+              accessibilityLabel={ui.filesUpload}
+              tone="brand"
+              onPress={() => setUploadOpen(true)}
+            />
+          }
         />
       }>
       <Animated.View entering={FadeInDown.duration(450)}>
@@ -63,10 +81,10 @@ export default function FoldersScreen() {
       <Animated.View entering={FadeInDown.delay(160).duration(450)}>
         <Section title={ui.filesRecent} actionLabel={ui.filesSeeAll}>
           <Card padded={false} style={styles.recentCard}>
-            {RECENT_FILES.map((file, index) => (
+            {recent.map((file, index) => (
               <View key={file.id}>
                 <RecentRow file={file} />
-                {index < RECENT_FILES.length - 1 ? (
+                {index < recent.length - 1 ? (
                   <View
                     style={[
                       styles.divider,
@@ -80,6 +98,40 @@ export default function FoldersScreen() {
           </Card>
         </Section>
       </Animated.View>
+
+      <BottomSheet visible={uploadOpen} onClose={() => setUploadOpen(false)} title={ui.filesUpload}>
+        <Text variant="caption" tone="faint">
+          {ui.filesUploadHint}
+        </Text>
+        {UPLOAD_OPTIONS.map((option) => (
+          <PressableScale
+            key={option.kind}
+            onPress={() => {
+              addRecentFile(option.kind);
+              setUploadOpen(false);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={ui[option.labelKey]}
+            style={[
+              styles.uploadRow,
+              row(isRtl),
+              { backgroundColor: theme.color.surfaceMuted, borderColor: theme.color.border },
+            ]}>
+            <View style={[styles.uploadIcon, { backgroundColor: theme.color.brandSoft }]}>
+              <Icon name={UPLOAD_META[option.kind].icon} size={18} color={theme.color.brand} />
+            </View>
+            <View style={styles.flex}>
+              <Text variant="bodyMedium" numberOfLines={1}>
+                {ui[option.labelKey]}
+              </Text>
+              <Text variant="caption" tone="faint" numberOfLines={1}>
+                {ui[option.hintKey]}
+              </Text>
+            </View>
+            <Icon name="chevron-forward" size={15} color={theme.color.textFaint} directional />
+          </PressableScale>
+        ))}
+      </BottomSheet>
     </Screen>
   );
 }
@@ -184,4 +236,12 @@ const styles = StyleSheet.create({
   },
   recentIcon: { width: 38, height: 38, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   divider: { height: StyleSheet.hairlineWidth },
+  uploadRow: {
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  uploadIcon: { width: 38, height: 38, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
 });

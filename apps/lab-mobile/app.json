@@ -47,6 +47,12 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to scan case QR codes and barcodes.",
           "recordAudioAndroid": false
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to attach photos to case conversations."
+        }
       ]
     ],
     "experiments": {

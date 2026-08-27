@@ -32,10 +32,10 @@ import { Text } from '@/components/ui/text';
 import { elevation, motion, radius, spacing } from '@/constants/design';
 import { ThemeOverride, useTheme } from '@/hooks/use-theme';
 import type { UiStrings } from '@/lib/i18n';
-import { MESSAGES } from '@/lib/mock-data';
 import { ROLE_LABEL_KEYS, resolveNav, type Permission } from '@/lib/roles';
 import { alignStart, row } from '@/lib/rtl';
 import { logout, useAuth, usePermissions } from '@/store/auth-store';
+import { useChat } from '@/store/chat-store';
 import { useLanguage } from '@/store/language-store';
 import { useNotifications } from '@/store/notifications-store';
 import { setThemeMode, useThemeMode, type ThemeMode } from '@/store/theme-store';
@@ -133,14 +133,6 @@ const NAV_GROUPS: NavGroup[] = [
         match: '/notifications',
         badgeSource: 'notifications',
       },
-      {
-        key: 'exocad',
-        labelKey: 'navExocad',
-        icon: 'cube-outline',
-        route: '/demo-exocad',
-        match: '/demo-exocad',
-        permission: 'viewExocad',
-      },
     ],
   },
   {
@@ -222,6 +214,22 @@ const NAV_GROUPS: NavGroup[] = [
         route: '/staff',
         match: '/staff',
         permission: 'manageStaff',
+      },
+      {
+        key: 'integrations',
+        labelKey: 'navIntegrations',
+        icon: 'link-outline',
+        route: '/integrations',
+        match: '/integrations',
+        permission: 'manageStaff',
+      },
+      {
+        key: 'exocad',
+        labelKey: 'navExocad',
+        icon: 'cube-outline',
+        route: '/demo-exocad',
+        match: '/demo-exocad',
+        permission: 'viewExocad',
       },
     ],
   },
@@ -392,8 +400,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
   const { mode } = useThemeMode();
   const { isRtl, ui } = useLanguage();
   const { unread } = useNotifications();
-
-  const unreadMessages = useMemo(() => MESSAGES.filter((message) => message.unread).length, []);
+  const { unread: unreadMessages } = useChat();
 
   // Slots are assigned once per render pass so the stagger stays continuous no
   // matter how many entries the current role can actually see.

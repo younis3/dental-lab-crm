@@ -59,6 +59,7 @@ export type UiStrings = {
   navAnalytics: string;
   navCourier: string;
   navTeam: string;
+  navIntegrations: string;
   navExocad: string;
 
   // drawer
@@ -140,6 +141,21 @@ export type UiStrings = {
   ordersUnstar: string;
   ordersEmptyTitle: string;
   ordersEmptyBody: string;
+  orderDetailProgress: string;
+  orderDetailComplete: string;
+  orderDetailTimeline: string;
+  orderDetailStageCurrent: string;
+  orderDetailSpecTitle: string;
+  orderDetailPatient: string;
+  orderDetailWorkType: string;
+  orderDetailShade: string;
+  orderDetailTeeth: string;
+  orderDetailDoctor: string;
+  orderDetailClinic: string;
+  orderDetailMessageClinic: string;
+  orderDetailViewFiles: string;
+  orderDetailNotFoundTitle: string;
+  orderDetailNotFoundBody: string;
 
   // inbox
   inboxTitle: string;
@@ -157,11 +173,43 @@ export type UiStrings = {
   inboxConversationAria: string;
   inboxEmptyTitle: string;
   inboxEmptyBody: string;
+  inboxYouPreview: string;
+
+  // chat thread
+  threadNotFoundTitle: string;
+  threadNotFoundBody: string;
+  threadOpenCase: string;
+  threadPlaceholder: string;
+  threadSend: string;
+  threadAttach: string;
+  threadAttachHint: string;
+  threadAttachPhoto: string;
+  threadAttachVideo: string;
+  threadAttachFile: string;
+  threadPhotoDeniedTitle: string;
+  threadPhotoDeniedBody: string;
+
+  // compose message
+  composeTitle: string;
+  composeRecipient: string;
+  composeRecipientPlaceholder: string;
+  composeClinic: string;
+  composeClinicPlaceholder: string;
+  composeMessage: string;
+  composeMessagePlaceholder: string;
+  composeSend: string;
 
   // files
   filesTitle: string;
   filesSubtitle: string;
   filesUpload: string;
+  filesUploadHint: string;
+  filesUploadScan: string;
+  filesUploadScanHint: string;
+  filesUploadPhoto: string;
+  filesUploadPhotoHint: string;
+  filesUploadDocument: string;
+  filesUploadDocumentHint: string;
   filesStorage: string;
   filesStorageUsed: string;
   filesFolders: string;
@@ -609,6 +657,59 @@ export type UiStrings = {
   billingResend: string;
   billingSendNow: string;
   billingDeleteDraft: string;
+  billingExportPdf: string;
+  billingDownloadPdf: string;
+  billingDownloadDoneTitle: string;
+  billingDownloadDoneBody: string;
+  billingDownloadFailTitle: string;
+  billingDownloadFailBody: string;
+
+  // invoice pdf
+  pdfInvoiceTitle: string;
+  pdfBillTo: string;
+  pdfIssued: string;
+  pdfDue: string;
+  pdfColItem: string;
+  pdfColQty: string;
+  pdfColUnit: string;
+  pdfColAmount: string;
+  pdfNotes: string;
+  pdfThanks: string;
+
+  // integrations
+  integrationsTitle: string;
+  integrationsSubtitle: string;
+  integrationsIntro: string;
+  integrationsSecurityNote: string;
+  integrationConnected: string;
+  integrationActive: string;
+  integrationDisconnected: string;
+  integrationIncomplete: string;
+  integrationOff: string;
+  integrationEnable: string;
+  integrationSave: string;
+  integrationShowValue: string;
+  integrationHideValue: string;
+  integrationConfirm: string;
+  integrationOtpTitle: string;
+  integrationOtpHint: string;
+  integrationOtpLabel: string;
+  integrationOtpPlaceholder: string;
+  integrationOtpError: string;
+  integrationShining3d: string;
+  integrationShining3dHint: string;
+  integrationAnthropic: string;
+  integrationAnthropicHint: string;
+  integrationCloud: string;
+  integrationCloudHint: string;
+  integrationFieldApiKey: string;
+  integrationFieldApiKeyPlaceholder: string;
+  integrationFieldAccountId: string;
+  integrationFieldAccountIdPlaceholder: string;
+  integrationFieldModel: string;
+  integrationFieldModelPlaceholder: string;
+  integrationFieldEndpoint: string;
+  integrationFieldEndpointPlaceholder: string;
   billingRemovePayment: string;
   billingPaymentTitle: string;
   billingPaymentFor: string;
@@ -689,6 +790,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navAnalytics: 'Analytics',
     navCourier: 'Drivers',
     navTeam: 'Team & roles',
+    navIntegrations: 'Integrations',
     navExocad: 'exocad demo',
 
     drawerWorkspace: 'Workspace',
@@ -766,6 +868,21 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     ordersUnstar: 'Remove from starred',
     ordersEmptyTitle: 'No cases found',
     ordersEmptyBody: 'Try a different search term or clear the active filter.',
+    orderDetailProgress: 'Case progress',
+    orderDetailComplete: '{percent}% complete',
+    orderDetailTimeline: 'Stage timeline',
+    orderDetailStageCurrent: 'In progress',
+    orderDetailSpecTitle: 'Case details',
+    orderDetailPatient: 'Patient',
+    orderDetailWorkType: 'Work type',
+    orderDetailShade: 'Shade',
+    orderDetailTeeth: 'Teeth',
+    orderDetailDoctor: 'Doctor',
+    orderDetailClinic: 'Clinic',
+    orderDetailMessageClinic: 'Message clinic',
+    orderDetailViewFiles: 'View files',
+    orderDetailNotFoundTitle: 'Case not found',
+    orderDetailNotFoundBody: 'This case may have been moved or removed.',
 
     inboxTitle: 'Inbox',
     inboxUnreadSubtitle: '{count} unread conversations',
@@ -782,10 +899,38 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     inboxConversationAria: 'Conversation with {name}',
     inboxEmptyTitle: 'Nothing here',
     inboxEmptyBody: 'No conversations match this filter.',
+    inboxYouPreview: 'You: {text}',
+    threadNotFoundTitle: 'Conversation not found',
+    threadNotFoundBody: 'This conversation may have been removed.',
+    threadOpenCase: 'Open case {id}',
+    threadPlaceholder: 'Write a message…',
+    threadSend: 'Send message',
+    threadAttach: 'Add attachment',
+    threadAttachHint: 'Attach a file to this conversation.',
+    threadAttachPhoto: 'Photo',
+    threadAttachVideo: 'Video',
+    threadAttachFile: 'Document',
+    threadPhotoDeniedTitle: 'Photos permission needed',
+    threadPhotoDeniedBody: 'Allow photo access in Settings to attach an image.',
+    composeTitle: 'New message',
+    composeRecipient: 'Recipient',
+    composeRecipientPlaceholder: 'Dr. Amir Saleh',
+    composeClinic: 'Clinic (optional)',
+    composeClinicPlaceholder: 'Bright Smile Clinic',
+    composeMessage: 'Message',
+    composeMessagePlaceholder: 'Write your message…',
+    composeSend: 'Send message',
 
     filesTitle: 'Files',
     filesSubtitle: 'Scans, photos and documents',
     filesUpload: 'Upload file',
+    filesUploadHint: 'Choose what you want to add to the library.',
+    filesUploadScan: 'Intraoral scan',
+    filesUploadScanHint: 'STL or PLY from a scanner',
+    filesUploadPhoto: 'Case photo',
+    filesUploadPhotoHint: 'Shade or try-in shot',
+    filesUploadDocument: 'Document',
+    filesUploadDocumentHint: 'Prescription or PDF',
     filesStorage: 'Lab storage',
     filesStorageUsed: '{used} of {total} used',
     filesFolders: 'Folders',
@@ -1215,6 +1360,55 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     billingResend: 'Send again',
     billingSendNow: 'Send by email',
     billingDeleteDraft: 'Delete draft',
+    billingExportPdf: 'Share PDF',
+    billingDownloadPdf: 'Save to device',
+    billingDownloadDoneTitle: 'Saved',
+    billingDownloadDoneBody: 'The invoice PDF was saved to your device.',
+    billingDownloadFailTitle: "Couldn't save",
+    billingDownloadFailBody: 'The invoice PDF could not be saved. Please try again.',
+    pdfInvoiceTitle: 'Invoice',
+    pdfBillTo: 'Billed to',
+    pdfIssued: 'Issued',
+    pdfDue: 'Due',
+    pdfColItem: 'Description',
+    pdfColQty: 'Qty',
+    pdfColUnit: 'Unit price',
+    pdfColAmount: 'Amount',
+    pdfNotes: 'Notes',
+    pdfThanks: 'Thank you for your business.',
+    integrationsTitle: 'Integrations',
+    integrationsSubtitle: 'Connect the lab to external services',
+    integrationsIntro: 'Add API keys and endpoints so the lab can sync scans, automate replies and back up files.',
+    integrationsSecurityNote: 'Keys are stored on this device only and never leave it.',
+    integrationConnected: 'Connected',
+    integrationActive: 'Active',
+    integrationDisconnected: 'Disconnected',
+    integrationIncomplete: 'Needs key',
+    integrationOff: 'Not configured',
+    integrationEnable: 'Enable integration',
+    integrationSave: 'Save',
+    integrationShowValue: 'Show value',
+    integrationHideValue: 'Hide value',
+    integrationConfirm: 'Confirm',
+    integrationOtpTitle: 'Confirm change',
+    integrationOtpHint: 'For this demo, enter code {code} to confirm the new keys.',
+    integrationOtpLabel: 'Verification code',
+    integrationOtpPlaceholder: '4-digit code',
+    integrationOtpError: 'Incorrect code. Try again.',
+    integrationShining3d: 'Shining 3D Dental Cloud',
+    integrationShining3dHint: 'Pull intraoral scans straight from the cloud.',
+    integrationAnthropic: 'Anthropic API',
+    integrationAnthropicHint: 'Draft replies and summaries with Claude.',
+    integrationCloud: 'Cloud backup',
+    integrationCloudHint: 'Mirror files to your own cloud storage.',
+    integrationFieldApiKey: 'API key',
+    integrationFieldApiKeyPlaceholder: 'sk-…',
+    integrationFieldAccountId: 'Account ID',
+    integrationFieldAccountIdPlaceholder: 'e.g. NADEEM-LAB',
+    integrationFieldModel: 'Model',
+    integrationFieldModelPlaceholder: 'claude-sonnet-4',
+    integrationFieldEndpoint: 'Endpoint URL',
+    integrationFieldEndpointPlaceholder: 'https://…',
     billingRemovePayment: 'Remove payment',
     billingPaymentTitle: 'Record payment',
     billingPaymentFor: 'Invoice {id} has {balance} open.',
@@ -1293,6 +1487,7 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navAnalytics: 'אנליטיקה',
     navCourier: 'שליחים',
     navTeam: 'צוות והרשאות',
+    navIntegrations: 'אינטגרציות',
     navExocad: 'הדגמת exocad',
 
     drawerWorkspace: 'סביבת עבודה',
@@ -1370,6 +1565,21 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     ordersUnstar: 'הסרה מהמסומנים',
     ordersEmptyTitle: 'לא נמצאו תיקים',
     ordersEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון הפעיל.',
+    orderDetailProgress: 'התקדמות התיק',
+    orderDetailComplete: '{percent}% הושלמו',
+    orderDetailTimeline: 'ציר השלבים',
+    orderDetailStageCurrent: 'בתהליך',
+    orderDetailSpecTitle: 'פרטי התיק',
+    orderDetailPatient: 'מטופל',
+    orderDetailWorkType: 'סוג עבודה',
+    orderDetailShade: 'גוון',
+    orderDetailTeeth: 'שיניים',
+    orderDetailDoctor: 'רופא',
+    orderDetailClinic: 'מרפאה',
+    orderDetailMessageClinic: 'שליחת הודעה למרפאה',
+    orderDetailViewFiles: 'צפייה בקבצים',
+    orderDetailNotFoundTitle: 'התיק לא נמצא',
+    orderDetailNotFoundBody: 'ייתכן שהתיק הועבר או הוסר.',
 
     inboxTitle: 'הודעות',
     inboxUnreadSubtitle: '{count} שיחות שלא נקראו',
@@ -1386,10 +1596,38 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     inboxConversationAria: 'שיחה עם {name}',
     inboxEmptyTitle: 'אין כאן כלום',
     inboxEmptyBody: 'אין שיחות שתואמות את הסינון.',
+    inboxYouPreview: 'את/ה: {text}',
+    threadNotFoundTitle: 'השיחה לא נמצאה',
+    threadNotFoundBody: 'ייתכן שהשיחה הוסרה.',
+    threadOpenCase: 'פתיחת תיק {id}',
+    threadPlaceholder: 'כתיבת הודעה…',
+    threadSend: 'שליחת הודעה',
+    threadAttach: 'הוספת קובץ מצורף',
+    threadAttachHint: 'צירוף קובץ לשיחה זו.',
+    threadAttachPhoto: 'תמונה',
+    threadAttachVideo: 'וידאו',
+    threadAttachFile: 'מסמך',
+    threadPhotoDeniedTitle: 'נדרשת הרשאת תמונות',
+    threadPhotoDeniedBody: 'אפשרו גישה לתמונות בהגדרות כדי לצרף תמונה.',
+    composeTitle: 'הודעה חדשה',
+    composeRecipient: 'נמען',
+    composeRecipientPlaceholder: 'ד״ר אמיר סאלח',
+    composeClinic: 'מרפאה (אופציונלי)',
+    composeClinicPlaceholder: 'Bright Smile Clinic',
+    composeMessage: 'הודעה',
+    composeMessagePlaceholder: 'כתבו את ההודעה…',
+    composeSend: 'שליחת הודעה',
 
     filesTitle: 'קבצים',
     filesSubtitle: 'סריקות, תמונות ומסמכים',
     filesUpload: 'העלאת קובץ',
+    filesUploadHint: 'בחרו מה להוסיף לספרייה.',
+    filesUploadScan: 'סריקה תוך-פה',
+    filesUploadScanHint: 'קובץ STL או PLY מסורק',
+    filesUploadPhoto: 'תמונת תיק',
+    filesUploadPhotoHint: 'תמונת גוון או מדידה',
+    filesUploadDocument: 'מסמך',
+    filesUploadDocumentHint: 'הוראת עבודה או PDF',
     filesStorage: 'אחסון המעבדה',
     filesStorageUsed: '{used} מתוך {total} בשימוש',
     filesFolders: 'תיקיות',
@@ -1819,6 +2057,55 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     billingResend: 'שליחה שוב',
     billingSendNow: 'שליחה באימייל',
     billingDeleteDraft: 'מחיקת הטיוטה',
+    billingExportPdf: 'שיתוף PDF',
+    billingDownloadPdf: 'שמירה במכשיר',
+    billingDownloadDoneTitle: 'נשמר',
+    billingDownloadDoneBody: 'קובץ ה-PDF של החשבונית נשמר במכשיר שלך.',
+    billingDownloadFailTitle: 'השמירה נכשלה',
+    billingDownloadFailBody: 'לא ניתן היה לשמור את קובץ ה-PDF של החשבונית. נסו שוב.',
+    pdfInvoiceTitle: 'חשבונית',
+    pdfBillTo: 'לחיוב עבור',
+    pdfIssued: 'תאריך הפקה',
+    pdfDue: 'לתשלום עד',
+    pdfColItem: 'תיאור',
+    pdfColQty: 'כמות',
+    pdfColUnit: 'מחיר יחידה',
+    pdfColAmount: 'סכום',
+    pdfNotes: 'הערות',
+    pdfThanks: 'תודה על העבודה המשותפת.',
+    integrationsTitle: 'אינטגרציות',
+    integrationsSubtitle: 'חיבור המעבדה לשירותים חיצוניים',
+    integrationsIntro: 'הוסיפו מפתחות API וכתובות כדי לסנכרן סריקות, להפיק תשובות אוטומטיות ולגבות קבצים.',
+    integrationsSecurityNote: 'המפתחות נשמרים במכשיר זה בלבד ואינם נשלחים החוצה.',
+    integrationConnected: 'מחובר',
+    integrationActive: 'פעיל',
+    integrationDisconnected: 'מנותק',
+    integrationIncomplete: 'חסר מפתח',
+    integrationOff: 'לא מוגדר',
+    integrationEnable: 'הפעלת אינטגרציה',
+    integrationSave: 'שמירה',
+    integrationShowValue: 'הצגת הערך',
+    integrationHideValue: 'הסתרת הערך',
+    integrationConfirm: 'אישור',
+    integrationOtpTitle: 'אישור שינוי',
+    integrationOtpHint: 'לצורך ההדגמה, הזינו את הקוד {code} לאישור המפתחות החדשים.',
+    integrationOtpLabel: 'קוד אימות',
+    integrationOtpPlaceholder: 'קוד בן 4 ספרות',
+    integrationOtpError: 'קוד שגוי. נסו שוב.',
+    integrationShining3d: 'Shining 3D Dental Cloud',
+    integrationShining3dHint: 'משיכת סריקות תוך-פה ישירות מהענן.',
+    integrationAnthropic: 'Anthropic API',
+    integrationAnthropicHint: 'ניסוח תשובות וסיכומים עם Claude.',
+    integrationCloud: 'גיבוי לענן',
+    integrationCloudHint: 'שיקוף קבצים לאחסון הענן שלכם.',
+    integrationFieldApiKey: 'מפתח API',
+    integrationFieldApiKeyPlaceholder: 'sk-…',
+    integrationFieldAccountId: 'מזהה חשבון',
+    integrationFieldAccountIdPlaceholder: 'לדוגמה NADEEM-LAB',
+    integrationFieldModel: 'מודל',
+    integrationFieldModelPlaceholder: 'claude-sonnet-4',
+    integrationFieldEndpoint: 'כתובת נקודת קצה',
+    integrationFieldEndpointPlaceholder: 'https://…',
     billingRemovePayment: 'הסרת התשלום',
     billingPaymentTitle: 'רישום תשלום',
     billingPaymentFor: 'בחשבונית {id} פתוחים {balance}.',

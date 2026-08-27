@@ -178,6 +178,7 @@ export default function OrdersScreen() {
               order={item}
               favorite={favorites.has(item.id)}
               onToggleFavorite={() => toggleFavorite(item.id)}
+              onOpen={() => router.push({ pathname: '/orders/[id]', params: { id: item.id } })}
             />
           </Animated.View>
         )}
@@ -190,9 +191,10 @@ type OrderCardProps = {
   order: Order;
   favorite: boolean;
   onToggleFavorite: () => void;
+  onOpen: () => void;
 };
 
-function OrderCard({ order, favorite, onToggleFavorite }: OrderCardProps) {
+function OrderCard({ order, favorite, onToggleFavorite, onOpen }: OrderCardProps) {
   const theme = useTheme();
   const { isRtl, lang, ui } = useLanguage();
   const stage = STAGE_META[order.stage];
@@ -200,6 +202,7 @@ function OrderCard({ order, favorite, onToggleFavorite }: OrderCardProps) {
 
   return (
     <PressableScale
+      onPress={onOpen}
       scaleTo={0.98}
       accessibilityRole="button"
       accessibilityLabel={interpolate(ui.ordersCaseAria, { id: order.id, patient: order.patient })}>

@@ -1,6 +1,6 @@
 import { Redirect, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { FlatList, SectionList, StyleSheet, View } from 'react-native';
+import { Alert, FlatList, SectionList, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -37,6 +37,7 @@ import {
 import { formatMoney, formatMoneyShort } from '@/lib/format';
 import { LOCALES, interpolate, localized, type Lang } from '@/lib/i18n';
 import { openInvoiceMail } from '@/lib/invoice-mail';
+import { exportInvoicePdf, saveInvoicePdf } from '@/lib/invoice-pdf';
 import { row } from '@/lib/rtl';
 import { usePermissions } from '@/store/auth-store';
 import {
@@ -527,6 +528,16 @@ function InvoiceSheet({
     markInvoiceSent(invoice.id, 'email');
   };
 
+  const download = async () => {
+    if (!invoice) return;
+    const result = await saveInvoicePdf(invoice, ui, lang, paid);
+    if (result === 'saved') {
+      Alert.alert(ui.billingDownloadDoneTitle, ui.billingDownloadDoneBody);
+    } else if (result === 'error') {
+      Alert.alert(ui.billingDownloadFailTitle, ui.billingDownloadFailBody);
+    }
+  };
+
   return (
     <BottomSheet
       visible={Boolean(invoiceId)}
@@ -679,6 +690,22 @@ function InvoiceSheet({
               ))}
             </View>
           )}
+
+          <Button
+            size="md"
+            variant="secondary"
+            icon="share-outline"
+            label={ui.billingExportPdf}
+            onPress={() => void exportInvoicePdf(invoice, ui, lang, paid)}
+          />
+
+          <Button
+            size="md"
+            variant="secondary"
+            icon="download-outline"
+            label={ui.billingDownloadPdf}
+            onPress={() => void download()}
+          />
 
           {!invoice.sentAt ? (
             <Button
