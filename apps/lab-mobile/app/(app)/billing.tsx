@@ -560,7 +560,6 @@ function InvoiceSheet({
               size="md"
               variant="secondary"
               label={invoice?.sentAt ? ui.billingResend : ui.billingSendNow}
-              icon="mail-outline"
               onPress={() => void resend()}
             />
           </View>
@@ -694,7 +693,6 @@ function InvoiceSheet({
           <Button
             size="md"
             variant="secondary"
-            icon="share-outline"
             label={ui.billingExportPdf}
             onPress={() => void exportInvoicePdf(invoice, ui, lang, paid)}
           />
@@ -702,7 +700,6 @@ function InvoiceSheet({
           <Button
             size="md"
             variant="secondary"
-            icon="download-outline"
             label={ui.billingDownloadPdf}
             onPress={() => void download()}
           />
@@ -777,10 +774,10 @@ function PaymentSheet({ invoiceId, onClose }: { invoiceId: string | null; onClos
       footer={
         <>
           <View style={styles.flex}>
-            <Button size="md" variant="secondary" label={ui.actionCancel} onPress={onClose} />
+            <Button size="md" label={ui.billingPaymentSave} onPress={submit} />
           </View>
           <View style={styles.flex}>
-            <Button size="md" label={ui.billingPaymentSave} icon="checkmark" onPress={submit} />
+            <Button size="md" variant="secondary" label={ui.actionCancel} onPress={onClose} />
           </View>
         </>
       }>
