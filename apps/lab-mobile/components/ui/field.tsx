@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, View, type KeyboardTypeOptions, type TextInputProps } from 'react-native';
+import { StyleSheet, TextInput, View, type KeyboardTypeOptions, type TextInputProps, type TextStyle } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -12,7 +12,7 @@ import { PressableScale } from '@/components/ui/pressable-scale';
 import { Text } from '@/components/ui/text';
 import { motion, radius, spacing, type as typeScale } from '@/constants/design';
 import { useTheme } from '@/hooks/use-theme';
-import { LTR_TEXT, row } from '@/lib/rtl';
+import { LTR_INPUT, row } from '@/lib/rtl';
 import { useLanguage } from '@/store/language-store';
 
 type FieldProps = {
@@ -30,6 +30,7 @@ type FieldProps = {
   size?: 'sm' | 'md';
   /** Keeps typed characters left-to-right, e.g. phone numbers. */
   ltr?: boolean;
+  textAlign?: TextStyle['textAlign'];
   toggleLabels?: { show: string; hide: string };
 };
 
@@ -47,6 +48,7 @@ export function Field({
   returnKeyType,
   size = 'md',
   ltr = false,
+  textAlign,
   toggleLabels,
 }: FieldProps) {
   const theme = useTheme();
@@ -115,7 +117,8 @@ export function Field({
             styles.input,
             compact ? typeScale.body : typeScale.bodyMedium,
             { color: theme.color.text },
-            ltr ? LTR_TEXT : { textAlign: isRtl ? 'right' : 'left' },
+            ltr ? LTR_INPUT : { textAlign: isRtl ? 'right' : 'left' },
+            textAlign ? { textAlign } : null,
           ]}
         />
         {secure ? (

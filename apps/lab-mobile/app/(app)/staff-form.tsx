@@ -19,8 +19,10 @@ import {
   ASSIGNABLE_PERMISSIONS,
   PERMISSION_ICONS,
   PERMISSION_LABEL_KEYS,
+  ROLE_HINT_KEYS,
   ROLE_LABEL_KEYS,
   ROLE_PERMISSIONS,
+  ROSTER_ROLES,
   effectivePermissions,
   type Permission,
 } from '@/lib/roles';
@@ -37,7 +39,8 @@ import {
   type StaffRole,
 } from '@/store/staff-store';
 
-const EDITABLE_ROLES: StaffRole[] = ['lab_staff', 'driver'];
+/** The owner seat is structural, so it is never offered as a choice. */
+const EDITABLE_ROLES: readonly StaffRole[] = ROSTER_ROLES.filter((role) => role !== 'lab_owner');
 
 export default function StaffFormScreen() {
   const router = useRouter();
@@ -190,6 +193,12 @@ export default function StaffFormScreen() {
             ))
           )}
         </View>
+        <View style={[styles.roleHint, row(isRtl), { backgroundColor: theme.color.brandSoft }]}>
+          <Icon name="information-circle-outline" size={15} color={theme.color.brand} />
+          <Text variant="caption" tone="brand" style={styles.flex}>
+            {ui[ROLE_HINT_KEYS[draft.role]]}
+          </Text>
+        </View>
       </FormSection>
 
       <FormSection title={ui.staffFormAccessTitle} hint={owner ? ui.staffOwnerProtected : ui.staffFormAccessHint}>
@@ -325,6 +334,13 @@ const styles = StyleSheet.create({
   group: { gap: spacing.sm },
   sectionHead: { gap: 2, marginBottom: spacing.xs },
   chipRow: { flexWrap: 'wrap', gap: spacing.sm },
+  roleHint: {
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.xs,
+    padding: spacing.sm + 2,
+    borderRadius: radius.sm,
+  },
   permissionList: { gap: spacing.xs },
   permissionRow: {
     alignItems: 'center',

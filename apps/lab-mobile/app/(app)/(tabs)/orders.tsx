@@ -1,3 +1,5 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
@@ -33,10 +35,20 @@ const FILTERS: { key: Filter; labelKey: keyof UiStrings }[] = [
 
 export default function OrdersScreen() {
   const theme = useTheme();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { isRtl, lang, ui } = useLanguage();
+  const { filter: requestedFilter } = useLocalSearchParams<{ filter?: string }>();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
+
+  useFocusEffect(
+    useCallback(() => {
+      if (requestedFilter !== 'rush') return;
+      setFilter('rush');
+      router.setParams({ filter: undefined });
+    }, [requestedFilter, router])
+  );
   const [favorites, setFavorites] = useState(() =>
     new Set(ORDERS.filter((order) => order.favorite).map((order) => order.id))
   );

@@ -21,11 +21,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/hooks/use-theme';
 import { hydrateAuth } from '@/store/auth-store';
+import { hydrateDirectory } from '@/store/directory-store';
+import { hydrateBilling } from '@/store/invoices-store';
 import { hydrateLanguage } from '@/store/language-store';
 import { hydrateNotificationPrefs } from '@/store/notifications-store';
 import { hydrateStaff } from '@/store/staff-store';
 import { hydrateTasks } from '@/store/tasks-store';
 import { hydrateThemeMode } from '@/store/theme-store';
+import { hydrateWorkPressure } from '@/store/work-pressure-store';
 
 void SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 480, fade: true });
@@ -51,6 +54,9 @@ export default function RootLayout() {
       hydrateNotificationPrefs(),
       hydrateStaff(),
       hydrateTasks(),
+      hydrateBilling(),
+      hydrateWorkPressure(),
+      hydrateDirectory(),
     ]).finally(() => setStoresHydrated(true));
   }, []);
 

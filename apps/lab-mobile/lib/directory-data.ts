@@ -1,5 +1,5 @@
 import type { Tone } from '@/components/ui/pill';
-import type { LocalizedText, UiStrings } from '@/lib/i18n';
+import type { LocalizedText, MaybeLocalized, UiStrings } from '@/lib/i18n';
 import type { OrderStage } from '@/lib/mock-data';
 
 /**
@@ -8,11 +8,13 @@ import type { OrderStage } from '@/lib/mock-data';
  * screenshot — shows the same data.
  */
 
-export type DirectoryStatus = 'active' | 'pending' | 'inactive';
+/** Either the lab is working with the row right now, or it is not. */
+export type DirectoryStatus = 'active' | 'inactive';
+
+export const DIRECTORY_STATUSES: readonly DirectoryStatus[] = ['active', 'inactive'];
 
 export const STATUS_META: Record<DirectoryStatus, { labelKey: keyof UiStrings; tone: Tone }> = {
   active: { labelKey: 'statusActive', tone: 'success' },
-  pending: { labelKey: 'statusPending', tone: 'warning' },
   inactive: { labelKey: 'statusInactive', tone: 'neutral' },
 };
 
@@ -22,6 +24,8 @@ export type Doctor = {
   clinic: string;
   specialty: LocalizedText;
   phone: string;
+  /** Where invoices are sent. */
+  email: string;
   activeCases: number;
   totalCases: number;
   status: DirectoryStatus;
@@ -45,10 +49,53 @@ export type Patient = {
   clinic: string;
   doctor: string;
   caseId: string;
-  workType: LocalizedText;
+  /** Copied from the work type list, so it can be seeded or owner-typed. */
+  workType: MaybeLocalized;
+  /** `0` when it was not recorded. */
   age: number;
   stage: OrderStage;
 };
+
+/** Families the price list is grouped and filtered by. */
+export type WorkTypeCategory = 'crown' | 'bridge' | 'veneer' | 'denture' | 'implant' | 'appliance';
+
+export const WORK_TYPE_CATEGORIES: readonly WorkTypeCategory[] = [
+  'crown',
+  'bridge',
+  'veneer',
+  'denture',
+  'implant',
+  'appliance',
+];
+
+export const CATEGORY_LABEL_KEYS: Record<WorkTypeCategory, keyof UiStrings> = {
+  crown: 'workTypeCrown',
+  bridge: 'workTypeBridge',
+  veneer: 'workTypeVeneer',
+  denture: 'workTypeDenture',
+  implant: 'workTypeImplant',
+  appliance: 'workTypeAppliance',
+};
+
+/** One line of the lab's price list. */
+export type WorkType = {
+  id: string;
+  /** Seeded rows ship both languages; owner-typed names are plain strings. */
+  name: MaybeLocalized;
+  category: WorkTypeCategory;
+  /** Price per unit in shekels. `0` when it has not been priced yet. */
+  price: number;
+  /** Working days from case receipt to delivery. `0` when unset. */
+  turnaround: number;
+  status: DirectoryStatus;
+};
+
+/**
+ * Stable key for a work type across languages, so a patient row can be matched
+ * back to the price list no matter which language it was created in.
+ */
+export const workTypeKey = (name: MaybeLocalized) =>
+  (typeof name === 'string' ? name : name.en).trim().toLowerCase();
 
 const FIRST_NAMES = [
   'Amir', 'Rana', 'Lina', 'Yara', 'Sami', 'Noor', 'Dana', 'Karim',
@@ -81,37 +128,111 @@ const CLINIC_NAMES = [
   'Alma Dental Clinic',
 ];
 
-const CITIES: LocalizedText[] = [
-  { en: 'Haifa', he: 'חיפה', ar: 'حيفا' },
-  { en: 'Nazareth', he: 'נצרת', ar: 'الناصرة' },
-  { en: 'Tel Aviv', he: 'תל אביב', ar: 'تل أبيب' },
-  { en: 'Jerusalem', he: 'ירושלים', ar: 'القدس' },
-  { en: 'Acre', he: 'עכו', ar: 'عكا' },
-  { en: 'Tiberias', he: 'טבריה', ar: 'طبريا' },
+export const CITIES: LocalizedText[] = [
+  { en: 'Haifa', he: 'חיפה' },
+  { en: 'Nazareth', he: 'נצרת' },
+  { en: 'Tel Aviv', he: 'תל אביב' },
+  { en: 'Jerusalem', he: 'ירושלים' },
+  { en: 'Acre', he: 'עכו' },
+  { en: 'Tiberias', he: 'טבריה' },
 ];
 
-const SPECIALTIES: LocalizedText[] = [
-  { en: 'Prosthodontics', he: 'שיקום הפה', ar: 'استعاضة سنية' },
-  { en: 'Implantology', he: 'אימפלנטולוגיה', ar: 'زراعة الأسنان' },
-  { en: 'Orthodontics', he: 'יישור שיניים', ar: 'تقويم الأسنان' },
-  { en: 'General dentistry', he: 'רפואת שיניים כללית', ar: 'طب أسنان عام' },
-  { en: 'Periodontics', he: 'מחלות חניכיים', ar: 'أمراض اللثة' },
-  { en: 'Oral surgery', he: 'כירורגיה פה ולסת', ar: 'جراحة الفم' },
+export const SPECIALTIES: LocalizedText[] = [
+  { en: 'Prosthodontics', he: 'שיקום הפה' },
+  { en: 'Implantology', he: 'אימפלנטולוגיה' },
+  { en: 'Orthodontics', he: 'יישור שיניים' },
+  { en: 'General dentistry', he: 'רפואת שיניים כללית' },
+  { en: 'Periodontics', he: 'מחלות חניכיים' },
+  { en: 'Oral surgery', he: 'כירורגיה פה ולסת' },
 ];
 
-const WORK_TYPES: LocalizedText[] = [
-  { en: 'Zirconia crown', he: 'כתר זירקוניה', ar: 'تاج زيركونيا' },
-  { en: 'E-max veneers', he: 'ציפויי E-max', ar: 'قشور E-max' },
-  { en: 'Implant bridge', he: 'גשר על שתלים', ar: 'جسر زرعات' },
-  { en: 'PFM crown', he: 'כתר חרסינה על מתכת', ar: 'تاج بورسلين على معدن' },
-  { en: 'Night guard', he: 'סד לילה', ar: 'واقٍ ليلي' },
-  { en: 'Partial denture', he: 'תותבת חלקית', ar: 'طقم جزئي' },
-  { en: 'Inlay / onlay', he: 'אינליי / אונליי', ar: 'حشوة داخلية / خارجية' },
+export const WORK_TYPES: WorkType[] = [
+  {
+    id: 'wt-001',
+    name: { en: 'Zirconia crown', he: 'כתר זירקוניה' },
+    category: 'crown',
+    price: 720,
+    turnaround: 4,
+    status: 'active',
+  },
+  {
+    id: 'wt-002',
+    name: { en: 'E-max veneers', he: 'ציפויי E-max' },
+    category: 'veneer',
+    price: 890,
+    turnaround: 5,
+    status: 'active',
+  },
+  {
+    id: 'wt-003',
+    name: { en: 'Implant bridge', he: 'גשר על שתלים' },
+    category: 'implant',
+    price: 2400,
+    turnaround: 8,
+    status: 'active',
+  },
+  {
+    id: 'wt-004',
+    name: { en: 'PFM crown', he: 'כתר חרסינה על מתכת' },
+    category: 'crown',
+    price: 540,
+    turnaround: 4,
+    status: 'active',
+  },
+  {
+    id: 'wt-005',
+    name: { en: 'Night guard', he: 'סד לילה' },
+    category: 'appliance',
+    price: 380,
+    turnaround: 3,
+    status: 'active',
+  },
+  {
+    id: 'wt-006',
+    name: { en: 'Partial denture', he: 'תותבת חלקית' },
+    category: 'denture',
+    price: 1650,
+    turnaround: 9,
+    status: 'active',
+  },
+  {
+    id: 'wt-007',
+    name: { en: 'Inlay / onlay', he: 'אינליי / אונליי' },
+    category: 'crown',
+    price: 610,
+    turnaround: 4,
+    status: 'active',
+  },
+  {
+    id: 'wt-008',
+    name: { en: 'Full-arch bridge', he: 'גשר לקשת שלמה' },
+    category: 'bridge',
+    price: 5200,
+    turnaround: 12,
+    status: 'active',
+  },
+  {
+    id: 'wt-009',
+    name: { en: 'Complete denture', he: 'תותבת שלמה' },
+    category: 'denture',
+    price: 2900,
+    turnaround: 11,
+    status: 'active',
+  },
+  {
+    id: 'wt-010',
+    name: { en: 'Clear aligner set', he: 'סט קשתיות שקופות' },
+    category: 'appliance',
+    price: 4300,
+    turnaround: 14,
+    status: 'inactive',
+  },
 ];
 
 const STAGES: OrderStage[] = ['received', 'design', 'production', 'quality', 'courier', 'delivered'];
 
-const STATUSES: DirectoryStatus[] = ['active', 'active', 'active', 'pending', 'active', 'inactive'];
+/** Clinics the lab has stopped working with, so their doctors are dormant too. */
+const RETIRED_CLINICS: readonly string[] = [CLINIC_NAMES[9], CLINIC_NAMES[14]];
 
 /** `05x-xxx-xxxx`, stable per row. */
 const phoneFor = (seed: number) =>
@@ -120,36 +241,52 @@ const phoneFor = (seed: number) =>
 const fullName = (seed: number) =>
   `${FIRST_NAMES[seed % FIRST_NAMES.length]} ${LAST_NAMES[(seed * 7) % LAST_NAMES.length]}`;
 
+/** `Dr. Amir Saleh` at `Bright Smile Clinic` → `amir.saleh@brightsmileclinic.com`. */
+const emailFor = (name: string, clinic: string) => {
+  const person = name
+    .replace(/^Dr\.?\s+/i, '')
+    .toLowerCase()
+    .split(/\s+/)
+    .join('.');
+  return `${person}@${clinic.toLowerCase().replace(/[^a-z]/g, '')}.com`;
+};
+
 export const DOCTORS: Doctor[] = Array.from({ length: 34 }, (_, index) => {
   const seed = index + 3;
-  const activeCases = (seed * 5) % 14;
+  const name = `Dr. ${fullName(seed)}`;
+  const clinic = CLINIC_NAMES[seed % CLINIC_NAMES.length];
+  // Dormant either because the lab dropped the clinic or because this doctor
+  // stopped referring. Either way none of their work can still be in the lab,
+  // so the case count has to follow the badge.
+  const dormant = RETIRED_CLINICS.includes(clinic) || seed % 7 === 0;
   return {
     id: `doc-${String(index + 1).padStart(3, '0')}`,
-    name: `Dr. ${fullName(seed)}`,
-    clinic: CLINIC_NAMES[seed % CLINIC_NAMES.length],
+    name,
+    clinic,
     specialty: SPECIALTIES[seed % SPECIALTIES.length],
     phone: phoneFor(seed),
-    activeCases,
+    email: emailFor(name, clinic),
+    activeCases: dormant ? 0 : (seed * 5) % 14,
+    /** Dormant doctors keep the history they built up. */
     totalCases: 40 + ((seed * 29) % 260),
-    status: activeCases === 0 ? 'inactive' : STATUSES[seed % STATUSES.length],
+    status: dormant ? 'inactive' : 'active',
   };
 });
 
 export const CLINICS: Clinic[] = CLINIC_NAMES.map((name, index) => {
   const seed = index + 2;
-  const doctors = DOCTORS.filter((doctor) => doctor.clinic === name).length;
+  const doctors = DOCTORS.filter((doctor) => doctor.clinic === name);
   return {
     id: `cli-${String(index + 1).padStart(3, '0')}`,
     name,
     city: CITIES[seed % CITIES.length],
     phone: phoneFor(seed * 3),
-    doctors,
-    activeCases: DOCTORS.filter((doctor) => doctor.clinic === name).reduce(
-      (sum, doctor) => sum + doctor.activeCases,
-      0
-    ),
+    doctors: doctors.length,
+    // Summed from the doctors, so a retired clinic lands on zero by itself.
+    activeCases: doctors.reduce((sum, doctor) => sum + doctor.activeCases, 0),
+    /** A retired clinic can still owe the lab money. */
     outstanding: (seed * 740) % 9200,
-    status: doctors === 0 ? 'inactive' : STATUSES[(seed * 2) % STATUSES.length],
+    status: RETIRED_CLINICS.includes(name) || doctors.length === 0 ? 'inactive' : 'active',
   };
 });
 
@@ -162,7 +299,7 @@ export const PATIENTS: Patient[] = Array.from({ length: 46 }, (_, index) => {
     clinic: doctor.clinic,
     doctor: doctor.name,
     caseId: `ND-${2300 + ((seed * 13) % 190)}`,
-    workType: WORK_TYPES[seed % WORK_TYPES.length],
+    workType: WORK_TYPES[seed % WORK_TYPES.length].name,
     age: 18 + ((seed * 17) % 58),
     stage: STAGES[seed % STAGES.length],
   };

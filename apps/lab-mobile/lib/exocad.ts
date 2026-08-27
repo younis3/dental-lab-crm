@@ -26,12 +26,10 @@ export const EXOCAD_FILES: ExocadFile[] = [
     title: {
       en: 'Demo case',
       he: 'תיק הדגמה',
-      ar: 'حالة تجريبية',
     },
     description: {
       en: 'Sample export with the STL meshes embedded in the page.',
       he: 'קובץ דוגמה שבו קבצי ה-STL משובצים בתוך העמוד.',
-      ar: 'ملف نموذجي تُدمج فيه شبكات STL داخل الصفحة.',
     },
     source: require('../assets/exocad/exocad-demo.html') as ExocadSource,
   },

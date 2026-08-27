@@ -32,7 +32,8 @@ export type TableColumn<T> = {
   minWidth: number;
   /** Columns with the highest priority number are dropped first; 0 never drops. */
   priority: number;
-  align?: 'start' | 'end';
+  /** Where the header and the cells sit inside the column. Defaults to `start`. */
+  align?: 'start' | 'center' | 'end';
   /** Supply to make the column sortable. */
   sortValue?: (item: T) => string | number;
   render: (item: T) => ReactNode;
@@ -260,7 +261,9 @@ function HeaderCell<T>({
     <View style={[styles.headerInner, rowStyle(isRtl)]}>
       <Text
         variant="overline"
-        numberOfLines={1}
+        // Two-word titles wrap inside a narrow column instead of being clipped.
+        numberOfLines={2}
+        style={styles.headerTitle}
         color={active ? theme.color.brand : theme.color.textFaint}>
         {column.title}
       </Text>
@@ -372,7 +375,9 @@ function cellFlex<T>(column: TableColumn<T>) {
   return { flexGrow: column.minWidth, flexShrink: 1, flexBasis: 0, minWidth: 0 };
 }
 
+/** `start` stretches from the leading edge; the others shrink to their content. */
 function alignFor(align: TableColumn<unknown>['align'], isRtl: boolean) {
+  if (align === 'center') return styles.centerCell;
   if (align !== 'end') return null;
   return { alignItems: isRtl ? ('flex-start' as const) : ('flex-end' as const) };
 }
@@ -394,6 +399,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   headerInner: { alignItems: 'center', gap: 4 },
+  headerTitle: { flexShrink: 1 },
+  centerCell: { alignItems: 'center' },
   row: {
     alignItems: 'center',
     gap: CELL_GAP,

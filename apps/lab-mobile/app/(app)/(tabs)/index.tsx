@@ -1,12 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { Avatar } from '@/components/ui/avatar';
-import { IconButton } from '@/components/ui/button';
+import { BottomSheet } from '@/components/ui/bottom-sheet';
+import { Button, IconButton } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Field } from '@/components/ui/field';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { LiveDot } from '@/components/ui/live-dot';
 import { Badge, useToneColors, withAlpha, type Tone } from '@/components/ui/pill';
@@ -17,12 +19,36 @@ import { Section } from '@/components/ui/section';
 import { Text } from '@/components/ui/text';
 import { elevation, radius, spacing } from '@/constants/design';
 import { useTheme } from '@/hooks/use-theme';
+import { invoiceStatus, invoiceTotals } from '@/lib/billing-data';
+import { formatMoneyShort } from '@/lib/format';
 import { LOCALES, interpolate, localized, type UiStrings } from '@/lib/i18n';
-import { row, startSpacing } from '@/lib/rtl';
 import { ACTIVITY, ORDERS, PIPELINE, QUICK_ACTIONS, STAGE_META } from '@/lib/mock-data';
-import { useAuth } from '@/store/auth-store';
+import { row, startSpacing } from '@/lib/rtl';
+import { useAuth, usePermissions } from '@/store/auth-store';
+import { useBilling } from '@/store/invoices-store';
 import { useLanguage } from '@/store/language-store';
 import { useNotifications } from '@/store/notifications-store';
+import {
+  clampCapacity,
+  setOrderCapacity,
+  useWorkPressure,
+  workPressureLevel,
+  workPressurePercent,
+} from '@/store/work-pressure-store';
+
+const OPEN_ORDERS = PIPELINE.reduce((sum, stage) => sum + stage.value, 0);
+
+const RING_STROKE = {
+  ok: ['#FFFFFF', 'rgba(255,255,255,0.45)'] as const,
+  warning: ['#FFE082', '#F5C542'] as const,
+  danger: ['#FF8A80', '#FF5252'] as const,
+};
+
+const RING_LABEL = {
+  ok: 'rgba(255,255,255,0.78)',
+  warning: '#FFE082',
+  danger: '#FF8A80',
+};
 
 type Stat = {
   id: string;
@@ -34,6 +60,7 @@ type Stat = {
   tone: Tone;
 };
 
+/** The money tile is added at render time, so it only ships real numbers. */
 const STATS: Stat[] = [
   {
     id: 's1',
@@ -62,15 +89,6 @@ const STATS: Stat[] = [
     icon: 'checkmark-done-outline',
     tone: 'success',
   },
-  {
-    id: 's4',
-    labelKey: 'dashStatOutstanding',
-    value: '₪18.4k',
-    deltaKey: 'dashStatOutstandingDelta',
-    deltaValues: { count: 4 },
-    icon: 'wallet-outline',
-    tone: 'accent',
-  },
 ];
 
 function greetingKey(): keyof UiStrings {
@@ -80,24 +98,59 @@ function greetingKey(): keyof UiStrings {
   return 'dashGreetingEvening';
 }
 
-function firstName(name?: string) {
-  if (!name) return '';
-  const parts = name.replace(/^Dr\.?\s+/i, '').split(' ');
-  return parts[0] ?? '';
-}
-
 export default function DashboardScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { user } = useAuth();
+  const { can } = usePermissions();
   const { isRtl, lang, ui } = useLanguage();
   const { unread } = useNotifications();
+  const { invoices, paidByInvoice } = useBilling();
+  const { capacity } = useWorkPressure();
   const [refreshing, setRefreshing] = useState(false);
+  const [pressureOpen, setPressureOpen] = useState(false);
+  const workPressure = workPressurePercent(OPEN_ORDERS, capacity);
+  const pressureLevel = workPressureLevel(workPressure);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 900);
   }, []);
+
+  // Money is the front desk's business, so the tile and the invoice shortcut
+  // only exist for the roles that are allowed to see the ledger.
+  const money = useMemo(() => {
+    let outstanding = 0;
+    let open = 0;
+    for (const invoice of invoices) {
+      const paid = paidByInvoice.get(invoice.id) ?? 0;
+      if (invoiceStatus(invoice, paid) === 'draft') continue;
+      const { balance } = invoiceTotals(invoice, paid);
+      if (balance <= 0) continue;
+      outstanding += balance;
+      open += 1;
+    }
+    return { outstanding, open };
+  }, [invoices, paidByInvoice]);
+
+  const stats: Stat[] = can('viewBilling')
+    ? [
+        ...STATS,
+        {
+          id: 's4',
+          labelKey: 'dashStatOutstanding',
+          value: formatMoneyShort(money.outstanding),
+          deltaKey: 'dashStatOutstandingDelta',
+          deltaValues: { count: money.open },
+          icon: 'wallet-outline',
+          tone: 'accent',
+        },
+      ]
+    : STATS;
+
+  const quickActions = QUICK_ACTIONS.filter(
+    (action) => !action.permission || can(action.permission)
+  );
 
   const today = new Date().toLocaleDateString(LOCALES[lang], {
     weekday: 'long',
@@ -115,12 +168,12 @@ export default function DashboardScreen() {
     <Screen
       refreshing={refreshing}
       onRefresh={onRefresh}
+      contentStyle={{ paddingTop: spacing.lg }}
       header={
         <ScreenHeader
           title={ui[greetingKey()]}
           subtitle={today}
-          // Instrument Serif only covers Latin, so other scripts use the sans face.
-          titleVariant={lang === 'en' ? 'editorial' : 'heading'}
+          titleVariant={lang === 'en' ? 'greeting' : 'heading'}
           right={
             <View style={[styles.headerActions, row(isRtl)]}>
               <IconButton
@@ -136,13 +189,7 @@ export default function DashboardScreen() {
           }
         />
       }>
-      <Animated.View entering={FadeInDown.duration(480)}>
-        <Text variant="displaySerif" style={styles.hello}>
-          {firstName(user?.name)}
-        </Text>
-      </Animated.View>
-
-      <Animated.View entering={FadeInDown.delay(70).duration(520)}>
+      <Animated.View entering={FadeInDown.duration(520)}>
         <LinearGradient
           colors={theme.gradient.hero}
           start={{ x: isRtl ? 1 : 0, y: 0 }}
@@ -154,8 +201,8 @@ export default function DashboardScreen() {
           <View style={[styles.heroContent, row(isRtl)]}>
             <View style={styles.flex}>
               <LiveDot label={ui.dashTodayAtLab} />
-              <Text variant="display" tone="inverse" style={styles.heroValue}>
-                24
+              <Text variant="display" tone="inverse" style={styles.heroValue} ltr>
+                {OPEN_ORDERS}
               </Text>
               <Text variant="bodyMedium" color="rgba(255,255,255,0.88)">
                 {ui.dashCasesInProduction}
@@ -165,7 +212,7 @@ export default function DashboardScreen() {
                 <View style={[styles.heroPill, row(isRtl)]}>
                   <Icon name="flash" size={13} color="#FFFFFF" />
                   <Text variant="caption" tone="inverse">
-                    {interpolate(ui.dashRushJobs, { count: 2 })}
+                    {interpolate(ui.dashRushJobs, { count: attention.length })}
                   </Text>
                 </View>
                 <View style={[styles.heroPill, row(isRtl)]}>
@@ -177,33 +224,56 @@ export default function DashboardScreen() {
               </View>
             </View>
 
-            <ProgressRing
-              value={0.94}
-              size={108}
-              stroke={10}
-              trackColor="rgba(255,255,255,0.18)"
-              colors={['#FFFFFF', 'rgba(255,255,255,0.45)'] as const}>
-              <Text variant="heading" tone="inverse" style={styles.centerText}>
-                94%
-              </Text>
-              <Text variant="caption" color="rgba(255,255,255,0.78)" style={styles.centerText}>
-                {ui.dashOnTime}
-              </Text>
-            </ProgressRing>
+            <PressableScale
+              scaleTo={0.94}
+              accessibilityRole="button"
+              accessibilityLabel={interpolate(ui.dashWorkPressureAria, {
+                percent: workPressure,
+                open: OPEN_ORDERS,
+                capacity,
+              })}
+              onPress={() => setPressureOpen(true)}>
+              <ProgressRing
+                value={Math.min(workPressure / 100, 1)}
+                size={90}
+                stroke={9}
+                trackColor="rgba(255,255,255,0.18)"
+                colors={RING_STROKE[pressureLevel]}>
+                <Text
+                  variant="heading"
+                  color={pressureLevel === 'ok' ? '#FFFFFF' : RING_LABEL[pressureLevel]}
+                  style={styles.centerText}
+                  ltr>
+                  {interpolate(ui.dashWorkPressureValue, { percent: workPressure })}
+                </Text>
+                <Text
+                  variant="caption"
+                  color={RING_LABEL[pressureLevel]}
+                  style={[styles.centerText, lang === 'en' && styles.ringLabelEn]}>
+                  {ui.dashWorkPressure}
+                </Text>
+              </ProgressRing>
+            </PressableScale>
           </View>
         </LinearGradient>
       </Animated.View>
 
       <Animated.View entering={FadeInDown.delay(130).duration(500)} style={[styles.quickRow, row(isRtl)]}>
-        {QUICK_ACTIONS.map((action) => (
-          <QuickAction key={action.id} label={ui[action.labelKey]} icon={action.icon} tone={action.tone} />
+        {quickActions.map(({ id, labelKey, icon, tone, route }) => (
+          <QuickAction
+            key={id}
+            label={ui[labelKey]}
+            icon={icon}
+            tone={tone}
+            onPress={route ? () => router.navigate(route) : undefined}
+          />
         ))}
       </Animated.View>
 
       {attention.length > 0 ? (
         <Animated.View entering={FadeInDown.delay(190).duration(500)}>
           <PressableScale
-            onPress={() => router.navigate('/orders')}
+            onPress={() => router.navigate({ pathname: '/orders', params: { filter: 'rush' } })}
             accessibilityRole="button"
             accessibilityLabel={ui.dashAttentionAria}
             style={[
@@ -219,9 +289,6 @@ export default function DashboardScreen() {
             </View>
             <View style={styles.flex}>
               <Text variant="label">{attentionLabel}</Text>
-              <Text variant="caption" tone="muted" numberOfLines={1}>
-                {attention[0].id} · {localized(attention[0].workType, lang)}
-              </Text>
             </View>
             <Icon name="chevron-forward" size={16} color={theme.color.textFaint} directional />
           </PressableScale>
@@ -229,7 +296,7 @@ export default function DashboardScreen() {
       ) : null}
 
       <Animated.View entering={FadeInDown.delay(250).duration(500)} style={[styles.statGrid, row(isRtl)]}>
-        {STATS.map((stat) => (
+        {stats.map((stat) => (
           <StatCard key={stat.id} stat={stat} />
         ))}
       </Animated.View>
@@ -332,16 +399,132 @@ export default function DashboardScreen() {
           </Card>
         </Section>
       </Animated.View>
+
+      <CapacitySheet
+        visible={pressureOpen}
+        capacity={capacity}
+        openOrders={OPEN_ORDERS}
+        onClose={() => setPressureOpen(false)}
+      />
     </Screen>
   );
 }
 
-function QuickAction({ label, icon, tone }: { label: string; icon: IconName; tone: Tone }) {
+function CapacitySheet({
+  visible,
+  capacity,
+  openOrders,
+  onClose,
+}: {
+  visible: boolean;
+  capacity: number;
+  openOrders: number;
+  onClose: () => void;
+}) {
+  const theme = useTheme();
+  const { isRtl, ui } = useLanguage();
+  const [draft, setDraft] = useState(String(capacity));
+
+  useEffect(() => {
+    if (visible) setDraft(String(capacity));
+  }, [visible, capacity]);
+
+  const parsed = Number(draft);
+  const valid = Number.isFinite(parsed) && parsed >= 1;
+  const preview = workPressurePercent(openOrders, valid ? parsed : 0);
+  const level = workPressureLevel(preview);
+
+  const nudge = (delta: number) => {
+    const current = Number.isFinite(parsed) ? parsed : capacity;
+    setDraft(String(clampCapacity(current + delta)));
+  };
+
+  return (
+    <BottomSheet
+      visible={visible}
+      onClose={onClose}
+      title={ui.dashCapacityTitle}
+      footer={
+        <View style={styles.flex}>
+          <Button
+            label={ui.actionSave}
+            icon="checkmark"
+            disabled={!valid}
+            onPress={() => {
+              if (!valid) return;
+              setOrderCapacity(parsed);
+              onClose();
+            }}
+          />
+        </View>
+      }>
+      <Text variant="caption" tone="faint">
+        {ui.dashCapacityHint}
+      </Text>
+      <Text variant="bodyMedium">
+        {interpolate(ui.dashCapacityOpen, { count: openOrders })}
+      </Text>
+      <View style={[styles.capacityRow, row(isRtl)]}>
+        <View style={styles.flex}>
+          <Field
+            size="sm"
+            label={ui.dashCapacityLabel}
+            value={draft}
+            onChangeText={(text) => setDraft(text.replace(/[^\d]/g, ''))}
+            icon="layers-outline"
+            keyboardType="number-pad"
+            ltr
+            textAlign={isRtl ? 'right' : 'left'}
+          />
+        </View>
+        <View style={[styles.capacitySteppers, row(isRtl)]}>
+          <IconButton
+            icon="remove"
+            size={46}
+            shape="rounded"
+            accessibilityLabel={ui.dashCapacityDecrease}
+            onPress={() => nudge(-1)}
+          />
+          <IconButton
+            icon="add"
+            size={46}
+            shape="rounded"
+            accessibilityLabel={ui.dashCapacityIncrease}
+            onPress={() => nudge(1)}
+          />
+        </View>
+      </View>
+      <Text variant="caption" tone="muted" style={styles.centerText}>
+        {ui.dashWorkPressure}
+      </Text>
+      <Text
+        variant="metric"
+        ltr
+        color={level === 'ok' ? theme.color.text : level === 'warning' ? theme.color.warning : theme.color.danger}
+        style={styles.centerText}>
+        {interpolate(ui.dashWorkPressureValue, { percent: preview })}
+      </Text>
+    </BottomSheet>
+  );
+}
+
+function QuickAction({
+  label,
+  icon,
+  tone,
+  onPress,
+}: {
+  label: string;
+  icon: IconName;
+  tone: Tone;
+  onPress?: () => void;
+}) {
   const theme = useTheme();
   const { fg, bg } = useToneColors(tone);
 
   return (
     <PressableScale
+      onPress={onPress}
       scaleTo={0.93}
       accessibilityRole="button"
       accessibilityLabel={label}
@@ -406,8 +589,10 @@ function toneColor(theme: ReturnType<typeof useTheme>, tone: Tone) {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   centerText: { textAlign: 'center' },
-  hello: { marginTop: -spacing.sm, marginBottom: spacing.xs },
+  ringLabelEn: { fontSize: 10, lineHeight: 12, width: 54 },
   headerActions: { alignItems: 'center', gap: spacing.sm },
+  capacityRow: { alignItems: 'flex-end', gap: spacing.sm },
+  capacitySteppers: { alignItems: 'center', gap: spacing.sm },
   hero: {
     borderRadius: radius['2xl'],
     padding: spacing['2xl'],
@@ -420,7 +605,7 @@ const styles = StyleSheet.create({
   },
   heroBlobTop: { width: 200, height: 200, top: -104 },
   heroBlobBottom: { width: 140, height: 140, bottom: -74 },
-  heroContent: { alignItems: 'center', gap: spacing.lg },
+  heroContent: { alignItems: 'flex-start', gap: spacing.lg },
   heroValue: { marginTop: spacing.md },
   heroPills: { gap: spacing.sm, marginTop: spacing.lg },
   heroPill: {

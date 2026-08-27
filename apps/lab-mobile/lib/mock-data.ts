@@ -1,6 +1,9 @@
+import type { Href } from 'expo-router';
+
 import type { IconName } from '@/components/ui/icon';
 import type { Tone } from '@/components/ui/pill';
 import type { LocalizedText, MaybeLocalized, UiStrings } from '@/lib/i18n';
+import type { Permission } from '@/lib/roles';
 
 export type OrderStage = 'received' | 'design' | 'production' | 'quality' | 'courier' | 'delivered';
 
@@ -38,12 +41,12 @@ export const ORDERS: Order[] = [
     patient: 'Layla Hassan',
     clinic: 'Bright Smile Clinic',
     doctor: 'Dr. Amir Saleh',
-    workType: { en: 'Zirconia crown', he: 'כתר זירקוניה', ar: 'تاج زيركونيا' },
+    workType: { en: 'Zirconia crown', he: 'כתר זירקוניה' },
     shade: 'A2',
     teeth: '#14, #15',
     stage: 'quality',
     progress: 0.82,
-    dueLabel: { en: 'Due tomorrow', he: 'ליעד מחר', ar: 'الاستحقاق غدًا' },
+    dueLabel: { en: 'Due tomorrow', he: 'ליעד מחר' },
     urgent: true,
     favorite: true,
   },
@@ -55,14 +58,13 @@ export const ORDERS: Order[] = [
     workType: {
       en: 'Full arch implant bridge',
       he: 'גשר על שתלים, קשת מלאה',
-      ar: 'جسر زرعات لقوس كامل',
     },
     shade: 'B1',
-    teeth: { en: 'Upper arch', he: 'קשת עליונה', ar: 'القوس العلوي' },
+    teeth: { en: 'Upper arch', he: 'קשת עליונה' },
     stage: 'production',
     progress: 0.54,
-    dueLabel: { en: 'Due in 3 days', he: 'ליעד בעוד 3 ימים', ar: 'الاستحقاق خلال 3 أيام' },
-    urgent: false,
+    dueLabel: { en: 'Due in 3 days', he: 'ליעד בעוד 3 ימים' },
+    urgent: true,
     favorite: true,
   },
   {
@@ -70,12 +72,12 @@ export const ORDERS: Order[] = [
     patient: 'Maya Cohen',
     clinic: 'Bright Smile Clinic',
     doctor: 'Dr. Amir Saleh',
-    workType: { en: 'E-max veneers ×6', he: '6 ציפויי E-max', ar: '6 قشور E-max' },
+    workType: { en: 'E-max veneers ×6', he: '6 ציפויי E-max' },
     shade: 'BL2',
     teeth: '#11 – #23',
     stage: 'design',
     progress: 0.31,
-    dueLabel: { en: 'Due in 5 days', he: 'ליעד בעוד 5 ימים', ar: 'الاستحقاق خلال 5 أيام' },
+    dueLabel: { en: 'Due in 5 days', he: 'ליעד בעוד 5 ימים' },
     urgent: false,
     favorite: false,
   },
@@ -84,12 +86,12 @@ export const ORDERS: Order[] = [
     patient: 'Yusuf Amara',
     clinic: 'Peak Dental Studio',
     doctor: 'Dr. Lina Farah',
-    workType: { en: 'Night guard', he: 'סד לילה', ar: 'واقٍ ليلي' },
+    workType: { en: 'Night guard', he: 'סד לילה' },
     shade: 'Clear',
-    teeth: { en: 'Lower arch', he: 'קשת תחתונה', ar: 'القوس السفلي' },
+    teeth: { en: 'Lower arch', he: 'קשת תחתונה' },
     stage: 'courier',
     progress: 0.93,
-    dueLabel: { en: 'Picked up 09:40', he: 'נאסף ב-09:40', ar: 'تم الاستلام 09:40' },
+    dueLabel: { en: 'Picked up 09:40', he: 'נאסף ב-09:40' },
     urgent: false,
     favorite: false,
   },
@@ -98,12 +100,12 @@ export const ORDERS: Order[] = [
     patient: 'Sara Mansour',
     clinic: 'Dentaris Center',
     doctor: 'Dr. Rana Odeh',
-    workType: { en: 'PFM crown', he: 'כתר חרסינה על מתכת', ar: 'تاج بورسلين على معدن' },
+    workType: { en: 'PFM crown', he: 'כתר חרסינה על מתכת' },
     shade: 'A3.5',
     teeth: '#26',
     stage: 'received',
     progress: 0.12,
-    dueLabel: { en: 'Due in 6 days', he: 'ליעד בעוד 6 ימים', ar: 'الاستحقاق خلال 6 أيام' },
+    dueLabel: { en: 'Due in 6 days', he: 'ליעד בעוד 6 ימים' },
     urgent: false,
     favorite: false,
   },
@@ -112,12 +114,12 @@ export const ORDERS: Order[] = [
     patient: 'Adam Nassar',
     clinic: 'Peak Dental Studio',
     doctor: 'Dr. Lina Farah',
-    workType: { en: 'Inlay / onlay', he: 'אינליי / אונליי', ar: 'حشوة داخلية / خارجية' },
+    workType: { en: 'Inlay / onlay', he: 'אינליי / אונליי' },
     shade: 'A1',
     teeth: '#36',
     stage: 'delivered',
     progress: 1,
-    dueLabel: { en: 'Delivered Tue', he: 'נמסר ביום ג׳', ar: 'سُلّم الثلاثاء' },
+    dueLabel: { en: 'Delivered Tue', he: 'נמסר ביום ג׳' },
     urgent: false,
     favorite: false,
   },
@@ -144,9 +146,8 @@ export const MESSAGES: Message[] = [
     preview: {
       en: 'The shade on ND-2418 looks a touch light in the photos — can we warm it up?',
       he: 'הגוון של ND-2418 נראה מעט בהיר מדי בתמונות — אפשר לחמם אותו?',
-      ar: 'درجة اللون في ND-2418 تبدو فاتحة قليلًا في الصور — هل يمكن جعلها أدفأ؟',
     },
-    time: { en: '2m', he: '2 דק׳', ar: '2 د' },
+    time: { en: '2m', he: '2 דק׳' },
     unread: true,
     priority: 'action',
     orderId: 'ND-2418',
@@ -159,24 +160,22 @@ export const MESSAGES: Message[] = [
     preview: {
       en: 'New STL scan uploaded for the full arch case. Please confirm you can open it.',
       he: 'הועלתה סריקת STL חדשה לתיק הקשת המלאה. אנא אשרו שניתן לפתוח אותה.',
-      ar: 'تم رفع مسح STL جديد لحالة القوس الكامل. يرجى تأكيد إمكانية فتحه.',
     },
-    time: { en: '18m', he: '18 דק׳', ar: '18 د' },
+    time: { en: '18m', he: '18 דק׳' },
     unread: true,
     priority: 'high',
     orderId: 'ND-2417',
   },
   {
     id: 'm3',
-    sender: { en: 'Courier — Sami', he: 'שליח — סמי', ar: 'المندوب — سامي' },
+    sender: { en: 'Courier — Sami', he: 'שליח — סמי' },
     initials: 'CS',
-    clinic: { en: 'Logistics', he: 'לוגיסטיקה', ar: 'الخدمات اللوجستية' },
+    clinic: { en: 'Logistics', he: 'לוגיסטיקה' },
     preview: {
       en: 'Pickup completed at Peak Dental Studio, 4 impressions collected.',
       he: 'האיסוף הושלם ב-Peak Dental Studio, נאספו 4 הטבעות.',
-      ar: 'اكتمل الاستلام من Peak Dental Studio، وتم جمع 4 طبعات.',
     },
-    time: { en: '1h', he: 'שעה', ar: 'ساعة' },
+    time: { en: '1h', he: 'שעה' },
     unread: false,
     priority: 'normal',
   },
@@ -188,24 +187,22 @@ export const MESSAGES: Message[] = [
     preview: {
       en: 'Thanks for the fast turnaround on the night guard, patient is happy.',
       he: 'תודה על הזמן המהיר בסד הלילה, המטופל מרוצה.',
-      ar: 'شكرًا على سرعة الإنجاز في الواقي الليلي، المريض سعيد.',
     },
-    time: { en: 'Yesterday', he: 'אתמול', ar: 'أمس' },
+    time: { en: 'Yesterday', he: 'אתמול' },
     unread: false,
     priority: 'normal',
     orderId: 'ND-2412',
   },
   {
     id: 'm5',
-    sender: { en: 'Accounts', he: 'הנהלת חשבונות', ar: 'المحاسبة' },
+    sender: { en: 'Accounts', he: 'הנהלת חשבונות' },
     initials: 'AC',
     clinic: 'Nadeem Dental Lab',
     preview: {
       en: 'Invoice #4471 for Dentaris Center is now 12 days overdue.',
       he: 'חשבונית #4471 עבור Dentaris Center באיחור של 12 ימים.',
-      ar: 'الفاتورة #4471 الخاصة بـ Dentaris Center متأخرة 12 يومًا.',
     },
-    time: { en: 'Yesterday', he: 'אתמול', ar: 'أمس' },
+    time: { en: 'Yesterday', he: 'אתמול' },
     unread: false,
     priority: 'high',
   },
@@ -224,11 +221,10 @@ export type FileFolder = {
 export const FOLDERS: FileFolder[] = [
   {
     id: 'f1',
-    name: { en: 'Intraoral scans', he: 'סריקות תוך-פה', ar: 'مسوحات داخل الفم' },
+    name: { en: 'Intraoral scans', he: 'סריקות תוך-פה' },
     description: {
       en: 'STL & PLY files from clinics',
       he: 'קבצי STL ו-PLY ממרפאות',
-      ar: 'ملفات STL و PLY من العيادات',
     },
     icon: 'cube-outline',
     tone: 'brand',
@@ -237,11 +233,10 @@ export const FOLDERS: FileFolder[] = [
   },
   {
     id: 'f2',
-    name: { en: 'Case photography', he: 'צילומי תיקים', ar: 'تصوير الحالات' },
+    name: { en: 'Case photography', he: 'צילומי תיקים' },
     description: {
       en: 'Shade matching and try-in shots',
       he: 'התאמת גוון ותמונות מדידה',
-      ar: 'مطابقة اللون وصور القياس',
     },
     icon: 'image-outline',
     tone: 'accent',
@@ -250,11 +245,10 @@ export const FOLDERS: FileFolder[] = [
   },
   {
     id: 'f3',
-    name: { en: 'Prescriptions', he: 'הזמנות עבודה', ar: 'أوامر العمل' },
+    name: { en: 'Prescriptions', he: 'הזמנות עבודה' },
     description: {
       en: 'Signed lab work orders',
       he: 'הזמנות עבודה חתומות',
-      ar: 'أوامر عمل موقّعة',
     },
     icon: 'document-text-outline',
     tone: 'success',
@@ -263,11 +257,10 @@ export const FOLDERS: FileFolder[] = [
   },
   {
     id: 'f4',
-    name: { en: 'Invoices & receipts', he: 'חשבוניות וקבלות', ar: 'الفواتير والإيصالات' },
+    name: { en: 'Invoices & receipts', he: 'חשבוניות וקבלות' },
     description: {
       en: 'Billing exports per clinic',
       he: 'ייצוא חיובים לפי מרפאה',
-      ar: 'تصدير الفواتير حسب العيادة',
     },
     icon: 'receipt-outline',
     tone: 'warning',
@@ -288,21 +281,21 @@ export const RECENT_FILES: RecentFile[] = [
   {
     id: 'r1',
     name: 'ND-2418_upper.stl',
-    meta: { en: '48 MB · 2 hours ago', he: '48 MB · לפני שעתיים', ar: '48 MB · قبل ساعتين' },
+    meta: { en: '48 MB · 2 hours ago', he: '48 MB · לפני שעתיים' },
     icon: 'cube-outline',
     tone: 'brand',
   },
   {
     id: 'r2',
     name: 'shade_match_A2.jpg',
-    meta: { en: '3.2 MB · 4 hours ago', he: '3.2 MB · לפני 4 שעות', ar: '3.2 MB · قبل 4 ساعات' },
+    meta: { en: '3.2 MB · 4 hours ago', he: '3.2 MB · לפני 4 שעות' },
     icon: 'image-outline',
     tone: 'accent',
   },
   {
     id: 'r3',
     name: 'RX_ND-2417.pdf',
-    meta: { en: '820 KB · Yesterday', he: '820 KB · אתמול', ar: '820 KB · أمس' },
+    meta: { en: '820 KB · Yesterday', he: '820 KB · אתמול' },
     icon: 'document-text-outline',
     tone: 'success',
   },
@@ -325,14 +318,12 @@ export const ACTIVITY: Activity[] = [
     title: {
       en: 'ND-2418 passed quality check',
       he: 'ND-2418 עבר בקרת איכות',
-      ar: 'ND-2418 اجتاز فحص الجودة',
     },
     detail: {
       en: 'Zirconia crown ready for glazing',
       he: 'כתר זירקוניה מוכן להזגגה',
-      ar: 'تاج زيركونيا جاهز للتزجيج',
     },
-    time: { en: '12m ago', he: 'לפני 12 דק׳', ar: 'قبل 12 د' },
+    time: { en: '12m ago', he: 'לפני 12 דק׳' },
     icon: 'shield-checkmark-outline',
     tone: 'success',
   },
@@ -341,14 +332,12 @@ export const ACTIVITY: Activity[] = [
     title: {
       en: 'New case from Dentaris Center',
       he: 'תיק חדש מ-Dentaris Center',
-      ar: 'حالة جديدة من Dentaris Center',
     },
     detail: {
       en: 'Full arch implant bridge, upper',
       he: 'גשר על שתלים, קשת עליונה',
-      ar: 'جسر زرعات، القوس العلوي',
     },
-    time: { en: '46m ago', he: 'לפני 46 דק׳', ar: 'قبل 46 د' },
+    time: { en: '46m ago', he: 'לפני 46 דק׳' },
     icon: 'add-circle-outline',
     tone: 'brand',
   },
@@ -357,14 +346,12 @@ export const ACTIVITY: Activity[] = [
     title: {
       en: 'Courier pickup scheduled',
       he: 'נקבע איסוף שליח',
-      ar: 'تم جدولة استلام المندوب',
     },
     detail: {
       en: 'Peak Dental Studio · today 16:30',
       he: 'Peak Dental Studio · היום 16:30',
-      ar: 'Peak Dental Studio · اليوم 16:30',
     },
-    time: { en: '2h ago', he: 'לפני שעתיים', ar: 'قبل ساعتين' },
+    time: { en: '2h ago', he: 'לפני שעתיים' },
     icon: 'car-outline',
     tone: 'accent',
   },
@@ -373,10 +360,9 @@ export const ACTIVITY: Activity[] = [
     title: {
       en: 'Invoice #4471 overdue',
       he: 'חשבונית #4471 באיחור',
-      ar: 'الفاتورة #4471 متأخرة',
     },
     detail: 'Dentaris Center · ₪2,480',
-    time: { en: '5h ago', he: 'לפני 5 שעות', ar: 'قبل 5 ساعات' },
+    time: { en: '5h ago', he: 'לפני 5 שעות' },
     icon: 'alert-circle-outline',
     tone: 'danger',
   },
@@ -389,9 +375,27 @@ export const PIPELINE: { key: string; labelKey: keyof UiStrings; value: number; 
   { key: 'courier', labelKey: 'stageShortCourier', value: 3, tone: 'success' },
 ];
 
-export const QUICK_ACTIONS: { id: string; labelKey: keyof UiStrings; icon: IconName; tone: Tone }[] = [
+export type QuickAction = {
+  id: string;
+  labelKey: keyof UiStrings;
+  icon: IconName;
+  tone: Tone;
+  /** Tiles without a destination are still placeholders. */
+  route?: Href;
+  /** Hidden unless the signed-in user holds this permission. */
+  permission?: Permission;
+};
+
+export const QUICK_ACTIONS: QuickAction[] = [
   { id: 'q1', labelKey: 'quickNewCase', icon: 'add-outline', tone: 'brand' },
-  { id: 'q2', labelKey: 'quickCourier', icon: 'car-outline', tone: 'accent' },
-  { id: 'q3', labelKey: 'quickScan', icon: 'scan-outline', tone: 'success' },
-  { id: 'q4', labelKey: 'quickInvoice', icon: 'card-outline', tone: 'warning' },
+  { id: 'q2', labelKey: 'quickCourier', icon: 'car-outline', tone: 'accent', route: '/deliveries' },
+  { id: 'q3', labelKey: 'quickScan', icon: 'scan-outline', tone: 'success', route: '/scan' },
+  {
+    id: 'q4',
+    labelKey: 'quickInvoice',
+    icon: 'receipt-outline',
+    tone: 'warning',
+    route: '/invoice-new',
+    permission: 'viewBilling',
+  },
 ];

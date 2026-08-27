@@ -85,7 +85,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'Dentaris Center submitted ND-2417 — full arch implant bridge.',
       he: 'Dentaris Center שלחה את ND-2417 — גשר על שתלים בקשת מלאה.',
-      ar: 'أرسل Dentaris Center الحالة ND-2417 — جسر زرعات لقوس كامل.',
     },
     orderId: 'ND-2417',
     createdAt: minutesAgo(4),
@@ -97,7 +96,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'ND-2418 is due tomorrow and still waiting on glazing.',
       he: 'ND-2418 ליעד מחר ועדיין ממתין להזגגה.',
-      ar: 'ND-2418 مستحقة غدًا ولا تزال بانتظار التزجيج.',
     },
     orderId: 'ND-2418',
     createdAt: minutesAgo(26),
@@ -109,7 +107,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'Dr. Amir Saleh asked about the shade on ND-2418.',
       he: 'ד״ר אמיר סאלח שאל לגבי הגוון של ND-2418.',
-      ar: 'سأل د. أمير صالح عن درجة اللون في ND-2418.',
     },
     orderId: 'ND-2418',
     createdAt: minutesAgo(52),
@@ -121,7 +118,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'Sami collected 4 impressions from Peak Dental Studio.',
       he: 'סמי אסף 4 הטבעות מ-Peak Dental Studio.',
-      ar: 'استلم سامي 4 طبعات من Peak Dental Studio.',
     },
     createdAt: minutesAgo(140),
     read: true,
@@ -132,7 +128,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'Invoice #4471 for Dentaris Center is 12 days overdue.',
       he: 'חשבונית #4471 עבור Dentaris Center באיחור של 12 ימים.',
-      ar: 'الفاتورة #4471 الخاصة بـ Dentaris Center متأخرة 12 يومًا.',
     },
     createdAt: minutesAgo(320),
     read: true,
@@ -143,7 +138,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'Bright Smile Clinic submitted ND-2415 — six E-max veneers.',
       he: 'Bright Smile Clinic שלחה את ND-2415 — שישה ציפויי E-max.',
-      ar: 'أرسلت Bright Smile Clinic الحالة ND-2415 — ستة قشور E-max.',
     },
     orderId: 'ND-2415',
     createdAt: minutesAgo(1180),
@@ -155,7 +149,6 @@ const SEED: NotificationItem[] = [
     body: {
       en: 'ND-2412 night guard was delivered and signed for.',
       he: 'סד הלילה ND-2412 נמסר ונחתם.',
-      ar: 'تم تسليم الواقي الليلي ND-2412 وتوقيع الاستلام.',
     },
     orderId: 'ND-2412',
     createdAt: minutesAgo(2600),

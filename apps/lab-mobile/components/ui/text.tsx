@@ -1,7 +1,6 @@
-import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
+import { Text as RNText, type TextProps as RNTextProps, type TextStyle } from 'react-native';
 
 import { type as typeScale } from '@/constants/design';
-import { LTR_TEXT } from '@/lib/rtl';
 import { useTheme } from '@/hooks/use-theme';
 import { useLanguage } from '@/store/language-store';
 
@@ -13,7 +12,10 @@ export type TextProps = RNTextProps & {
   tone?: Tone;
   /** Overrides both `tone` and the theme colour. */
   color?: string;
-  /** Keeps the run left-to-right — for phone numbers, codes and counters. */
+  /**
+   * Keeps the characters left-to-right — for phone numbers, codes and counters.
+   * Alignment is unaffected: the run still sits on the layout's leading edge.
+   */
   ltr?: boolean;
 };
 
@@ -33,9 +35,12 @@ export function Text({ variant = 'body', tone = 'default', color, ltr = false, s
     inverse: '#FFFFFF',
   };
 
-  const direction = ltr
-    ? LTR_TEXT
-    : { writingDirection: isRtl ? ('rtl' as const) : ('ltr' as const), textAlign: isRtl ? ('right' as const) : ('left' as const) };
+  // Only the character order is pinned by `ltr`; alignment follows the layout so
+  // a counter cannot drift to the far side of the card that owns it.
+  const direction: TextStyle = {
+    writingDirection: ltr || !isRtl ? 'ltr' : 'rtl',
+    textAlign: isRtl ? 'right' : 'left',
+  };
 
   return (
     <RNText

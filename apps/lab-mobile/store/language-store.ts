@@ -26,7 +26,7 @@ export function setLanguage(lang: Lang) {
 
 export async function hydrateLanguage() {
   const saved = await AsyncStorage.getItem(STORAGE_KEY);
-  if (saved === 'en' || saved === 'he' || saved === 'ar') {
+  if (saved === 'en' || saved === 'he') {
     store.set({ lang: saved });
   }
 }

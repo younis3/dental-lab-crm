@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import type { MaybeLocalized } from '@/lib/i18n';
-import type { PermissionOverrides, UserRole } from '@/lib/roles';
+import { ROSTER_ROLES, type PermissionOverrides, type RosterRole } from '@/lib/roles';
 import { createStore } from '@/lib/store';
 
 /** Doctors are clients, not employees, so they never appear on the roster. */
-export type StaffRole = Extract<UserRole, 'lab_owner' | 'lab_staff' | 'driver'>;
+export type StaffRole = RosterRole;
 
 export type StaffMember = {
   id: string;
@@ -39,7 +39,7 @@ const SEED: StaffMember[] = [
   {
     id: 'st-1',
     name: 'Nadeem Younis',
-    title: { en: 'Lab owner', he: 'בעל המעבדה', ar: 'مالك المختبر' },
+    title: { en: 'Lab owner', he: 'בעל המעבדה' },
     phone: '1',
     email: 'nadeem@nadeemlab.com',
     role: 'lab_owner',
@@ -48,12 +48,34 @@ const SEED: StaffMember[] = [
     active: true,
   },
   {
+    id: 'st-7',
+    name: 'Lara Nasrallah',
+    title: { en: 'Receptionist', he: 'פקידת קבלה' },
+    phone: '8',
+    email: 'lara@nadeemlab.com',
+    role: 'receptionist',
+    permissions: {},
+    color: '#C25B54',
+    active: true,
+  },
+  {
+    id: 'st-4',
+    name: 'Tarek Aziz',
+    title: { en: 'Staff manager', he: 'מנהל צוות' },
+    phone: '6',
+    email: 'tarek@nadeemlab.com',
+    role: 'staff_manager',
+    permissions: {},
+    color: '#B4822F',
+    active: true,
+  },
+  {
     id: 'st-2',
     name: 'Karim Haddad',
-    title: { en: 'CAD/CAM technician', he: 'טכנאי CAD/CAM', ar: 'فني CAD/CAM' },
+    title: { en: 'CAD/CAM technician', he: 'טכנאי CAD/CAM' },
     phone: '2',
     email: 'karim@nadeemlab.com',
-    role: 'lab_staff',
+    role: 'worker',
     permissions: { viewDoctors: true },
     color: '#2B3D4F',
     active: true,
@@ -61,29 +83,18 @@ const SEED: StaffMember[] = [
   {
     id: 'st-3',
     name: 'Rania Kassab',
-    title: { en: 'Ceramist', he: 'קרמיסטית', ar: 'أخصائية سيراميك' },
+    title: { en: 'Ceramist', he: 'קרמיסטית' },
     phone: '5',
     email: 'rania@nadeemlab.com',
-    role: 'lab_staff',
+    role: 'worker',
     permissions: { viewFiles: false },
     color: '#3F8A6E',
     active: true,
   },
   {
-    id: 'st-4',
-    name: 'Tarek Aziz',
-    title: { en: 'Quality control', he: 'בקרת איכות', ar: 'مراقبة الجودة' },
-    phone: '6',
-    email: 'tarek@nadeemlab.com',
-    role: 'lab_staff',
-    permissions: { viewClinics: true, viewPatients: true },
-    color: '#B4822F',
-    active: true,
-  },
-  {
     id: 'st-5',
     name: 'Sami Nasser',
-    title: { en: 'Courier', he: 'שליח', ar: 'مندوب توصيل' },
+    title: { en: 'Courier', he: 'שליח' },
     phone: '4',
     email: 'sami@nadeemlab.com',
     role: 'driver',
@@ -94,10 +105,10 @@ const SEED: StaffMember[] = [
   {
     id: 'st-6',
     name: 'Dina Barakat',
-    title: { en: 'Model & dies', he: 'מודלים ודייז', ar: 'النماذج والقوالب' },
+    title: { en: 'Model & dies', he: 'מודלים ודייז' },
     phone: '7',
     email: 'dina@nadeemlab.com',
-    role: 'lab_staff',
+    role: 'worker',
     permissions: {},
     color: '#9D5BD2',
     active: false,
@@ -151,11 +162,19 @@ export function createStaffMember(): StaffMember {
     title: '',
     phone: '',
     email: '',
-    role: 'lab_staff',
+    role: 'worker',
     permissions: {},
     color: STAFF_COLORS.find((color) => !used.has(color)) ?? STAFF_COLORS[0],
     active: true,
   };
+}
+
+/** Roles that were renamed after a build shipped, so saved rosters still load. */
+const RENAMED_ROLES: Record<string, StaffRole> = { lab_staff: 'worker' };
+
+function knownRole(role: string): StaffRole {
+  if ((ROSTER_ROLES as readonly string[]).includes(role)) return role as StaffRole;
+  return RENAMED_ROLES[role] ?? 'worker';
 }
 
 export async function hydrateStaff() {
@@ -165,7 +184,9 @@ export async function hydrateStaff() {
     const parsed = JSON.parse(saved) as StaffMember[];
     // An empty roster would lock the owner out of staff management.
     if (Array.isArray(parsed) && parsed.length > 0) {
-      store.set({ members: parsed });
+      store.set({
+        members: parsed.map((member) => ({ ...member, role: knownRole(member.role) })),
+      });
     }
   } catch {
     await AsyncStorage.removeItem(STORAGE_KEY);

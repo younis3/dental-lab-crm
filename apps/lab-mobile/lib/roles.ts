@@ -4,10 +4,37 @@ import type { UiStrings } from '@/lib/i18n';
 /**
  * Who is signed in. Each role gets its own tab bar, sidebar and permission set;
  * the lab owner can additionally override single permissions per staff member.
+ *
+ * The first four work at the lab. A doctor is a client of the lab and a driver
+ * only ever sees the courier board, so both stay outside the staff hierarchy.
  */
-export type UserRole = 'lab_owner' | 'lab_staff' | 'doctor' | 'driver';
+export type UserRole =
+  | 'lab_owner'
+  | 'receptionist'
+  | 'staff_manager'
+  | 'worker'
+  | 'doctor'
+  | 'driver';
 
-export const USER_ROLES: readonly UserRole[] = ['lab_owner', 'lab_staff', 'doctor', 'driver'];
+export const USER_ROLES: readonly UserRole[] = [
+  'lab_owner',
+  'receptionist',
+  'staff_manager',
+  'worker',
+  'doctor',
+  'driver',
+];
+
+/** Roles that appear on the lab roster. Doctors are clients, not employees. */
+export const ROSTER_ROLES = [
+  'lab_owner',
+  'receptionist',
+  'staff_manager',
+  'worker',
+  'driver',
+] as const;
+
+export type RosterRole = (typeof ROSTER_ROLES)[number];
 
 export type Permission =
   | 'viewDashboard'
@@ -18,7 +45,10 @@ export type Permission =
   | 'viewDoctors'
   | 'viewClinics'
   | 'viewPatients'
+  | 'viewWorkTypes'
   | 'viewDeliveries'
+  | 'viewBilling'
+  | 'viewAnalytics'
   | 'viewExocad'
   | 'manageStaff'
   | 'manageTasks';
@@ -32,7 +62,10 @@ export const ASSIGNABLE_PERMISSIONS: readonly Permission[] = [
   'viewDoctors',
   'viewClinics',
   'viewPatients',
+  'viewWorkTypes',
   'viewDeliveries',
+  'viewBilling',
+  'viewAnalytics',
   'viewExocad',
   'manageStaff',
   'manageTasks',
@@ -40,9 +73,20 @@ export const ASSIGNABLE_PERMISSIONS: readonly Permission[] = [
 
 export const ROLE_LABEL_KEYS: Record<UserRole, keyof UiStrings> = {
   lab_owner: 'roleLabOwner',
-  lab_staff: 'roleLabStaff',
+  receptionist: 'roleReceptionist',
+  staff_manager: 'roleStaffManager',
+  worker: 'roleWorker',
   doctor: 'roleDoctor',
   driver: 'roleDriver',
+};
+
+export const ROLE_HINT_KEYS: Record<UserRole, keyof UiStrings> = {
+  lab_owner: 'roleLabOwnerHint',
+  receptionist: 'roleReceptionistHint',
+  staff_manager: 'roleStaffManagerHint',
+  worker: 'roleWorkerHint',
+  doctor: 'roleDoctorHint',
+  driver: 'roleDriverHint',
 };
 
 export const PERMISSION_LABEL_KEYS: Record<Permission, keyof UiStrings> = {
@@ -54,7 +98,10 @@ export const PERMISSION_LABEL_KEYS: Record<Permission, keyof UiStrings> = {
   viewDoctors: 'permViewDoctors',
   viewClinics: 'permViewClinics',
   viewPatients: 'permViewPatients',
+  viewWorkTypes: 'permViewWorkTypes',
   viewDeliveries: 'permViewDeliveries',
+  viewBilling: 'permViewBilling',
+  viewAnalytics: 'permViewAnalytics',
   viewExocad: 'permViewExocad',
   manageStaff: 'permManageStaff',
   manageTasks: 'permManageTasks',
@@ -69,13 +116,20 @@ export const PERMISSION_ICONS: Record<Permission, IconName> = {
   viewDoctors: 'medkit-outline',
   viewClinics: 'business-outline',
   viewPatients: 'people-outline',
+  viewWorkTypes: 'pricetags-outline',
   viewDeliveries: 'car-outline',
+  viewBilling: 'receipt-outline',
+  viewAnalytics: 'stats-chart-outline',
   viewExocad: 'cube-outline',
   manageStaff: 'shield-checkmark-outline',
   manageTasks: 'checkmark-done-outline',
 };
 
-/** Baseline each role starts from before any per-member override. */
+/**
+ * Baseline each role starts from before any per-member override. Money is the
+ * dividing line: only the owner and the front desk invoice clients and read the
+ * lab's numbers, so `viewBilling` and `viewAnalytics` stop there.
+ */
 export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
   lab_owner: [
     'viewDashboard',
@@ -86,12 +140,54 @@ export const ROLE_PERMISSIONS: Record<UserRole, readonly Permission[]> = {
     'viewDoctors',
     'viewClinics',
     'viewPatients',
+    'viewWorkTypes',
+    'viewDeliveries',
+    'viewBilling',
+    'viewAnalytics',
+    'viewExocad',
+    'manageStaff',
+    'manageTasks',
+  ],
+  receptionist: [
+    'viewDashboard',
+    'viewOrders',
+    'editOrders',
+    'viewInbox',
+    'viewFiles',
+    'viewDoctors',
+    'viewClinics',
+    'viewPatients',
+    'viewWorkTypes',
+    'viewDeliveries',
+    'viewBilling',
+    'viewAnalytics',
+  ],
+  staff_manager: [
+    'viewDashboard',
+    'viewOrders',
+    'editOrders',
+    'viewInbox',
+    'viewFiles',
+    'viewDoctors',
+    'viewClinics',
+    'viewPatients',
+    'viewWorkTypes',
     'viewDeliveries',
     'viewExocad',
     'manageStaff',
     'manageTasks',
   ],
-  lab_staff: ['viewDashboard', 'viewOrders', 'editOrders', 'viewInbox', 'viewFiles', 'viewPatients', 'viewExocad'],
+  worker: [
+    'viewDashboard',
+    'viewOrders',
+    'editOrders',
+    'viewInbox',
+    'viewFiles',
+    'viewPatients',
+    'viewWorkTypes',
+    'viewDeliveries',
+    'viewExocad',
+  ],
   doctor: ['viewDashboard', 'viewOrders', 'viewInbox', 'viewFiles', 'viewPatients'],
   driver: ['viewDashboard', 'viewDeliveries', 'viewInbox'],
 };
@@ -107,7 +203,7 @@ export function effectivePermissions(
   role: UserRole,
   overrides?: PermissionOverrides
 ): ReadonlySet<Permission> {
-  const granted = new Set<Permission>(ROLE_PERMISSIONS[role]);
+  const granted = new Set<Permission>(ROLE_PERMISSIONS[role] ?? []);
   if (role === 'lab_owner' || !overrides) return granted;
 
   for (const [permission, enabled] of Object.entries(overrides) as [Permission, boolean][]) {
@@ -159,7 +255,9 @@ export const TAB_PERMISSIONS: Record<string, Permission> = {
  */
 export const ROLE_TABS: Record<UserRole, readonly string[]> = {
   lab_owner: ['index', 'orders', 'tasks', 'inbox', 'folders'],
-  lab_staff: ['index', 'orders', 'tasks', 'inbox', 'folders'],
+  receptionist: ['index', 'orders', 'tasks', 'inbox', 'folders'],
+  staff_manager: ['index', 'orders', 'tasks', 'inbox', 'folders'],
+  worker: ['index', 'orders', 'tasks', 'inbox', 'folders'],
   doctor: ['index', 'orders', 'inbox', 'folders'],
   driver: ['index', 'orders', 'inbox'],
 };

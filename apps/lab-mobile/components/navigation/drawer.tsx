@@ -60,7 +60,6 @@ type NavItem = {
   permission?: Permission;
   /** Live counter resolved at render time. */
   badgeSource?: 'inbox' | 'notifications';
-  soon?: boolean;
 };
 
 type NavGroup = { key: string; titleKey: keyof UiStrings; items: NavItem[] };
@@ -112,6 +111,21 @@ const NAV_GROUPS: NavGroup[] = [
         permission: 'viewFiles',
       },
       {
+        key: 'scan',
+        labelKey: 'navScan',
+        icon: 'scan-outline',
+        route: '/scan',
+        match: '/scan',
+      },
+      {
+        key: 'courier',
+        labelKey: 'navCourier',
+        icon: 'car-outline',
+        route: '/deliveries',
+        match: '/deliveries',
+        permission: 'viewDeliveries',
+      },
+      {
         key: 'notifications',
         labelKey: 'navNotifications',
         icon: 'notifications-outline',
@@ -157,6 +171,44 @@ const NAV_GROUPS: NavGroup[] = [
         match: '/patients',
         permission: 'viewPatients',
       },
+      {
+        key: 'work-types',
+        labelKey: 'navWorkTypes',
+        icon: 'pricetags-outline',
+        route: '/work-types',
+        match: '/work-types',
+        permission: 'viewWorkTypes',
+      },
+    ],
+  },
+  {
+    key: 'money',
+    titleKey: 'drawerMoney',
+    items: [
+      {
+        key: 'invoice-new',
+        labelKey: 'navNewInvoice',
+        icon: 'add-circle-outline',
+        route: '/invoice-new',
+        match: '/invoice-new',
+        permission: 'viewBilling',
+      },
+      {
+        key: 'billing',
+        labelKey: 'navBilling',
+        icon: 'wallet-outline',
+        route: '/billing',
+        match: '/billing',
+        permission: 'viewBilling',
+      },
+      {
+        key: 'analytics',
+        labelKey: 'navAnalytics',
+        icon: 'stats-chart-outline',
+        route: '/analytics',
+        match: '/analytics',
+        permission: 'viewAnalytics',
+      },
     ],
   },
   {
@@ -171,15 +223,6 @@ const NAV_GROUPS: NavGroup[] = [
         match: '/staff',
         permission: 'manageStaff',
       },
-    ],
-  },
-  {
-    key: 'soon',
-    titleKey: 'drawerComingSoon',
-    items: [
-      { key: 'analytics', labelKey: 'navAnalytics', icon: 'stats-chart-outline', soon: true },
-      { key: 'financials', labelKey: 'navFinancials', icon: 'wallet-outline', soon: true },
-      { key: 'courier', labelKey: 'navCourier', icon: 'car-outline', soon: true },
     ],
   },
 ];
@@ -460,7 +503,7 @@ function DrawerPanel({ progress, onNavigate }: PanelProps) {
                   item={item}
                   badge={badgeFor(item)}
                   active={pathname === item.match}
-                  onPress={item.soon ? undefined : () => go(item)}
+                  onPress={() => go(item)}
                 />
               </StaggerItem>
             ))}
@@ -562,7 +605,6 @@ function DrawerRow({
   return (
     <PressableScale
       onPress={onPress}
-      disabled={item.soon}
       scaleTo={0.97}
       accessibilityRole="button"
       accessibilityLabel={label}
@@ -584,7 +626,6 @@ function DrawerRow({
         {label}
       </Text>
       {badge > 0 ? <Badge label={String(badge)} tone="danger" /> : null}
-      {item.soon ? <Badge label={ui.drawerSoonBadge} tone="neutral" /> : null}
     </PressableScale>
   );
 }

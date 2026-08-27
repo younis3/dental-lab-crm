@@ -33,7 +33,11 @@ export const DEMO_OTP = '1234';
 
 const LAB_NAME = 'Nadeem Dental Lab';
 
-/** One demo login per role, keyed by the phone number typed on the sign-in screen. */
+/**
+ * One demo login per role, keyed by the phone number typed on the sign-in
+ * screen. The phone numbers match the roster in `staff-store`, so signing in as
+ * a member and editing that member are the same person.
+ */
 export const DEMO_ACCOUNTS: Record<string, AuthUser> = {
   '1': {
     id: 'u-owner',
@@ -43,12 +47,28 @@ export const DEMO_ACCOUNTS: Record<string, AuthUser> = {
     role: 'lab_owner',
     labName: LAB_NAME,
   },
+  '8': {
+    id: 'u-reception',
+    name: 'Lara Nasrallah',
+    initials: 'LN',
+    phone: '8',
+    role: 'receptionist',
+    labName: LAB_NAME,
+  },
+  '6': {
+    id: 'u-manager',
+    name: 'Tarek Aziz',
+    initials: 'TA',
+    phone: '6',
+    role: 'staff_manager',
+    labName: LAB_NAME,
+  },
   '2': {
-    id: 'u-tech',
+    id: 'u-worker',
     name: 'Karim Haddad',
     initials: 'KH',
     phone: '2',
-    role: 'lab_staff',
+    role: 'worker',
     labName: LAB_NAME,
     permissions: { viewDoctors: true },
   },
@@ -71,7 +91,7 @@ export const DEMO_ACCOUNTS: Record<string, AuthUser> = {
 };
 
 /** Order the demo roles appear in on the sign-in screen. */
-export const DEMO_ACCOUNT_PHONES: readonly string[] = ['1', '2', '3', '4'];
+export const DEMO_ACCOUNT_PHONES: readonly string[] = ['1', '8', '6', '2', '3', '4'];
 
 const STORAGE_KEY = 'lab-mobile:session';
 /** Fake network delay so buttons show real pending states. */

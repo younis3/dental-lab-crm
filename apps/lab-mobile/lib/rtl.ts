@@ -31,5 +31,9 @@ export function mirror(isRtl: boolean): TextStyle | null {
   return isRtl ? { transform: [{ scaleX: -1 }] } : null;
 }
 
-/** Keeps digits in order inside an RTL layout (phone numbers, codes, times). */
-export const LTR_TEXT: TextStyle = { writingDirection: 'ltr', textAlign: 'left' };
+/**
+ * Typed input that is always left-to-right (phone numbers, codes, amounts).
+ * Unlike display text, it also starts at the left edge, which is how the
+ * platform itself aligns Latin content inside an RTL form.
+ */
+export const LTR_INPUT: TextStyle = { writingDirection: 'ltr', textAlign: 'left' };

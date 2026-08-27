@@ -1,14 +1,13 @@
-export type Lang = 'en' | 'he' | 'ar';
+export type Lang = 'en' | 'he';
 
 export const LANGS: { key: Lang; label: string; short: string }[] = [
   { key: 'en', label: 'English', short: 'EN' },
   { key: 'he', label: 'עברית', short: 'עב' },
-  { key: 'ar', label: 'العربية', short: 'ع' },
 ];
 
-export const isRtl = (lang: Lang) => lang === 'he' || lang === 'ar';
+export const isRtl = (lang: Lang) => lang === 'he';
 
-export const LOCALES: Record<Lang, string> = { en: 'en-US', he: 'he-IL', ar: 'ar-EG' };
+export const LOCALES: Record<Lang, string> = { en: 'en-US', he: 'he-IL' };
 
 /** Tenant-authored copy that ships in every language. */
 export type LocalizedText = Record<Lang, string>;
@@ -58,15 +57,12 @@ export type UiStrings = {
   navInbox: string;
   navFiles: string;
   navAnalytics: string;
-  navFinancials: string;
   navCourier: string;
   navTeam: string;
   navExocad: string;
 
   // drawer
   drawerWorkspace: string;
-  drawerComingSoon: string;
-  drawerSoonBadge: string;
   drawerOpenMenu: string;
   drawerCloseMenu: string;
   drawerOpenProfile: string;
@@ -84,7 +80,15 @@ export type UiStrings = {
   dashGreetingEvening: string;
   dashTodayAtLab: string;
   dashCasesInProduction: string;
-  dashOnTime: string;
+  dashWorkPressure: string;
+  dashWorkPressureValue: string;
+  dashWorkPressureAria: string;
+  dashCapacityTitle: string;
+  dashCapacityHint: string;
+  dashCapacityLabel: string;
+  dashCapacityOpen: string;
+  dashCapacityDecrease: string;
+  dashCapacityIncrease: string;
   dashRushJobs: string;
   dashPickups: string;
   dashProfile: string;
@@ -209,9 +213,17 @@ export type UiStrings = {
 
   // roles
   roleLabOwner: string;
-  roleLabStaff: string;
+  roleReceptionist: string;
+  roleStaffManager: string;
+  roleWorker: string;
   roleDoctor: string;
   roleDriver: string;
+  roleLabOwnerHint: string;
+  roleReceptionistHint: string;
+  roleStaffManagerHint: string;
+  roleWorkerHint: string;
+  roleDoctorHint: string;
+  roleDriverHint: string;
   loginDemoRoles: string;
 
   // permissions
@@ -224,6 +236,8 @@ export type UiStrings = {
   permViewClinics: string;
   permViewPatients: string;
   permViewDeliveries: string;
+  permViewBilling: string;
+  permViewAnalytics: string;
   permViewExocad: string;
   permManageStaff: string;
 
@@ -267,7 +281,6 @@ export type UiStrings = {
 
   // directory status
   statusActive: string;
-  statusPending: string;
   statusInactive: string;
 
   // directory columns
@@ -286,6 +299,10 @@ export type UiStrings = {
   colWorkType: string;
   colAge: string;
   colStage: string;
+  colPrice: string;
+  colTurnaround: string;
+  colCategory: string;
+  colEdit: string;
 
   // doctors
   doctorsTitle: string;
@@ -293,6 +310,10 @@ export type UiStrings = {
   doctorsSearch: string;
   doctorsEmptyTitle: string;
   doctorsEmptyBody: string;
+  doctorsAdd: string;
+  doctorsAddTitle: string;
+  doctorsAddNamePlaceholder: string;
+  doctorsAddClinicPlaceholder: string;
 
   // clinics
   clinicsTitle: string;
@@ -300,6 +321,9 @@ export type UiStrings = {
   clinicsSearch: string;
   clinicsEmptyTitle: string;
   clinicsEmptyBody: string;
+  clinicsAdd: string;
+  clinicsAddTitle: string;
+  clinicsAddNamePlaceholder: string;
 
   // patients
   patientsTitle: string;
@@ -307,6 +331,41 @@ export type UiStrings = {
   patientsSearch: string;
   patientsEmptyTitle: string;
   patientsEmptyBody: string;
+  patientsAdd: string;
+  patientsAddTitle: string;
+  patientsAddNamePlaceholder: string;
+  patientsAddDoctorPlaceholder: string;
+  patientsAddAgePlaceholder: string;
+
+  // work types
+  navWorkTypes: string;
+  permViewWorkTypes: string;
+  workTypesTitle: string;
+  workTypesSubtitle: string;
+  workTypesSearch: string;
+  workTypesEmptyTitle: string;
+  workTypesEmptyBody: string;
+  workTypesAdd: string;
+  workTypesAddTitle: string;
+  workTypesAddNamePlaceholder: string;
+  workTypesAddPricePlaceholder: string;
+  workTypesAddDaysPlaceholder: string;
+  workTypesEditTitle: string;
+  workTypesEditAria: string;
+  workTypeCrown: string;
+  workTypeBridge: string;
+  workTypeVeneer: string;
+  workTypeDenture: string;
+  workTypeImplant: string;
+  workTypeAppliance: string;
+
+  // quick add sheets
+  quickAddName: string;
+  quickAddEmail: string;
+  quickAddPhonePlaceholder: string;
+  quickAddEmailPlaceholder: string;
+  quickAddRequired: string;
+  quickAddSave: string;
 
   // team and roles
   staffTitle: string;
@@ -393,6 +452,208 @@ export type UiStrings = {
   tasksReviewHint: string;
   tasksDragHandle: string;
   tasksMyTaskAria: string;
+
+  // driver runs
+  deliveriesTitle: string;
+  deliveriesSubtitle: string;
+  deliveriesToday: string;
+  deliveriesTomorrow: string;
+  deliveriesThisWeek: string;
+  deliveriesAllDrivers: string;
+  deliveriesStopsCount: string;
+  deliveriesCasesCount: string;
+  deliveriesSummaryStops: string;
+  deliveriesSummaryCases: string;
+  deliveriesSummaryCities: string;
+  deliveriesKindDrop: string;
+  deliveriesKindPickup: string;
+  deliveriesRushBadge: string;
+  deliveriesAddress: string;
+  deliveriesStopAria: string;
+  deliveriesDriverAria: string;
+  deliveriesEmptyTitle: string;
+  deliveriesEmptyBody: string;
+
+  // scanner
+  navScan: string;
+  scanTitle: string;
+  scanSubtitle: string;
+  scanHint: string;
+  scanPermissionTitle: string;
+  scanPermissionBody: string;
+  scanPermissionAction: string;
+  scanPermissionBlockedTitle: string;
+  scanPermissionBlockedBody: string;
+  scanOpenSettings: string;
+  scanUnavailableTitle: string;
+  scanUnavailableBody: string;
+  scanRetry: string;
+  scanTorchOn: string;
+  scanTorchOff: string;
+  scanFlipCamera: string;
+  scanResultTitle: string;
+  scanResultFormat: string;
+  scanResultCode: string;
+  scanResultCopy: string;
+  scanResultCopied: string;
+  scanResultAgain: string;
+  scanCameraAria: string;
+
+  // invoicing
+  navNewInvoice: string;
+  navBilling: string;
+  drawerMoney: string;
+  invoiceNewTitle: string;
+  invoiceNewSubtitle: string;
+  invoiceCustomerTitle: string;
+  invoiceCustomerDoctor: string;
+  invoiceCustomerWalkIn: string;
+  invoicePickDoctor: string;
+  invoicePickDoctorHint: string;
+  invoiceWalkInHint: string;
+  invoiceChangeDoctor: string;
+  invoiceDoctorSheetTitle: string;
+  invoiceDoctorSearch: string;
+  invoiceDoctorEmpty: string;
+  invoiceDoctorEmptyHint: string;
+  invoiceCustomerName: string;
+  invoiceCustomerNamePlaceholder: string;
+  invoiceEmail: string;
+  invoiceEmailPlaceholder: string;
+  invoicePhone: string;
+  invoicePhonePlaceholder: string;
+  invoiceItemsTitle: string;
+  invoiceItemsHint: string;
+  invoiceItemsEmpty: string;
+  invoiceItemsEmptyHint: string;
+  invoiceAddServiceAria: string;
+  invoiceCustomLine: string;
+  invoiceLineEach: string;
+  invoiceLineRemove: string;
+  invoiceLineIncrease: string;
+  invoiceLineDecrease: string;
+  invoiceLineSheetNew: string;
+  invoiceLineSheetEdit: string;
+  invoiceLineDescription: string;
+  invoiceLineDescriptionPlaceholder: string;
+  invoiceLineUnitPrice: string;
+  invoiceLineQuantity: string;
+  invoiceLineRequired: string;
+  invoiceTermsTitle: string;
+  invoiceDueOn: string;
+  invoiceNotesTitle: string;
+  invoiceNotesPlaceholder: string;
+  invoiceSubtotal: string;
+  invoiceVat: string;
+  invoiceTotal: string;
+  invoiceSendTitle: string;
+  invoiceChannelEmail: string;
+  invoiceChannelApp: string;
+  invoiceChannelEmailHint: string;
+  invoiceChannelAppHint: string;
+  invoiceSend: string;
+  invoiceSaveDraft: string;
+  invoiceErrorCustomer: string;
+  invoiceErrorEmail: string;
+  invoiceErrorLines: string;
+  invoiceSentTitle: string;
+  invoiceSentBody: string;
+  invoiceDraftSavedTitle: string;
+  invoiceDraftSavedBody: string;
+  invoiceMailFallback: string;
+  invoiceAnother: string;
+  invoiceOpenBilling: string;
+  invoiceMailSubject: string;
+  invoiceMailBody: string;
+
+  // payments and invoices
+  billingTitle: string;
+  billingSubtitle: string;
+  billingNewInvoice: string;
+  billingViewInvoices: string;
+  billingViewPayments: string;
+  billingSearch: string;
+  billingSummaryOutstanding: string;
+  billingSummaryOverdue: string;
+  billingSummaryCollected: string;
+  billingStatusDraft: string;
+  billingStatusSent: string;
+  billingStatusPartial: string;
+  billingStatusPaid: string;
+  billingStatusOverdue: string;
+  billingTermsMonthly: string;
+  billingTermsMonthlyHint: string;
+  billingTermsImmediate: string;
+  billingTermsImmediateHint: string;
+  billingWalkInBadge: string;
+  billingIssuedOn: string;
+  billingDueOn: string;
+  billingOverdueDays: string;
+  billingFullyPaid: string;
+  billingPaidOf: string;
+  billingInvoiceAria: string;
+  billingPaymentAria: string;
+  billingEmptyInvoices: string;
+  billingEmptyInvoicesHint: string;
+  billingEmptyPayments: string;
+  billingEmptyPaymentsHint: string;
+  billingDetailTitle: string;
+  billingDetailItems: string;
+  billingDetailPaid: string;
+  billingDetailBalance: string;
+  billingDetailNotes: string;
+  billingDetailPayments: string;
+  billingDetailNoPayments: string;
+  billingSentVia: string;
+  billingRecordPayment: string;
+  billingResend: string;
+  billingSendNow: string;
+  billingDeleteDraft: string;
+  billingRemovePayment: string;
+  billingPaymentTitle: string;
+  billingPaymentFor: string;
+  billingPaymentAmount: string;
+  billingPaymentMethod: string;
+  billingPaymentReference: string;
+  billingPaymentReferencePlaceholder: string;
+  billingPaymentSave: string;
+  billingPaymentInvalid: string;
+  payMethodCash: string;
+  payMethodCard: string;
+  payMethodTransfer: string;
+  payMethodCheck: string;
+  payMethodApp: string;
+
+  // analytics
+  analyticsTitle: string;
+  analyticsSubtitle: string;
+  analyticsRangeMonth: string;
+  analyticsRangeQuarter: string;
+  analyticsRangeHalf: string;
+  analyticsHeroInvoiced: string;
+  analyticsHeroCollected: string;
+  analyticsCollectionRate: string;
+  analyticsKpiOutstanding: string;
+  analyticsKpiOverdue: string;
+  analyticsOverdueCount: string;
+  analyticsKpiAvgInvoice: string;
+  analyticsInvoiceCount: string;
+  analyticsKpiUnits: string;
+  analyticsCounterShare: string;
+  analyticsRevenueTitle: string;
+  analyticsLegendInvoiced: string;
+  analyticsLegendCollected: string;
+  analyticsQualityTitle: string;
+  analyticsKpiOnTime: string;
+  analyticsKpiTurnaround: string;
+  analyticsTurnaroundHint: string;
+  analyticsServicesTitle: string;
+  analyticsServiceUnits: string;
+  analyticsDoctorsTitle: string;
+  analyticsMethodsTitle: string;
+  analyticsMethodCount: string;
+  analyticsEmpty: string;
+  analyticsEmptyHint: string;
 };
 
 export const UI_STRINGS: Record<Lang, UiStrings> = {
@@ -426,14 +687,11 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navInbox: 'Inbox',
     navFiles: 'Files',
     navAnalytics: 'Analytics',
-    navFinancials: 'Financials',
-    navCourier: 'Courier',
+    navCourier: 'Drivers',
     navTeam: 'Team & roles',
     navExocad: 'exocad demo',
 
     drawerWorkspace: 'Workspace',
-    drawerComingSoon: 'Coming soon',
-    drawerSoonBadge: 'Soon',
     drawerOpenMenu: 'Open menu',
     drawerCloseMenu: 'Close menu',
     drawerOpenProfile: 'Open profile',
@@ -450,13 +708,21 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashGreetingEvening: 'Good evening',
     dashTodayAtLab: 'Today at the lab',
     dashCasesInProduction: 'cases in production',
-    dashOnTime: 'on time',
+    dashWorkPressure: 'work pressure',
+    dashWorkPressureValue: '{percent}%',
+    dashWorkPressureAria: 'Work pressure {percent} percent from {open} of {capacity} cases. Set capacity.',
+    dashCapacityTitle: 'Order capacity',
+    dashCapacityHint: 'How many open cases the lab can take on at once. Pressure is current cases divided by this number.',
+    dashCapacityLabel: 'Capacity',
+    dashCapacityOpen: '{count} open cases now',
+    dashCapacityDecrease: 'Decrease capacity',
+    dashCapacityIncrease: 'Increase capacity',
     dashRushJobs: '{count} rush jobs',
     dashPickups: '{count} pickups',
     dashProfile: 'Your profile',
-    dashAttentionOne: '1 case needs attention',
-    dashAttentionMany: '{count} cases need attention',
-    dashAttentionAria: 'Review cases that need attention',
+    dashAttentionOne: '1 order needs your urgent attention',
+    dashAttentionMany: '{count} orders need your urgent attention',
+    dashAttentionAria: 'Review orders that need urgent attention',
     dashStatActive: 'Active cases',
     dashStatActiveDelta: '+{count} today',
     dashStatDue: 'Due this week',
@@ -470,8 +736,8 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashRecentActivity: 'Recent activity',
     dashSeeAll: 'See all',
     quickNewCase: 'New case',
-    quickCourier: 'Courier',
-    quickScan: 'Scan file',
+    quickCourier: 'Drivers',
+    quickScan: 'Scan code',
     quickInvoice: 'Invoice',
 
     stageReceived: 'Received',
@@ -568,9 +834,17 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     timeDays: '{count}d ago',
 
     roleLabOwner: 'Lab owner',
-    roleLabStaff: 'Lab technician',
+    roleReceptionist: 'Receptionist',
+    roleStaffManager: 'Staff manager',
+    roleWorker: 'Lab worker',
     roleDoctor: 'Doctor',
-    roleDriver: 'Courier',
+    roleDriver: 'Driver',
+    roleLabOwnerHint: 'Full access, including billing, analytics and the team.',
+    roleReceptionistHint: 'Front desk: invoices, payments, analytics, clients and cases.',
+    roleStaffManagerHint: 'Runs the floor: cases, tasks and the team, but not the money.',
+    roleWorkerHint: 'Works the cases and tasks assigned to them.',
+    roleDoctorHint: 'A client of the lab: sees only their own cases and files.',
+    roleDriverHint: 'Sees the delivery run and nothing else.',
     loginDemoRoles: 'Sign in as',
 
     permViewDashboard: 'View dashboard',
@@ -582,6 +856,8 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     permViewClinics: 'View clinics',
     permViewPatients: 'View patients',
     permViewDeliveries: 'View deliveries',
+    permViewBilling: 'View invoices and payments',
+    permViewAnalytics: 'View analytics',
     permViewExocad: 'Open exocad viewer',
     permManageStaff: 'Manage team',
 
@@ -621,14 +897,13 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     tableSortBy: 'Sort by {column}',
 
     statusActive: 'Active',
-    statusPending: 'Pending',
     statusInactive: 'Inactive',
 
     colDoctor: 'Doctor',
     colClinic: 'Clinic',
     colSpecialty: 'Specialty',
     colPhone: 'Phone',
-    colActiveCases: 'Active',
+    colActiveCases: 'Active cases',
     colTotalCases: 'Total',
     colStatus: 'Status',
     colCity: 'City',
@@ -639,24 +914,68 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     colWorkType: 'Work type',
     colAge: 'Age',
     colStage: 'Stage',
+    colPrice: 'Price',
+    colTurnaround: 'Days',
+    colCategory: 'Category',
+    colEdit: 'Edit',
 
     doctorsTitle: 'Doctors',
     doctorsSubtitle: '{count} referring doctors',
     doctorsSearch: 'Search doctor, clinic or specialty',
     doctorsEmptyTitle: 'No doctors found',
     doctorsEmptyBody: 'Try a different search term or clear the filter.',
+    doctorsAdd: 'Add doctor',
+    doctorsAddTitle: 'New doctor',
+    doctorsAddNamePlaceholder: 'Dr. Amir Saleh',
+    doctorsAddClinicPlaceholder: 'Where they practise',
 
     clinicsTitle: 'Clinics',
     clinicsSubtitle: '{count} partner clinics',
     clinicsSearch: 'Search clinic or city',
     clinicsEmptyTitle: 'No clinics found',
     clinicsEmptyBody: 'Try a different search term or clear the filter.',
+    clinicsAdd: 'Add clinic',
+    clinicsAddTitle: 'New clinic',
+    clinicsAddNamePlaceholder: 'Bright Smile Clinic',
 
     patientsTitle: 'Patients',
     patientsSubtitle: '{count} patients on file',
     patientsSearch: 'Search patient, case or doctor',
     patientsEmptyTitle: 'No patients found',
     patientsEmptyBody: 'Try a different search term or clear the filter.',
+    patientsAdd: 'Add patient',
+    patientsAddTitle: 'New patient',
+    patientsAddNamePlaceholder: 'Patient full name',
+    patientsAddDoctorPlaceholder: 'Referring doctor',
+    patientsAddAgePlaceholder: 'Age in years',
+
+    navWorkTypes: 'Work types',
+    permViewWorkTypes: 'View work types',
+    workTypesTitle: 'Work types',
+    workTypesSubtitle: '{count} services in the price list',
+    workTypesSearch: 'Search work type or category',
+    workTypesEmptyTitle: 'No work types found',
+    workTypesEmptyBody: 'Try a different search term or clear the filter.',
+    workTypesAdd: 'Add work type',
+    workTypesAddTitle: 'New work type',
+    workTypesAddNamePlaceholder: 'Zirconia crown',
+    workTypesAddPricePlaceholder: 'Price per unit',
+    workTypesAddDaysPlaceholder: 'Working days until delivery',
+    workTypesEditTitle: 'Edit work type',
+    workTypesEditAria: 'Edit {name}',
+    workTypeCrown: 'Crowns',
+    workTypeBridge: 'Bridges',
+    workTypeVeneer: 'Veneers',
+    workTypeDenture: 'Dentures',
+    workTypeImplant: 'Implants',
+    workTypeAppliance: 'Appliances',
+
+    quickAddName: 'Full name',
+    quickAddEmail: 'Email',
+    quickAddPhonePlaceholder: '050-000-0000',
+    quickAddEmailPlaceholder: 'name@clinic.com',
+    quickAddRequired: 'This field is required.',
+    quickAddSave: 'Add to list',
 
     staffTitle: 'Team & roles',
     staffSubtitle: '{count} team members',
@@ -741,6 +1060,205 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     tasksReviewHint: 'Completed — waiting for manager confirmation',
     tasksDragHandle: 'Drag to reorder',
     tasksMyTaskAria: '{title}, assigned to {assignee}',
+
+    deliveriesTitle: 'Drivers',
+    deliveriesSubtitle: '{stops} stops · {drivers} drivers',
+    deliveriesToday: 'Today',
+    deliveriesTomorrow: 'Tomorrow',
+    deliveriesThisWeek: 'This week',
+    deliveriesAllDrivers: 'All drivers',
+    deliveriesStopsCount: '{count} stops',
+    deliveriesCasesCount: '{count} cases',
+    deliveriesSummaryStops: 'Stops',
+    deliveriesSummaryCases: 'Cases',
+    deliveriesSummaryCities: 'Cities',
+    deliveriesKindDrop: 'Drop-off',
+    deliveriesKindPickup: 'Pickup',
+    deliveriesRushBadge: 'Rush',
+    deliveriesAddress: '{street} {number}, {city}',
+    deliveriesStopAria: 'Stop at {clinic}, {city}',
+    deliveriesDriverAria: 'Show only {name}',
+    deliveriesEmptyTitle: 'No stops scheduled',
+    deliveriesEmptyBody: 'Choose another driver or switch to the weekly view.',
+
+    navScan: 'Scan code',
+    scanTitle: 'Scan code',
+    scanSubtitle: 'QR codes and barcodes',
+    scanHint: 'Hold the code inside the frame',
+    scanPermissionTitle: 'Camera access needed',
+    scanPermissionBody: 'The scanner uses the camera to read case QR codes and barcodes.',
+    scanPermissionAction: 'Allow camera',
+    scanPermissionBlockedTitle: 'Camera is blocked',
+    scanPermissionBlockedBody: 'Enable camera access for this app in your device settings, then come back.',
+    scanOpenSettings: 'Open settings',
+    scanUnavailableTitle: 'Scanner unavailable',
+    scanUnavailableBody: 'The camera could not start on this device. Try again in a moment.',
+    scanRetry: 'Try again',
+    scanTorchOn: 'Turn on flashlight',
+    scanTorchOff: 'Turn off flashlight',
+    scanFlipCamera: 'Switch camera',
+    scanResultTitle: 'Code detected',
+    scanResultFormat: 'Format · {type}',
+    scanResultCode: 'Code',
+    scanResultCopy: 'Copy code',
+    scanResultCopied: 'Copied',
+    scanResultAgain: 'Scan another',
+    scanCameraAria: 'Camera viewfinder',
+
+    navNewInvoice: 'New invoice',
+    navBilling: 'Payments',
+    drawerMoney: 'Money',
+    invoiceNewTitle: 'New invoice',
+    invoiceNewSubtitle: 'Invoice {id}',
+    invoiceCustomerTitle: 'Customer',
+    invoiceCustomerDoctor: 'Doctor',
+    invoiceCustomerWalkIn: 'Walk-in',
+    invoicePickDoctor: 'Choose a doctor',
+    invoicePickDoctorHint: 'Billed to their monthly account.',
+    invoiceWalkInHint: 'Pays at the counter, on the spot.',
+    invoiceChangeDoctor: 'Change',
+    invoiceDoctorSheetTitle: 'Choose a doctor',
+    invoiceDoctorSearch: 'Search name or clinic',
+    invoiceDoctorEmpty: 'No doctor found',
+    invoiceDoctorEmptyHint: 'Try another name, or invoice them as a walk-in.',
+    invoiceCustomerName: 'Full name',
+    invoiceCustomerNamePlaceholder: 'Who is paying?',
+    invoiceEmail: 'Email',
+    invoiceEmailPlaceholder: 'name@example.com',
+    invoicePhone: 'Phone',
+    invoicePhonePlaceholder: '05X-XXX-XXXX',
+    invoiceItemsTitle: 'Items',
+    invoiceItemsHint: 'Tap a service to add it, tap again for another unit.',
+    invoiceItemsEmpty: 'No items yet',
+    invoiceItemsEmptyHint: 'Pick from the price list above.',
+    invoiceAddServiceAria: 'Add {name}',
+    invoiceCustomLine: 'Add a custom line',
+    invoiceLineEach: '{price} each',
+    invoiceLineRemove: 'Remove line',
+    invoiceLineIncrease: 'One more',
+    invoiceLineDecrease: 'One less',
+    invoiceLineSheetNew: 'Custom line',
+    invoiceLineSheetEdit: 'Edit line',
+    invoiceLineDescription: 'Description',
+    invoiceLineDescriptionPlaceholder: 'What are you charging for?',
+    invoiceLineUnitPrice: 'Price per unit',
+    invoiceLineQuantity: 'Quantity',
+    invoiceLineRequired: 'Add a description and a price above zero.',
+    invoiceTermsTitle: 'Payment terms',
+    invoiceDueOn: 'Due {date}',
+    invoiceNotesTitle: 'Note on the invoice',
+    invoiceNotesPlaceholder: 'Anything the customer should read.',
+    invoiceSubtotal: 'Subtotal',
+    invoiceVat: 'VAT {rate}%',
+    invoiceTotal: 'Total',
+    invoiceSendTitle: 'Send',
+    invoiceChannelEmail: 'Email',
+    invoiceChannelApp: 'In the app',
+    invoiceChannelEmailHint: 'Opens your mail app with the invoice ready to send.',
+    invoiceChannelAppHint: '{name} gets it in their app inbox.',
+    invoiceSend: 'Send invoice',
+    invoiceSaveDraft: 'Save as draft',
+    invoiceErrorCustomer: 'Choose who this invoice is for.',
+    invoiceErrorEmail: 'A valid email address is needed to send it.',
+    invoiceErrorLines: 'Add at least one item.',
+    invoiceSentTitle: 'Invoice sent',
+    invoiceSentBody: '{id} for {total} is on its way to {name}.',
+    invoiceDraftSavedTitle: 'Draft saved',
+    invoiceDraftSavedBody: '{id} is waiting in payments and invoices.',
+    invoiceMailFallback:
+      'No mail app answered. The invoice is saved, so you can send it again from payments.',
+    invoiceAnother: 'New invoice',
+    invoiceOpenBilling: 'Open payments',
+    invoiceMailSubject: 'Invoice {id} · Nadeem Dental Lab',
+    invoiceMailBody:
+      'Hello {name},\n\nHere is invoice {id} for {total}, due {due}.\n\n{lines}\n\nThank you,\nNadeem Dental Lab',
+
+    billingTitle: 'Payments & invoices',
+    billingSubtitle: '{outstanding} open · {overdue} overdue',
+    billingNewInvoice: 'New invoice',
+    billingViewInvoices: 'Invoices',
+    billingViewPayments: 'Payments',
+    billingSearch: 'Search invoice, doctor or clinic',
+    billingSummaryOutstanding: 'Open balance',
+    billingSummaryOverdue: 'Overdue',
+    billingSummaryCollected: 'In this month',
+    billingStatusDraft: 'Draft',
+    billingStatusSent: 'Sent',
+    billingStatusPartial: 'Part paid',
+    billingStatusPaid: 'Paid',
+    billingStatusOverdue: 'Overdue',
+    billingTermsMonthly: 'Monthly account',
+    billingTermsMonthlyHint: 'Settled with the month-end statement.',
+    billingTermsImmediate: 'Pay now',
+    billingTermsImmediateHint: 'Due when the customer collects the work.',
+    billingWalkInBadge: 'Walk-in',
+    billingIssuedOn: 'Issued {date}',
+    billingDueOn: 'Due {date}',
+    billingOverdueDays: '{count} days overdue',
+    billingFullyPaid: 'Fully paid',
+    billingPaidOf: '{paid} of {total} received',
+    billingInvoiceAria: 'Invoice {id} for {name}',
+    billingPaymentAria: 'Payment of {amount} from {name}',
+    billingEmptyInvoices: 'No invoices here',
+    billingEmptyInvoicesHint: 'Change the filter, or issue a new invoice.',
+    billingEmptyPayments: 'No payments yet',
+    billingEmptyPaymentsHint: 'Money you record against an invoice shows up here.',
+    billingDetailTitle: 'Invoice {id}',
+    billingDetailItems: 'Items',
+    billingDetailPaid: 'Received',
+    billingDetailBalance: 'Balance',
+    billingDetailNotes: 'Note',
+    billingDetailPayments: 'Payments received',
+    billingDetailNoPayments: 'Nothing received against this invoice yet.',
+    billingSentVia: 'Sent by {channel}',
+    billingRecordPayment: 'Record payment',
+    billingResend: 'Send again',
+    billingSendNow: 'Send by email',
+    billingDeleteDraft: 'Delete draft',
+    billingRemovePayment: 'Remove payment',
+    billingPaymentTitle: 'Record payment',
+    billingPaymentFor: 'Invoice {id} has {balance} open.',
+    billingPaymentAmount: 'Amount received',
+    billingPaymentMethod: 'How it was paid',
+    billingPaymentReference: 'Reference',
+    billingPaymentReferencePlaceholder: 'Cheque or transfer number',
+    billingPaymentSave: 'Record',
+    billingPaymentInvalid: 'Enter an amount up to the open balance.',
+    payMethodCash: 'Cash',
+    payMethodCard: 'Card',
+    payMethodTransfer: 'Transfer',
+    payMethodCheck: 'Cheque',
+    payMethodApp: 'In app',
+
+    analyticsTitle: 'Analytics',
+    analyticsSubtitle: 'How the lab is trading',
+    analyticsRangeMonth: 'This month',
+    analyticsRangeQuarter: '3 months',
+    analyticsRangeHalf: '6 months',
+    analyticsHeroInvoiced: 'Invoiced',
+    analyticsHeroCollected: 'Collected so far',
+    analyticsCollectionRate: 'Collected',
+    analyticsKpiOutstanding: 'Open balance',
+    analyticsKpiOverdue: 'Overdue',
+    analyticsOverdueCount: '{count} invoices',
+    analyticsKpiAvgInvoice: 'Average invoice',
+    analyticsInvoiceCount: '{count} invoices',
+    analyticsKpiUnits: 'Units produced',
+    analyticsCounterShare: '{percent}% at the counter',
+    analyticsRevenueTitle: 'Invoiced against collected',
+    analyticsLegendInvoiced: 'Invoiced',
+    analyticsLegendCollected: 'Collected',
+    analyticsQualityTitle: 'Production',
+    analyticsKpiOnTime: 'Delivered on time',
+    analyticsKpiTurnaround: 'Days per case',
+    analyticsTurnaroundHint: 'From case received to case shipped.',
+    analyticsServicesTitle: 'Revenue by service',
+    analyticsServiceUnits: '{count} units',
+    analyticsDoctorsTitle: 'Top doctors',
+    analyticsMethodsTitle: 'How customers pay',
+    analyticsMethodCount: '{count} payments',
+    analyticsEmpty: 'Nothing invoiced yet',
+    analyticsEmptyHint: 'Issue an invoice and the numbers will land here.',
   },
 
   he: {
@@ -773,14 +1291,11 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     navInbox: 'הודעות',
     navFiles: 'קבצים',
     navAnalytics: 'אנליטיקה',
-    navFinancials: 'כספים',
-    navCourier: 'שליחויות',
+    navCourier: 'שליחים',
     navTeam: 'צוות והרשאות',
     navExocad: 'הדגמת exocad',
 
     drawerWorkspace: 'סביבת עבודה',
-    drawerComingSoon: 'בקרוב',
-    drawerSoonBadge: 'בקרוב',
     drawerOpenMenu: 'פתיחת התפריט',
     drawerCloseMenu: 'סגירת התפריט',
     drawerOpenProfile: 'פתיחת הפרופיל',
@@ -797,13 +1312,21 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashGreetingEvening: 'ערב טוב',
     dashTodayAtLab: 'היום במעבדה',
     dashCasesInProduction: 'תיקים בייצור',
-    dashOnTime: 'בזמן',
+    dashWorkPressure: 'לחץ עבודה',
+    dashWorkPressureValue: '{percent}%',
+    dashWorkPressureAria: 'לחץ עבודה {percent} אחוז מתוך {open} מול {capacity} תיקים. הגדרת קיבולת.',
+    dashCapacityTitle: 'קיבולת הזמנות',
+    dashCapacityHint: 'כמה תיקים פתוחים המעבדה יכולה לקחת במקביל. הלחץ הוא מספר התיקים הנוכחי חלקי מספר זה.',
+    dashCapacityLabel: 'קיבולת',
+    dashCapacityOpen: '{count} תיקים פתוחים כעת',
+    dashCapacityDecrease: 'הפחתת קיבולת',
+    dashCapacityIncrease: 'העלאת קיבולת',
     dashRushJobs: '{count} עבודות דחופות',
     dashPickups: '{count} איסופים',
     dashProfile: 'הפרופיל שלך',
-    dashAttentionOne: 'תיק אחד דורש טיפול',
-    dashAttentionMany: '{count} תיקים דורשים טיפול',
-    dashAttentionAria: 'מעבר לתיקים שדורשים טיפול',
+    dashAttentionOne: 'הזמנה אחת דורשת טיפול דחוף',
+    dashAttentionMany: '{count} הזמנות דורשות טיפול דחוף',
+    dashAttentionAria: 'מעבר להזמנות שדורשות טיפול דחוף',
     dashStatActive: 'תיקים פעילים',
     dashStatActiveDelta: '+{count} היום',
     dashStatDue: 'ליעד השבוע',
@@ -817,8 +1340,8 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     dashRecentActivity: 'פעילות אחרונה',
     dashSeeAll: 'הצגת הכול',
     quickNewCase: 'תיק חדש',
-    quickCourier: 'שליח',
-    quickScan: 'סריקה',
+    quickCourier: 'שליחים',
+    quickScan: 'סריקת קוד',
     quickInvoice: 'חשבונית',
 
     stageReceived: 'התקבל',
@@ -915,9 +1438,17 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     timeDays: 'לפני {count} ימים',
 
     roleLabOwner: 'בעל המעבדה',
-    roleLabStaff: 'טכנאי מעבדה',
+    roleReceptionist: 'פקיד קבלה',
+    roleStaffManager: 'מנהל צוות',
+    roleWorker: 'עובד מעבדה',
     roleDoctor: 'רופא',
     roleDriver: 'שליח',
+    roleLabOwnerHint: 'גישה מלאה, כולל חשבוניות, אנליטיקה וניהול הצוות.',
+    roleReceptionistHint: 'קבלה: חשבוניות, תשלומים, אנליטיקה, לקוחות ותיקים.',
+    roleStaffManagerHint: 'מנהל את רצפת הייצור: תיקים, משימות וצוות — בלי כספים.',
+    roleWorkerHint: 'עובד על התיקים והמשימות שהוקצו לו.',
+    roleDoctorHint: 'לקוח של המעבדה: רואה רק את התיקים והקבצים שלו.',
+    roleDriverHint: 'רואה את מסלול המשלוחים בלבד.',
     loginDemoRoles: 'התחברות בתור',
 
     permViewDashboard: 'צפייה בלוח הבקרה',
@@ -929,6 +1460,8 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     permViewClinics: 'צפייה במרפאות',
     permViewPatients: 'צפייה במטופלים',
     permViewDeliveries: 'צפייה במשלוחים',
+    permViewBilling: 'צפייה בחשבוניות ותשלומים',
+    permViewAnalytics: 'צפייה באנליטיקה',
     permViewExocad: 'פתיחת מציג exocad',
     permManageStaff: 'ניהול הצוות',
 
@@ -968,14 +1501,13 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     tableSortBy: 'מיון לפי {column}',
 
     statusActive: 'פעיל',
-    statusPending: 'ממתין',
     statusInactive: 'לא פעיל',
 
     colDoctor: 'רופא',
     colClinic: 'מרפאה',
     colSpecialty: 'התמחות',
     colPhone: 'טלפון',
-    colActiveCases: 'פעילים',
+    colActiveCases: 'תיקים פעילים',
     colTotalCases: 'סה״כ',
     colStatus: 'סטטוס',
     colCity: 'עיר',
@@ -986,24 +1518,68 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     colWorkType: 'סוג עבודה',
     colAge: 'גיל',
     colStage: 'שלב',
+    colPrice: 'מחיר',
+    colTurnaround: 'ימים',
+    colCategory: 'קטגוריה',
+    colEdit: 'עריכה',
 
     doctorsTitle: 'רופאים',
     doctorsSubtitle: '{count} רופאים מפנים',
     doctorsSearch: 'חיפוש רופא, מרפאה או התמחות',
     doctorsEmptyTitle: 'לא נמצאו רופאים',
     doctorsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+    doctorsAdd: 'הוספת רופא',
+    doctorsAddTitle: 'רופא חדש',
+    doctorsAddNamePlaceholder: 'ד״ר אמיר סאלח',
+    doctorsAddClinicPlaceholder: 'המרפאה שבה הוא עובד',
 
     clinicsTitle: 'מרפאות',
     clinicsSubtitle: '{count} מרפאות שותפות',
     clinicsSearch: 'חיפוש מרפאה או עיר',
     clinicsEmptyTitle: 'לא נמצאו מרפאות',
     clinicsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+    clinicsAdd: 'הוספת מרפאה',
+    clinicsAddTitle: 'מרפאה חדשה',
+    clinicsAddNamePlaceholder: 'מרפאת חיוך בריא',
 
     patientsTitle: 'מטופלים',
     patientsSubtitle: '{count} מטופלים בתיקייה',
     patientsSearch: 'חיפוש מטופל, תיק או רופא',
     patientsEmptyTitle: 'לא נמצאו מטופלים',
     patientsEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+    patientsAdd: 'הוספת מטופל',
+    patientsAddTitle: 'מטופל חדש',
+    patientsAddNamePlaceholder: 'שם מלא של המטופל',
+    patientsAddDoctorPlaceholder: 'הרופא המפנה',
+    patientsAddAgePlaceholder: 'גיל בשנים',
+
+    navWorkTypes: 'סוגי עבודה',
+    permViewWorkTypes: 'צפייה בסוגי עבודה',
+    workTypesTitle: 'סוגי עבודה',
+    workTypesSubtitle: '{count} סוגי עבודה במחירון',
+    workTypesSearch: 'חיפוש סוג עבודה או קטגוריה',
+    workTypesEmptyTitle: 'לא נמצאו סוגי עבודה',
+    workTypesEmptyBody: 'נסו מונח חיפוש אחר או נקו את הסינון.',
+    workTypesAdd: 'הוספת סוג עבודה',
+    workTypesAddTitle: 'סוג עבודה חדש',
+    workTypesAddNamePlaceholder: 'כתר זירקוניה',
+    workTypesAddPricePlaceholder: 'מחיר ליחידה',
+    workTypesAddDaysPlaceholder: 'ימי עבודה עד המסירה',
+    workTypesEditTitle: 'עריכת סוג עבודה',
+    workTypesEditAria: 'עריכת {name}',
+    workTypeCrown: 'כתרים',
+    workTypeBridge: 'גשרים',
+    workTypeVeneer: 'ציפויים',
+    workTypeDenture: 'תותבות',
+    workTypeImplant: 'שתלים',
+    workTypeAppliance: 'סדים ומתקנים',
+
+    quickAddName: 'שם מלא',
+    quickAddEmail: 'אימייל',
+    quickAddPhonePlaceholder: '050-000-0000',
+    quickAddEmailPlaceholder: 'name@clinic.com',
+    quickAddRequired: 'שדה חובה.',
+    quickAddSave: 'הוספה לרשימה',
 
     staffTitle: 'צוות והרשאות',
     staffSubtitle: '{count} חברי צוות',
@@ -1088,352 +1664,204 @@ export const UI_STRINGS: Record<Lang, UiStrings> = {
     tasksReviewHint: 'הושלמה — ממתינה לאישור מנהל',
     tasksDragHandle: 'גרירה לשינוי סדר',
     tasksMyTaskAria: '{title}, מוקצית אל {assignee}',
-  },
 
-  ar: {
-    loginWelcome: 'أهلًا بعودتك',
-    loginSubtitle: 'سجّل الدخول إلى مساحة عمل المختبر.',
-    loginPhoneLabel: 'رقم الهاتف',
-    loginPhonePlaceholder: 'أدخل رقم هاتفك',
-    loginPasswordLabel: 'كلمة المرور',
-    loginPasswordPlaceholder: 'أدخل كلمة المرور',
-    loginShowPassword: 'إظهار كلمة المرور',
-    loginHidePassword: 'إخفاء كلمة المرور',
-    loginSendCode: 'إرسال رمز التحقق',
-    loginVerifyTitle: 'تأكيد هويتك',
-    loginVerifySubtitle: 'أدخل الرمز المكوّن من {count} أرقام المُرسل إلى هاتفك.',
-    loginDemoCode: 'رمز العرض هو {code}',
-    loginVerifyAction: 'تحقق ومتابعة',
-    loginVerifying: 'جارٍ التحقق',
-    loginChangeNumber: 'تغيير الرقم',
-    loginResendIn: 'إعادة الإرسال خلال {seconds} ث',
-    loginResend: 'إعادة إرسال الرمز',
-    loginSecureNote: 'جلسة مشفّرة · Nadeem Dental Lab',
-    loginStepStatus: 'الخطوة {current} من {total}',
-    loginErrorCredentials: 'رقم الهاتف وكلمة المرور غير متطابقين.',
-    loginErrorCode: 'رمز غير صحيح. رمز العرض هو {code}.',
-    loginErrorExpired: 'انتهت صلاحية الجلسة. يرجى تسجيل الدخول مجددًا.',
+    deliveriesTitle: 'שליחים',
+    deliveriesSubtitle: '{stops} עצירות · {drivers} שליחים',
+    deliveriesToday: 'היום',
+    deliveriesTomorrow: 'מחר',
+    deliveriesThisWeek: 'השבוע',
+    deliveriesAllDrivers: 'כל השליחים',
+    deliveriesStopsCount: '{count} עצירות',
+    deliveriesCasesCount: '{count} עבודות',
+    deliveriesSummaryStops: 'עצירות',
+    deliveriesSummaryCases: 'עבודות',
+    deliveriesSummaryCities: 'ערים',
+    deliveriesKindDrop: 'מסירה',
+    deliveriesKindPickup: 'איסוף',
+    deliveriesRushBadge: 'דחוף',
+    deliveriesAddress: '{street} {number}, {city}',
+    deliveriesStopAria: 'עצירה ב{clinic}, {city}',
+    deliveriesDriverAria: 'הצגת {name} בלבד',
+    deliveriesEmptyTitle: 'אין עצירות מתוכננות',
+    deliveriesEmptyBody: 'בחרו שליח אחר או עברו לתצוגה השבועית.',
 
-    navHome: 'الرئيسية',
-    navDashboard: 'لوحة التحكم',
-    navOrders: 'الطلبات',
-    navInbox: 'الرسائل',
-    navFiles: 'الملفات',
-    navAnalytics: 'التحليلات',
-    navFinancials: 'المالية',
-    navCourier: 'التوصيل',
-    navTeam: 'الفريق والصلاحيات',
-    navExocad: 'عرض exocad',
+    navScan: 'סריקת קוד',
+    scanTitle: 'סריקת קוד',
+    scanSubtitle: 'קודי QR וברקודים',
+    scanHint: 'החזיקו את הקוד בתוך המסגרת',
+    scanPermissionTitle: 'נדרשת הרשאה למצלמה',
+    scanPermissionBody: 'הסורק משתמש במצלמה כדי לקרוא קודי QR וברקודים של תיקים.',
+    scanPermissionAction: 'אישור המצלמה',
+    scanPermissionBlockedTitle: 'המצלמה חסומה',
+    scanPermissionBlockedBody: 'אפשרו גישה למצלמה עבור האפליקציה בהגדרות המכשיר, ואז חזרו לכאן.',
+    scanOpenSettings: 'פתיחת ההגדרות',
+    scanUnavailableTitle: 'הסורק אינו זמין',
+    scanUnavailableBody: 'לא ניתן להפעיל את המצלמה במכשיר הזה. נסו שוב בעוד רגע.',
+    scanRetry: 'נסו שוב',
+    scanTorchOn: 'הדלקת הפנס',
+    scanTorchOff: 'כיבוי הפנס',
+    scanFlipCamera: 'החלפת מצלמה',
+    scanResultTitle: 'קוד זוהה',
+    scanResultFormat: 'פורמט · {type}',
+    scanResultCode: 'קוד',
+    scanResultCopy: 'העתקת הקוד',
+    scanResultCopied: 'הועתק',
+    scanResultAgain: 'סריקה נוספת',
+    scanCameraAria: 'תצוגת המצלמה',
 
-    drawerWorkspace: 'مساحة العمل',
-    drawerComingSoon: 'قريبًا',
-    drawerSoonBadge: 'قريبًا',
-    drawerOpenMenu: 'فتح القائمة',
-    drawerCloseMenu: 'إغلاق القائمة',
-    drawerOpenProfile: 'فتح الملف الشخصي',
-    drawerLanguage: 'اللغة',
-    drawerAppearance: 'المظهر',
-    drawerStatusOk: 'جميع الأنظمة تعمل بشكل سليم',
-    drawerLogout: 'تسجيل الخروج',
-    themeAuto: 'تلقائي',
-    themeLight: 'فاتح',
-    themeDark: 'داكن',
+    navNewInvoice: 'חשבונית חדשה',
+    navBilling: 'תשלומים',
+    drawerMoney: 'כספים',
+    invoiceNewTitle: 'חשבונית חדשה',
+    invoiceNewSubtitle: 'חשבונית {id}',
+    invoiceCustomerTitle: 'לקוח',
+    invoiceCustomerDoctor: 'רופא',
+    invoiceCustomerWalkIn: 'לקוח מזדמן',
+    invoicePickDoctor: 'בחירת רופא',
+    invoicePickDoctorHint: 'מחויב בחשבון החודשי שלו.',
+    invoiceWalkInHint: 'משלם בדלפק, במקום.',
+    invoiceChangeDoctor: 'החלפה',
+    invoiceDoctorSheetTitle: 'בחירת רופא',
+    invoiceDoctorSearch: 'חיפוש שם או מרפאה',
+    invoiceDoctorEmpty: 'לא נמצא רופא',
+    invoiceDoctorEmptyHint: 'נסו שם אחר, או הפיקו חשבונית ללקוח מזדמן.',
+    invoiceCustomerName: 'שם מלא',
+    invoiceCustomerNamePlaceholder: 'מי משלם?',
+    invoiceEmail: 'אימייל',
+    invoiceEmailPlaceholder: 'name@example.com',
+    invoicePhone: 'טלפון',
+    invoicePhonePlaceholder: '05X-XXX-XXXX',
+    invoiceItemsTitle: 'פריטים',
+    invoiceItemsHint: 'הקשה על שירות מוסיפה אותו, הקשה נוספת מוסיפה יחידה.',
+    invoiceItemsEmpty: 'אין פריטים',
+    invoiceItemsEmptyHint: 'בחרו מהמחירון שלמעלה.',
+    invoiceAddServiceAria: 'הוספת {name}',
+    invoiceCustomLine: 'הוספת שורה חופשית',
+    invoiceLineEach: '{price} ליחידה',
+    invoiceLineRemove: 'הסרת שורה',
+    invoiceLineIncrease: 'יחידה נוספת',
+    invoiceLineDecrease: 'יחידה פחות',
+    invoiceLineSheetNew: 'שורה חופשית',
+    invoiceLineSheetEdit: 'עריכת שורה',
+    invoiceLineDescription: 'תיאור',
+    invoiceLineDescriptionPlaceholder: 'על מה החיוב?',
+    invoiceLineUnitPrice: 'מחיר ליחידה',
+    invoiceLineQuantity: 'כמות',
+    invoiceLineRequired: 'הוסיפו תיאור ומחיר גדול מאפס.',
+    invoiceTermsTitle: 'תנאי תשלום',
+    invoiceDueOn: 'לתשלום עד {date}',
+    invoiceNotesTitle: 'הערה לחשבונית',
+    invoiceNotesPlaceholder: 'כל מה שהלקוח צריך לדעת.',
+    invoiceSubtotal: 'סכום לפני מע״מ',
+    invoiceVat: 'מע״מ {rate}%',
+    invoiceTotal: 'סה״כ',
+    invoiceSendTitle: 'שליחה',
+    invoiceChannelEmail: 'אימייל',
+    invoiceChannelApp: 'באפליקציה',
+    invoiceChannelEmailHint: 'ייפתח יישום הדואר עם החשבונית מוכנה לשליחה.',
+    invoiceChannelAppHint: '{name} יקבל אותה בתיבה באפליקציה.',
+    invoiceSend: 'שליחת חשבונית',
+    invoiceSaveDraft: 'שמירה כטיוטה',
+    invoiceErrorCustomer: 'בחרו עבור מי החשבונית.',
+    invoiceErrorEmail: 'נדרשת כתובת אימייל תקינה לשליחה.',
+    invoiceErrorLines: 'הוסיפו פריט אחד לפחות.',
+    invoiceSentTitle: 'החשבונית נשלחה',
+    invoiceSentBody: '{id} בסך {total} בדרך אל {name}.',
+    invoiceDraftSavedTitle: 'הטיוטה נשמרה',
+    invoiceDraftSavedBody: '{id} ממתינה במסך התשלומים והחשבוניות.',
+    invoiceMailFallback:
+      'לא נמצא יישום דואר. החשבונית נשמרה, אפשר לשלוח אותה שוב ממסך התשלומים.',
+    invoiceAnother: 'חשבונית חדשה',
+    invoiceOpenBilling: 'למסך התשלומים',
+    invoiceMailSubject: 'חשבונית {id} · Nadeem Dental Lab',
+    invoiceMailBody:
+      'שלום {name},\n\nלפניך חשבונית {id} בסך {total}, לתשלום עד {due}.\n\n{lines}\n\nתודה,\nNadeem Dental Lab',
 
-    dashGreetingMorning: 'صباح الخير',
-    dashGreetingAfternoon: 'نهارك سعيد',
-    dashGreetingEvening: 'مساء الخير',
-    dashTodayAtLab: 'اليوم في المختبر',
-    dashCasesInProduction: 'حالة قيد الإنتاج',
-    dashOnTime: 'في الموعد',
-    dashRushJobs: '{count} أعمال مستعجلة',
-    dashPickups: '{count} عمليات استلام',
-    dashProfile: 'ملفك الشخصي',
-    dashAttentionOne: 'حالة واحدة تحتاج إلى متابعة',
-    dashAttentionMany: '{count} حالات تحتاج إلى متابعة',
-    dashAttentionAria: 'مراجعة الحالات التي تحتاج إلى متابعة',
-    dashStatActive: 'حالات نشطة',
-    dashStatActiveDelta: '+{count} اليوم',
-    dashStatDue: 'مستحقة هذا الأسبوع',
-    dashStatDueDelta: '{count} عاجلة',
-    dashStatDelivered: 'تم التسليم',
-    dashStatDeliveredDelta: '+{percent}%',
-    dashStatOutstanding: 'مستحقات',
-    dashStatOutstandingDelta: '{count} فواتير',
-    dashPipeline: 'مسار الإنتاج',
-    dashInProgress: 'قيد التنفيذ',
-    dashRecentActivity: 'النشاط الأخير',
-    dashSeeAll: 'عرض الكل',
-    quickNewCase: 'حالة جديدة',
-    quickCourier: 'مندوب',
-    quickScan: 'ملف مسح',
-    quickInvoice: 'فاتورة',
+    billingTitle: 'תשלומים וחשבוניות',
+    billingSubtitle: '{outstanding} פתוח · {overdue} באיחור',
+    billingNewInvoice: 'חשבונית חדשה',
+    billingViewInvoices: 'חשבוניות',
+    billingViewPayments: 'תשלומים',
+    billingSearch: 'חיפוש חשבונית, רופא או מרפאה',
+    billingSummaryOutstanding: 'יתרה פתוחה',
+    billingSummaryOverdue: 'באיחור',
+    billingSummaryCollected: 'נכנס החודש',
+    billingStatusDraft: 'טיוטה',
+    billingStatusSent: 'נשלחה',
+    billingStatusPartial: 'שולם חלקית',
+    billingStatusPaid: 'שולם',
+    billingStatusOverdue: 'באיחור',
+    billingTermsMonthly: 'חשבון חודשי',
+    billingTermsMonthlyHint: 'נסגר בריכוז החיובים בסוף החודש.',
+    billingTermsImmediate: 'תשלום מיד',
+    billingTermsImmediateHint: 'לתשלום באיסוף העבודה.',
+    billingWalkInBadge: 'לקוח מזדמן',
+    billingIssuedOn: 'הופקה ב־{date}',
+    billingDueOn: 'לתשלום עד {date}',
+    billingOverdueDays: 'באיחור {count} ימים',
+    billingFullyPaid: 'שולם במלואו',
+    billingPaidOf: 'התקבלו {paid} מתוך {total}',
+    billingInvoiceAria: 'חשבונית {id} של {name}',
+    billingPaymentAria: 'תשלום בסך {amount} מ־{name}',
+    billingEmptyInvoices: 'אין חשבוניות כאן',
+    billingEmptyInvoicesHint: 'שנו את הסינון, או הפיקו חשבונית חדשה.',
+    billingEmptyPayments: 'אין תשלומים',
+    billingEmptyPaymentsHint: 'תשלום שתרשמו מול חשבונית יופיע כאן.',
+    billingDetailTitle: 'חשבונית {id}',
+    billingDetailItems: 'פריטים',
+    billingDetailPaid: 'התקבל',
+    billingDetailBalance: 'יתרה',
+    billingDetailNotes: 'הערה',
+    billingDetailPayments: 'תשלומים שהתקבלו',
+    billingDetailNoPayments: 'עוד לא התקבל תשלום מול החשבונית.',
+    billingSentVia: 'נשלחה ב{channel}',
+    billingRecordPayment: 'רישום תשלום',
+    billingResend: 'שליחה שוב',
+    billingSendNow: 'שליחה באימייל',
+    billingDeleteDraft: 'מחיקת הטיוטה',
+    billingRemovePayment: 'הסרת התשלום',
+    billingPaymentTitle: 'רישום תשלום',
+    billingPaymentFor: 'בחשבונית {id} פתוחים {balance}.',
+    billingPaymentAmount: 'סכום שהתקבל',
+    billingPaymentMethod: 'אמצעי תשלום',
+    billingPaymentReference: 'אסמכתא',
+    billingPaymentReferencePlaceholder: 'מספר צ׳ק או העברה',
+    billingPaymentSave: 'רישום',
+    billingPaymentInvalid: 'הזינו סכום עד גובה היתרה הפתוחה.',
+    payMethodCash: 'מזומן',
+    payMethodCard: 'כרטיס',
+    payMethodTransfer: 'העברה',
+    payMethodCheck: 'צ׳ק',
+    payMethodApp: 'באפליקציה',
 
-    stageReceived: 'تم الاستلام',
-    stageDesign: 'التصميم',
-    stageProduction: 'قيد الإنتاج',
-    stageQuality: 'فحص الجودة',
-    stageCourier: 'في طريق التوصيل',
-    stageDelivered: 'تم التسليم',
-    stageShortDesign: 'تصميم',
-    stageShortProduction: 'إنتاج',
-    stageShortQuality: 'جودة',
-    stageShortCourier: 'توصيل',
-
-    ordersTitle: 'الطلبات',
-    ordersSubtitle: '{shown} من {total} حالة',
-    ordersSearch: 'ابحث عن مريض أو حالة أو عيادة',
-    ordersClearSearch: 'مسح البحث',
-    ordersFilterSort: 'تصفية وترتيب',
-    ordersFilterAll: 'الكل',
-    ordersFilterRush: 'مستعجل',
-    ordersFilterStarred: 'المميّزة',
-    ordersRushBadge: 'مستعجل',
-    ordersShade: 'درجة {shade}',
-    ordersCaseAria: 'الحالة {id} للمريض {patient}',
-    ordersStar: 'إضافة إلى المميّزة',
-    ordersUnstar: 'إزالة من المميّزة',
-    ordersEmptyTitle: 'لا توجد حالات',
-    ordersEmptyBody: 'جرّب كلمة بحث أخرى أو امسح عامل التصفية.',
-
-    inboxTitle: 'الرسائل',
-    inboxUnreadSubtitle: '{count} محادثات غير مقروءة',
-    inboxAllRead: 'لا توجد رسائل جديدة',
-    inboxNewMessage: 'رسالة جديدة',
-    inboxFilterAll: 'الكل',
-    inboxFilterUnread: 'غير مقروءة',
-    inboxFilterPriority: 'أولوية',
-    inboxSupport: 'دعم المختبر',
-    inboxSupportReply: 'الرد عادةً خلال أقل من 10 دقائق',
-    inboxSupportAria: 'فتح محادثة الدعم',
-    inboxActionRequired: 'مطلوب إجراء',
-    inboxHighPriority: 'أولوية عالية',
-    inboxConversationAria: 'محادثة مع {name}',
-    inboxEmptyTitle: 'لا يوجد شيء هنا',
-    inboxEmptyBody: 'لا توجد محادثات تطابق هذه التصفية.',
-
-    filesTitle: 'الملفات',
-    filesSubtitle: 'مسوحات وصور ومستندات',
-    filesUpload: 'رفع ملف',
-    filesStorage: 'تخزين المختبر',
-    filesStorageUsed: '{used} من {total} مستخدمة',
-    filesFolders: 'المجلدات',
-    filesManage: 'إدارة',
-    filesRecent: 'أحدث الملفات',
-    filesSeeAll: 'عرض الكل',
-    filesCount: '{count} ملفات',
-    filesFolderAria: '{name}، {count} ملفات',
-    filesMore: 'خيارات أخرى',
-
-    exocadTitle: 'عرض exocad',
-    exocadSubtitle: 'افتح حالة ثلاثية الأبعاد في عارض exocad webview',
-    exocadAboutTitle: 'كيف يعمل',
-    exocadAboutBody:
-      'كل ملف مُصدَّر يحتوي على شبكات STL وعلى عارض exocad، لذلك تُفتح الحالة دون اتصال بالإنترنت.',
-    exocadChooseTitle: 'اختر ملفًا',
-    exocadFileCount: '{count} ملفات مضمّنة في التطبيق',
-    exocadOpenAria: 'افتح {name} في العارض ثلاثي الأبعاد',
-    exocadEmptyTitle: 'لا توجد ملفات exocad بعد',
-    exocadEmptyBody: 'أضف ملف HTML مُصدَّرًا إلى assets/exocad وسجّله في lib/exocad.ts.',
-    exocadLoading: 'جارٍ تحميل العارض ثلاثي الأبعاد',
-    exocadLoadingHint: 'قد تستغرق الحالات الكبيرة بضع ثوانٍ.',
-    exocadErrorTitle: 'تعذّر فتح الملف',
-    exocadErrorBody: 'لم يتم تحميل ملف exocad. تحقق من الملف وحاول مرة أخرى.',
-    exocadRetry: 'حاول مرة أخرى',
-    exocadReload: 'إعادة تحميل العارض',
-    exocadBack: 'رجوع',
-    exocadBackToList: 'العودة إلى الملفات',
-    exocadNotFoundTitle: 'الملف غير موجود',
-    exocadNotFoundBody: 'هذا الملف لم يعد مضمّنًا في التطبيق.',
-
-    actionBack: 'رجوع',
-    actionClose: 'إغلاق',
-    actionSave: 'حفظ',
-    actionCancel: 'إلغاء',
-    actionEdit: 'تعديل',
-    actionDelete: 'حذف',
-    filterAll: 'الكل',
-    searchClear: 'مسح البحث',
-    accessDeniedTitle: 'لا توجد صلاحية',
-    accessDeniedBody: 'اطلب من مالك المختبر منحك هذه الصلاحية.',
-
-    timeJustNow: 'الآن',
-    timeMinutes: 'قبل {count} د',
-    timeHours: 'قبل {count} س',
-    timeDays: 'قبل {count} أيام',
-
-    roleLabOwner: 'مالك المختبر',
-    roleLabStaff: 'فني مختبر',
-    roleDoctor: 'طبيب',
-    roleDriver: 'مندوب توصيل',
-    loginDemoRoles: 'تسجيل الدخول كـ',
-
-    permViewDashboard: 'عرض لوحة التحكم',
-    permViewOrders: 'عرض الطلبات',
-    permEditOrders: 'تعديل الطلبات',
-    permViewInbox: 'عرض الرسائل',
-    permViewFiles: 'عرض الملفات',
-    permViewDoctors: 'عرض الأطباء',
-    permViewClinics: 'عرض العيادات',
-    permViewPatients: 'عرض المرضى',
-    permViewDeliveries: 'عرض عمليات التوصيل',
-    permViewExocad: 'فتح عارض exocad',
-    permManageStaff: 'إدارة الفريق',
-
-    navNotifications: 'الإشعارات',
-    navDoctors: 'الأطباء',
-    navClinics: 'العيادات',
-    navPatients: 'المرضى',
-    navDeliveries: 'التوصيلات',
-    navMyCases: 'حالاتي',
-    drawerDirectory: 'دليل العملاء',
-    drawerManage: 'الإدارة',
-
-    notificationsUnread: '{count} غير مقروءة',
-    notificationsAllRead: 'لا توجد إشعارات جديدة',
-    notificationsMarkAll: 'تعليم الكل كمقروء',
-    notificationsSettings: 'إعدادات الإشعارات',
-    notificationsSettingsHint: 'اختر التحديثات التي تصل إلى هذا الجهاز.',
-    notificationsEmptyTitle: 'لا توجد إشعارات',
-    notificationsEmptyBody: 'أعد تفعيل فئة من الإعدادات لعرض سجلها.',
-    notificationsOpenAria: 'فتح الإشعارات',
-    notifTypeNewCase: 'حالة جديدة',
-    notifTypeNewCaseHint: 'أرسلت عيادة أمر عمل جديد',
-    notifTypeDueSoon: 'موعد التسليم',
-    notifTypeDueSoonHint: 'حالة تقترب من موعد استحقاقها',
-    notifTypeMessage: 'رسالة',
-    notifTypeMessageHint: 'رد طبيب في صندوق الرسائل',
-    notifTypeDelivery: 'التوصيل',
-    notifTypeDeliveryHint: 'تحديثات الاستلام والتسليم',
-    notifTypeInvoice: 'الفواتير',
-    notifTypeInvoiceHint: 'تنبيهات الفواتير والمدفوعات',
-
-    tableRange: '{from}–{to} من {total}',
-    tableRangeEmpty: 'لا نتائج',
-    tablePageOf: '{page} / {total}',
-    tablePrevious: 'الصفحة السابقة',
-    tableNext: 'الصفحة التالية',
-    tableSortBy: 'ترتيب حسب {column}',
-
-    statusActive: 'نشط',
-    statusPending: 'قيد الانتظار',
-    statusInactive: 'غير نشط',
-
-    colDoctor: 'الطبيب',
-    colClinic: 'العيادة',
-    colSpecialty: 'التخصص',
-    colPhone: 'الهاتف',
-    colActiveCases: 'نشطة',
-    colTotalCases: 'الإجمالي',
-    colStatus: 'الحالة',
-    colCity: 'المدينة',
-    colDoctorsCount: 'الأطباء',
-    colOutstanding: 'الرصيد',
-    colPatient: 'المريض',
-    colCase: 'الحالة',
-    colWorkType: 'نوع العمل',
-    colAge: 'العمر',
-    colStage: 'المرحلة',
-
-    doctorsTitle: 'الأطباء',
-    doctorsSubtitle: '{count} طبيبًا محوّلًا',
-    doctorsSearch: 'ابحث عن طبيب أو عيادة أو تخصص',
-    doctorsEmptyTitle: 'لم يتم العثور على أطباء',
-    doctorsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
-
-    clinicsTitle: 'العيادات',
-    clinicsSubtitle: '{count} عيادة شريكة',
-    clinicsSearch: 'ابحث عن عيادة أو مدينة',
-    clinicsEmptyTitle: 'لم يتم العثور على عيادات',
-    clinicsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
-
-    patientsTitle: 'المرضى',
-    patientsSubtitle: '{count} مريضًا في السجل',
-    patientsSearch: 'ابحث عن مريض أو حالة أو طبيب',
-    patientsEmptyTitle: 'لم يتم العثور على مرضى',
-    patientsEmptyBody: 'جرّب كلمة بحث أخرى أو امسح التصفية.',
-
-    staffTitle: 'الفريق والصلاحيات',
-    staffSubtitle: '{count} أعضاء فريق',
-    staffAdd: 'إضافة عضو',
-    staffEmptyTitle: 'لا يوجد أعضاء فريق',
-    staffEmptyBody: 'أضف أول عامل مختبر لتعيين الصلاحيات.',
-    staffOwnerBadge: 'المالك',
-    staffOwnerProtected: 'مقعد المالك يحتفظ دائمًا بصلاحية كاملة.',
-    staffInactiveBadge: 'موقوف',
-    staffPermissionsCount: '{count} من {total} صلاحيات',
-    staffMemberAria: 'تعديل {name}',
-    staffFormNewTitle: 'عضو فريق جديد',
-    staffFormEditTitle: 'تعديل عضو الفريق',
-    staffFormName: 'الاسم الكامل',
-    staffFormNamePlaceholder: 'مثال: كريم حداد',
-    staffFormJobTitle: 'المسمى الوظيفي',
-    staffFormJobTitlePlaceholder: 'مثال: أخصائي سيراميك',
-    staffFormPhone: 'رقم الهاتف',
-    staffFormPhonePlaceholder: 'الرقم المستخدم لتسجيل الدخول',
-    staffFormEmail: 'البريد الإلكتروني',
-    staffFormEmailPlaceholder: 'name@nadeemlab.com',
-    staffFormRoleTitle: 'الدور في النظام',
-    staffFormRoleHint: 'يحدد الدور الصلاحيات الأولية.',
-    staffFormRoleLocked: 'لا يمكن تغيير دور المالك.',
-    staffFormAccessTitle: 'الصلاحيات',
-    staffFormAccessHint: 'فعّل أو عطّل صلاحيات فردية لهذا العضو.',
-    staffFormStatusTitle: 'حالة الحساب',
-    staffFormStatusHint: 'العضو الموقوف لا يمكنه تسجيل الدخول.',
-    staffFormColorTitle: 'اللون في قائمة الفريق',
-    staffFormColorAria: 'اختيار اللون {index}',
-    staffFormNameRequired: 'أدخل اسمًا قبل الحفظ.',
-    staffDeleteTitle: 'إزالة عضو',
-    staffDeleteBody: 'سيفقد {name} الوصول إلى مساحة عمل المختبر.',
-
-    navTasks: 'المهام',
-    permManageTasks: 'إدارة جميع المهام',
-    tasksTitle: 'المهام',
-    tasksSubtitle: 'لوحة العمل الداخلية',
-    tasksTabMine: 'مهامي',
-    tasksTabReview: 'للمراجعة',
-    tasksTabAll: 'الكل',
-    tasksTabDone: 'المكتملة',
-    tasksEmptyMine: 'لا توجد مهام مُسندة إليك',
-    tasksEmptyMineHint: 'ستظهر هنا المهام الجديدة التي تُسند إليك.',
-    tasksEmptyAll: 'لا توجد مهام مفتوحة',
-    tasksEmptyAllHint: 'أنشئ أول مهمة للفريق.',
-    tasksEmptyReview: 'لا يوجد ما يجب مراجعته',
-    tasksEmptyReviewHint: 'المهام التي أنجزها الفريق تنتظر هنا التأكيد.',
-    tasksEmptyDone: 'الأرشيف فارغ',
-    tasksEmptyDoneHint: 'ستُحفظ هنا المهام المكتملة.',
-    tasksNew: 'مهمة جديدة',
-    tasksEditTask: 'تعديل المهمة',
-    tasksNewTask: 'مهمة جديدة',
-    tasksNewSubtask: 'مهمة فرعية جديدة',
-    tasksAddSubtask: 'إضافة مهمة فرعية',
-    tasksFormTitle: 'العنوان',
-    tasksFormTitlePlaceholder: 'مثال: صب النماذج للحالة ND-2417',
-    tasksFormNotes: 'ملاحظات',
-    tasksFormNotesPlaceholder: 'تفاصيل أو تعليمات أو سياق (اختياري)',
-    tasksFormDueDate: 'تاريخ الاستحقاق',
-    tasksFormDueToday: 'اليوم',
-    tasksFormDueTomorrow: 'غدًا',
-    tasksFormDueNextWeek: 'الأسبوع المقبل',
-    tasksFormDueNone: 'بدون تاريخ',
-    tasksFormAssignee: 'إسناد إلى',
-    tasksFormParent: 'المهمة الرئيسية',
-    tasksTitleRequired: 'أدخل عنوانًا قبل الحفظ.',
-    tasksMarkDone: 'تعليم كمنجزة',
-    tasksReopen: 'إعادة فتح',
-    tasksConfirm: 'تأكيد',
-    tasksUndo: 'تراجع',
-    tasksDeleteTitle: 'حذف المهمة',
-    tasksDeleteBody: 'سيتم حذف "{title}" ومهامها الفرعية.',
-    tasksDueToday: 'مستحقة اليوم',
-    tasksDueTomorrow: 'مستحقة غدًا',
-    tasksOverdue: 'متأخرة',
-    tasksSubtaskCount: '{count} مهام فرعية',
-    tasksSubtaskDetail: 'مهمة فرعية',
-    tasksNoNotes: 'لا توجد ملاحظات لهذه المهمة الفرعية.',
-    tasksOpenSubtaskAria: 'فتح {title}',
-    tasksCreatedBy: 'أنشأها {name}',
-    tasksReviewHint: 'اكتملت — بانتظار تأكيد المدير',
-    tasksDragHandle: 'اسحب لإعادة الترتيب',
-    tasksMyTaskAria: '{title}، مُسندة إلى {assignee}',
+    analyticsTitle: 'אנליטיקה',
+    analyticsSubtitle: 'איך המעבדה עובדת',
+    analyticsRangeMonth: 'החודש',
+    analyticsRangeQuarter: '3 חודשים',
+    analyticsRangeHalf: '6 חודשים',
+    analyticsHeroInvoiced: 'חויב',
+    analyticsHeroCollected: 'נגבה עד כה',
+    analyticsCollectionRate: 'נגבה',
+    analyticsKpiOutstanding: 'יתרה פתוחה',
+    analyticsKpiOverdue: 'באיחור',
+    analyticsOverdueCount: '{count} חשבוניות',
+    analyticsKpiAvgInvoice: 'חשבונית ממוצעת',
+    analyticsInvoiceCount: '{count} חשבוניות',
+    analyticsKpiUnits: 'יחידות שיוצרו',
+    analyticsCounterShare: '{percent}% מכירה בדלפק',
+    analyticsRevenueTitle: 'חיוב מול גבייה',
+    analyticsLegendInvoiced: 'חויב',
+    analyticsLegendCollected: 'נגבה',
+    analyticsQualityTitle: 'ייצור',
+    analyticsKpiOnTime: 'נמסר בזמן',
+    analyticsKpiTurnaround: 'ימים לעבודה',
+    analyticsTurnaroundHint: 'מקבלת העבודה ועד המשלוח.',
+    analyticsServicesTitle: 'הכנסות לפי שירות',
+    analyticsServiceUnits: '{count} יחידות',
+    analyticsDoctorsTitle: 'הרופאים המובילים',
+    analyticsMethodsTitle: 'איך הלקוחות משלמים',
+    analyticsMethodCount: '{count} תשלומים',
+    analyticsEmpty: 'לא הופקו חשבוניות',
+    analyticsEmptyHint: 'הפיקו חשבונית והמספרים יופיעו כאן.',
   },
 };

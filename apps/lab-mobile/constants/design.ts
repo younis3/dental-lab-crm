@@ -236,6 +236,7 @@ export const type = {
   display: { fontFamily: fontFamily.extrabold, fontSize: 36, lineHeight: 42, letterSpacing: -1.1 },
   displaySerif: { fontFamily: fontFamily.serif, fontSize: 42, lineHeight: 46, letterSpacing: -1.2 },
   editorial: { fontFamily: fontFamily.serifItalic, fontSize: 22, lineHeight: 28, letterSpacing: -0.3 },
+  greeting: { fontFamily: fontFamily.regular, fontSize: 18, lineHeight: 24, letterSpacing: -0.2 },
   title: { fontFamily: fontFamily.bold, fontSize: 28, lineHeight: 34, letterSpacing: -0.6 },
   heading: { fontFamily: fontFamily.bold, fontSize: 20, lineHeight: 26, letterSpacing: -0.35 },
   subheading: { fontFamily: fontFamily.semibold, fontSize: 16, lineHeight: 22, letterSpacing: -0.2 },
